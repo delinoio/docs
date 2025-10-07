@@ -1,0 +1,148 @@
+---
+title: "Configuring AI Reviewer"
+description: "Enable bot reviews and automated code quality checks"
+---
+
+AutoDev can automatically respond to reviews from bot accounts, enabling automated code quality workflows.
+
+## What is Auto-Apply Bot Reviews?
+
+AutoDev can automatically respond to reviews from bot accounts. For detailed information about this setting including how to enable it, when to use it, and configuration options, see the [Auto-apply Bot Reviews](/autodev/settings#auto-apply-bot-reviews) documentation.
+
+## How It Works
+
+### Normal Review Workflow
+
+**Without auto-apply:**
+1. Bot submits review
+2. Nothing happens (bot hasn't connected repository)
+3. Review is ignored
+
+**With auto-apply enabled:**
+1. Bot submits review
+2. AutoDev detects it's a bot account
+3. Automatically triggers update workflow
+4. Uses GitHub App credentials
+5. PR is updated based on bot feedback
+
+### Bot Detection
+
+AutoDev identifies bots using GitHub's API:
+- Checks reviewer's `type` field
+- `type: "Bot"` = automated account
+- `type: "User"` = human account
+
+Common bot accounts:
+- Dependabot
+- Renovate
+- CodeClimate
+- Snyk
+- Custom CI/CD bots
+
+## Use Cases
+
+For common use cases including code quality bots, security scanning, and dependency updates, see the [Auto-apply Bot Reviews use cases](/autodev/settings#auto-apply-bot-reviews) in the settings documentation.
+
+## Configuration
+
+### Team-Level Setting
+
+Auto-apply is configured per team:
+- All team members use same setting
+- Applies to all connected repositories
+- Can be toggled on/off anytime
+
+### Per-Repository Behavior
+
+Currently, the setting applies to all repositories in the team. Future versions may support per-repository configuration.
+
+## Disabling Auto-Apply
+
+For information about when and how to disable this feature, see [when to disable Auto-apply Bot Reviews](/autodev/settings#auto-apply-bot-reviews) in the settings documentation.
+
+## Troubleshooting
+
+For detailed troubleshooting of bot reviews and auto-apply issues, see the [AI Reviewer Troubleshooting](/autodev/troubleshooting/ai-reviewer) guide.
+
+## Best Practices
+
+For best practices and configuration recommendations, see the [Auto-apply Bot Reviews configuration tips](/autodev/settings#configuration-tips) in the settings documentation.
+
+## Supported Bot Platforms
+
+AutoDev auto-apply works with any bot account recognized by GitHub:
+
+**Dependency Management:**
+- Dependabot
+- Renovate
+- Greenkeeper
+
+**Code Quality:**
+- CodeClimate
+- SonarCloud
+- Codacy
+- DeepSource
+
+**Custom Bots:**
+- Any bot created with GitHub App
+- Custom CI/CD bots
+- Internal automation tools
+
+## Limitations
+
+### Current Limitations
+
+1. **Team-level only:**
+   - Cannot configure per-repository
+   - All repos use team setting
+
+2. **All-or-nothing:**
+   - Cannot select specific bots
+   - Either all bots or no bots
+
+3. **No custom rules:**
+   - Cannot filter by bot type
+   - Cannot set conditions
+
+### Future Enhancements
+
+Planned features:
+- Per-repository settings
+- Bot allowlist/blocklist
+- Conditional auto-apply rules
+- Custom workflow templates
+
+## Alternative: Manual Bot Review Handling
+
+If auto-apply doesn't fit your workflow:
+
+### Option 1: Disable Auto-Apply
+
+- Turn off auto-apply
+- Manually review bot feedback
+- Use "Update PR" when needed
+- More control, more manual work
+
+### Option 2: Selective Application
+
+- Keep auto-apply off
+- Enable for specific tasks
+- Manual trigger for others
+- Balance automation and control
+
+### Option 3: Apply Reviews from Other reviewers
+
+You can also manually apply bot review feedback from other PRs using the Reflect command:
+
+1. Copy the bot review comment link from another PR
+2. Submit a review with "Request changes" on the current PR
+3. Use the Reflect command with the comment URL
+
+This allows you to selectively apply bot reviews without enabling auto-apply. For detailed instructions, see [Applying reviews from other PRs](/autodev/reviewing-prs#applying-reviews-from-other-prs).
+
+## Next Steps
+
+- [AI Reviewer Troubleshooting](/autodev/troubleshooting/ai-reviewer)
+- [PR Review Process](/autodev/reviewing-prs)
+- [Settings Configuration](/autodev/settings)
+- [Unit Task Guide](/autodev/tasks/unit)

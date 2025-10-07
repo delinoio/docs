@@ -1,0 +1,248 @@
+---
+title: "How AutoDev Handles PR Reviews"
+description: "Understand AutoDev's automated pull request review and update workflow"
+---
+
+AutoDev automatically manages pull request reviews and updates, responding to feedback and fixing issues without manual intervention.
+
+## The automated PR workflow
+
+### 1. PR Creation
+When AutoDev creates a pull request:
+- PR is opened for review
+- Task link comment is added
+- Task prompt comment is added (if enabled)
+- CI checks begin running
+
+### 2. Code Review
+Team members review the PR normally:
+- Leave review comments
+- Request changes
+- Approve changes
+
+### 3. Automatic Response
+When a review is submitted, AutoDev:
+- Detects the review via GitHub webhook
+- Converts PR to draft status (except for simple approvals)
+- Triggers a workflow to address the feedback
+- AI agent analyzes the review and makes changes
+- Pushes updates to the PR branch
+- CI checks run again
+
+### 4. CI Monitoring
+AutoDev watches CI check status:
+- When all checks complete
+- If any checks fail
+- Automatically triggers fix workflow
+- AI agent investigates and fixes failures
+- Updates are pushed to the PR
+
+### 5. Ready for Merge
+When everything passes:
+- All CI checks pass
+- All review feedback addressed
+- PR is automatically undrafted (if enabled)
+- Ready for final approval and merge
+
+## PR comments
+
+### Task Link Comment
+Always added to every AutoDev PR:
+
+```markdown
+🤖 This pull request has been linked to AutoDev Task #123
+
+View the task details and manage the automated development
+workflow in AutoDev.
+```
+
+Provides:
+- Link to the AutoDev task
+- Task ID reference
+- Context for reviewers
+
+### Task Prompt Comment
+Optional, enabled by default. Shows the original task prompt in PR comments to provide context for reviewers.
+
+For details about this feature including benefits and how to configure it, see [Enable Prompt Comments](/autodev/settings#enable-prompt-comments) in the settings documentation.
+
+## Review types and behavior
+
+### Changes Requested
+When reviewer requests changes:
+1. PR converts to draft
+2. AutoDev workflow triggered
+3. AI analyzes review comments
+4. Changes are made and pushed
+5. PR remains draft until CI passes
+
+### Comments Only
+When reviewer adds comments (not requesting changes):
+1. PR converts to draft
+2. AutoDev workflow triggered
+3. AI addresses comments
+4. Updates pushed to PR
+5. PR remains draft until CI passes
+
+### Approvals
+When reviewer approves without comments:
+1. PR stays as-is (not converted to draft)
+2. No workflow triggered
+3. PR ready for merge (if CI passes)
+
+### Bot Reviews
+When a bot account submits a review, behavior depends on the "Auto-apply Bot Reviews" setting. See [Settings](/autodev/settings) for details.
+
+## Draft status during updates
+
+AutoDev converts PRs to draft during automated updates to:
+- Signal work is in progress
+- Prevent accidental merges during changes
+- Avoid confusing reviewers
+- Indicate AI is actively working
+
+**Exception**: Simple approvals don't trigger draft conversion.
+
+## Automatic CI fixes
+
+When CI checks fail:
+
+### Detection
+AutoDev monitors:
+- `check_run` webhooks
+- `check_suite` webhooks
+- Waits for all checks to complete
+- Identifies failing checks
+
+### Fix Workflow
+If failures detected:
+1. Creates fix workflow execution
+2. Converts PR to draft
+3. Generates detailed fix prompt with:
+   - Original task prompt
+   - List of failing checks
+   - Links to check details
+4. AI investigates failures using GitHub CLI
+5. Fixes are made and pushed
+6. CI runs again
+
+### Rate Limiting
+To prevent excessive fix attempts:
+- Maximum 1 fix attempt per commit
+- Tracked by commit SHA
+- New commits allow new fix attempts
+
+## Auto-undraft feature
+
+When enabled (default), AutoDev automatically converts draft PRs to ready-for-review when all CI checks pass.
+
+For details about this feature including when to enable/disable it and configuration options, see [Auto-undraft PR](/autodev/settings#auto-undraft-pr) in the settings documentation.
+
+## GitHub Ruleset recommendations
+
+To optimize AutoDev's automated workflow, we recommend configuring GitHub Rulesets to protect your repository while allowing AutoDev to work efficiently.
+
+### Recommended ruleset configuration
+
+**Branch protection rules:**
+- **Require pull request reviews** - Ensure human oversight of AI-generated code
+- **Require status checks to pass** - Enforce CI validation before merging
+- **Allow force pushes: Enable for AutoDev bot** - Let AutoDev clean up commit history after addressing reviews
+- **Allow deletions: Disable** - Protect branches from accidental deletion
+
+**Why allow force pushes for AutoDev:**
+When AutoDev addresses review feedback or fixes CI failures, it may need to force push to maintain a clean commit history. This is safe because:
+- Only the AutoDev bot account has this permission
+- Changes still go through PR review
+- CI checks must still pass
+- Human approval required for merge
+
+**Setting up the ruleset:**
+1. Go to your repository settings
+2. Navigate to Rules → Rulesets
+3. Create a new ruleset for your target branches (e.g., `main`, `develop`)
+4. Configure branch protections as above
+5. Under "Bypass list," add the AutoDev bot account for force push permissions
+
+This configuration ensures code quality while allowing AutoDev to manage PRs efficiently without manual intervention.
+
+## Best practices
+
+### For Reviewers
+
+**Be specific in feedback:**
+```
+Please add error handling for the null case on line 45
+```
+Better than:
+```
+Needs error handling
+```
+
+**Reference specific code:**
+```
+In UserService.authenticateUser(), add rate limiting
+to prevent brute force attacks
+```
+
+**Provide context:**
+```
+This approach won't work with our existing session
+management. Please use the SessionManager class instead.
+```
+
+### For PR Authors
+
+**Monitor automated updates:**
+- Check that AutoDev addressed your feedback
+- Review changes made by AI
+- Add manual updates if needed
+
+**Collaborate with AI:**
+- Request updates through AutoDev
+- Let AI handle repetitive fixes
+- Make final manual adjustments
+
+**Keep PRs focused:**
+- Single responsibility per PR
+- Easier for AI to maintain
+- Faster review cycles
+
+## Manual PR updates
+
+You can also manually request PR updates:
+
+1. Go to AutoDev task details
+2. Find the PR you want to update
+3. Click **Update PR**
+4. Enter update instructions
+5. AutoDev converts PR to draft and makes changes
+
+Use manual updates when:
+- Review feedback is complex
+- Need additional features
+- Want to refine the implementation
+
+## Applying reviews from other reviewers
+
+You can apply review feedback from other pull requests using the Reflect command:
+
+1. Find the review comment you want to apply.
+2. Copy the comment's direct link (e.g., `https://github.com/delinoio/autodev-example/pull/123#issuecomment-337041341`)
+3. On the current PR, submit a review with "Request changes"
+4. In the review message, use: `Reflect https://github.com/delinoio/autodev-example/pull/123#issuecomment-337041341`
+5. AutoDev will analyze the linked review comment and apply those changes to the current PR
+
+This is useful when:
+- Applying reviews from other people
+
+## Troubleshooting
+
+For common PR review issues and solutions, see the [PR Review Troubleshooting](/autodev/troubleshooting/pr-reviews) guide.
+
+## Next steps
+
+- [PR Review Troubleshooting](/autodev/troubleshooting/pr-reviews)
+- Configure [AutoDev Settings](/autodev/settings)
+- Learn about [AI Reviewers](/autodev/reviewing-prs/ai-reviewer)
+- Troubleshoot [Unit Tasks](/autodev/troubleshooting/unit-task)

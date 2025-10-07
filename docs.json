@@ -26,6 +26,69 @@
             "pages": ["core/teams/creation"]
           }
         ]
+      },
+      {
+        "tab": "AutoDev",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "autodev/index",
+              "autodev/getting-started/prerequisites",
+              "autodev/getting-started/github-app",
+              "autodev/getting-started/github-workflow",
+              "autodev/getting-started/ai-agent",
+              "autodev/getting-started/first-pr"
+            ]
+          },
+          {
+            "group": "Managing Tasks",
+            "pages": [
+              "autodev/tasks/index",
+              "autodev/tasks/unit/index",
+              "autodev/tasks/composite/index"
+            ]
+          },
+          {
+            "group": "Settings",
+            "pages": ["autodev/settings/index"]
+          },
+          {
+            "group": "Configuring AI Agents",
+            "pages": [
+              "autodev/ai-agents/claude-code",
+              "autodev/ai-agents/codex-cli",
+              "autodev/ai-agents/opencode",
+              "autodev/ai-agents/gemini-cli",
+              "autodev/ai-agents/crush-cli",
+              "autodev/ai-agents/github-copilot-cli"
+            ]
+          },
+          {
+            "group": "Architecture",
+            "pages": ["autodev/architecture/webhook"]
+          },
+          {
+            "group": "Cost reduction (optional)",
+            "pages": ["autodev/cost-reduction/github-runner"]
+          },
+          {
+            "group": "Reviewing PRs",
+            "pages": [
+              "autodev/reviewing-prs/index",
+              "autodev/reviewing-prs/ai-reviewer"
+            ]
+          },
+          {
+            "group": "Troubleshooting",
+            "pages": [
+              "autodev/troubleshooting/unit-task",
+              "autodev/troubleshooting/composite-task",
+              "autodev/troubleshooting/pr-reviews",
+              "autodev/troubleshooting/ai-reviewer"
+            ]
+          }
+        ]
       }
     ],
     "global": {

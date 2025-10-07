@@ -1,0 +1,151 @@
+---
+title: "PR Review Troubleshooting"
+description: "Common issues and solutions for AutoDev pull request reviews"
+---
+
+## PR stuck in draft
+
+**Symptoms:**
+- PR remains in draft status
+- All checks passing but not ready for review
+- Cannot merge PR
+
+**Solution:**
+1. Check CI status - ensure all checks are passing
+2. Verify auto-undraft is enabled in [Settings](/autodev/settings)
+3. Manually undraft the PR if needed
+4. Check if there are pending review comments
+
+## AutoDev not responding to reviews
+
+**Symptoms:**
+- Reviewer submitted feedback
+- No workflow triggered
+- PR not updated
+- PR not converting to draft
+- No response to feedback
+
+**Possible causes:**
+- Reviewer hasn't connected the repository in AutoDev
+- Bot reviews with auto-apply disabled
+- GitHub webhook not configured or delivery failing
+- Review was a simple approval (doesn't trigger workflow)
+- Review type doesn't trigger workflow
+- Repository not connected
+
+**Solution:**
+
+**Ensure reviewer has repository access:**
+1. Reviewer must connect the repository in AutoDev
+2. Verify repository appears in reviewer's dashboard
+3. Check that AutoDev GitHub App is installed
+
+**Enable auto-apply for bot reviews:**
+See [Auto-apply Bot Reviews](/autodev/settings#auto-apply-bot-reviews) in the settings documentation for details on enabling this feature.
+
+**Verify webhook configuration:**
+1. Repository settings → Webhooks
+2. Check AutoDev webhook exists
+3. Verify webhook is active
+4. Check recent delivery status
+
+**Check GitHub webhook logs:**
+1. Go to repository settings on GitHub
+2. Navigate to Webhooks
+3. Find AutoDev webhook
+4. Check recent deliveries for errors
+5. Redeliver failed webhooks if needed
+
+**Check review type:**
+- Simple approvals don't trigger workflows
+- Comments must be submitted with "Request changes" or "Comment"
+- Verify review was actually submitted (not just comment)
+
+**Manual trigger:**
+1. Go to task details
+2. Click "Update PR"
+3. Enter update instructions
+4. Workflow will trigger manually
+
+## CI fixes not working
+
+**Symptoms:**
+- CI checks failing
+- AutoDev not attempting fixes
+- PR remains with failed checks
+
+**Possible causes:**
+- Already attempted fix for this commit (rate limited)
+- Workflow execution failed
+- GitHub Actions quota exceeded
+- AutoDev webhook not receiving check events
+
+**Solution:**
+
+**Push new commit to allow new fix attempt:**
+```bash
+git commit --allow-empty -m "Trigger CI fix attempt"
+git push
+```
+
+**Check workflow execution logs:**
+1. Go to task details page
+2. Find workflow executions
+3. Look for "ci_fix" type workflows
+4. Review error messages
+
+**Verify GitHub Actions quota:**
+1. Check repository Actions tab
+2. Verify workflows can run
+3. Check organization billing if quota exceeded
+
+**Manual fix alternative:**
+1. Review CI failure logs
+2. Make fixes locally
+3. Push updates to PR branch
+
+## Too many automated updates
+
+**Symptoms:**
+- PR receives excessive updates
+- Multiple workflow runs
+- High costs
+- Reviewers confused by constant changes
+
+**Causes:**
+- Task prompt too vague
+- Review feedback unclear
+- Multiple bots triggering updates
+- CI checks failing repeatedly
+
+**Solution:**
+
+**Break tasks into smaller units:**
+- Create focused, single-purpose tasks
+- Avoid complex multi-step tasks
+- Use composite tasks for large projects
+
+**Be more specific in initial prompt:**
+```
+Good: Fix null pointer exception in UserService.authenticateUser()
+when email field is missing
+
+Bad: Fix the bug
+```
+
+**Manually review and update PRs:**
+1. Disable auto-apply temporarily
+2. Review accumulated feedback
+3. Make consolidated updates
+4. Re-enable auto-apply
+
+**Limit bot reviews:**
+1. Configure bots to review less frequently
+2. Adjust bot sensitivity
+3. Use auto-apply selectively
+
+## Next steps
+
+- [PR Review Process](/autodev/reviewing-prs)
+- [Unit Task Troubleshooting](/autodev/troubleshooting/unit-task)
+- [Composite Task Troubleshooting](/autodev/troubleshooting/composite-task)
