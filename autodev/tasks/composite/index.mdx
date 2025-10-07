@@ -315,6 +315,39 @@ Tasks 3, 4, and 5 run in parallel after task 2 completes.
 - Track progress across all tasks
 - Understand dependencies
 
+### Batch processing with consistent prompts
+
+Composite tasks excel at applying the same logic across multiple independent items, creating separate PRs for each one. This is ideal for:
+
+**Translation and localization:**
+```
+Review all AutoDev documentation pages one by one and fix awkward translations.
+Check each supported language individually.
+Create one PR per page. Only create PRs if translations need fixing.
+```
+
+AutoDev will:
+- Plan separate tasks for each documentation page
+- Apply the same review logic to each language version
+- Create individual PRs only when improvements are needed
+- Process pages in parallel for faster completion
+
+**Codebase-wide refactoring:**
+```
+Update all API endpoints to use the new authentication middleware.
+Create one PR per endpoint group.
+Ensure backward compatibility in each change.
+```
+
+**Systematic improvements:**
+```
+Add error handling to all database query functions.
+Create one PR per module.
+Include tests for each error case.
+```
+
+This approach allows you to describe the logic once and let AutoDev apply it systematically across many items, while maintaining clean, reviewable PRs for each change.
+
 ## When not to use composite tasks
 
 Use unit tasks instead when:
