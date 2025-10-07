@@ -30,10 +30,10 @@ The AI agent is actively working on your task:
 - Running tests
 
 ### 3. Completed
-All work is done and pull requests have been created. You can now:
-- Review the generated code
-- Check the PRs created
-- Merge or request changes
+The task is marked complete when all pull requests are merged. This means:
+- All code changes have been reviewed and approved
+- All PRs have been merged to their target branches
+- The task objectives have been successfully implemented
 
 ### 4. Failed
 The task encountered an error. Common reasons:
@@ -117,11 +117,11 @@ If a task fails, you can retry it:
 Use the sync feature to refresh task status from GitHub:
 
 1. Go to the task details page
-2. Click **Sync Task** (usually in a debug or actions menu)
-3. AutoDev checks all PRs and updates the task status:
-   - All PRs merged → Task marked completed
-   - All PRs closed (not merged) → Task marked failed
-   - PRs still open → Status unchanged
+2. Click **Sync Task** in the Debug menu
+3. AutoDev checks all PRs and updates the task status automatically:
+   - **All PRs merged** → Task marked as completed
+   - **All PRs closed without merge** → Task marked as failed
+   - **PRs still open** → Status remains in progress
 
 ## Deleting a task
 
