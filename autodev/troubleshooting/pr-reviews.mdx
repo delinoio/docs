@@ -16,18 +16,22 @@ description: "Common issues and solutions for AutoDev pull request reviews"
 3. Manually undraft the PR if needed
 4. Check if there are pending review comments
 
-## AI not responding to reviews
+## AutoDev not responding to reviews
 
 **Symptoms:**
 - Reviewer submitted feedback
 - No workflow triggered
 - PR not updated
+- PR not converting to draft
+- No response to feedback
 
 **Possible causes:**
 - Reviewer hasn't connected the repository in AutoDev
 - Bot reviews with auto-apply disabled
-- GitHub webhook delivery failure
+- GitHub webhook not configured or delivery failing
 - Review was a simple approval (doesn't trigger workflow)
+- Review type doesn't trigger workflow
+- Repository not connected
 
 **Solution:**
 
@@ -41,12 +45,29 @@ description: "Common issues and solutions for AutoDev pull request reviews"
 2. Enable "Auto-apply Bot Reviews"
 3. Bot reviews will now trigger workflows
 
+**Verify webhook configuration:**
+1. Repository settings → Webhooks
+2. Check AutoDev webhook exists
+3. Verify webhook is active
+4. Check recent delivery status
+
 **Check GitHub webhook logs:**
 1. Go to repository settings on GitHub
 2. Navigate to Webhooks
 3. Find AutoDev webhook
 4. Check recent deliveries for errors
 5. Redeliver failed webhooks if needed
+
+**Check review type:**
+- Simple approvals don't trigger workflows
+- Comments must be submitted with "Request changes" or "Comment"
+- Verify review was actually submitted (not just comment)
+
+**Manual trigger:**
+1. Go to task details
+2. Click "Update PR"
+3. Enter update instructions
+4. Workflow will trigger manually
 
 ## CI fixes not working
 
@@ -124,68 +145,6 @@ Bad: Fix the bug
 1. Configure bots to review less frequently
 2. Adjust bot sensitivity
 3. Use auto-apply selectively
-
-## Workflow not triggering
-
-**Symptoms:**
-- Review submitted but no workflow starts
-- PR not converting to draft
-- No response to feedback
-
-**Possible causes:**
-- GitHub webhook not configured
-- Webhook delivery failing
-- Review type doesn't trigger workflow
-- Repository not connected
-
-**Solution:**
-
-**Verify webhook configuration:**
-1. Repository settings → Webhooks
-2. Check AutoDev webhook exists
-3. Verify webhook is active
-4. Check recent delivery status
-
-**Check review type:**
-- Simple approvals don't trigger workflows
-- Comments must be submitted with "Request changes" or "Comment"
-- Verify review was actually submitted (not just comment)
-
-**Manual trigger:**
-1. Go to task details
-2. Click "Update PR"
-3. Enter update instructions
-4. Workflow will trigger manually
-
-## PR comments not appearing
-
-**Symptoms:**
-- Task link comment missing
-- Prompt comment not showing
-- Expected AutoDev comments absent
-
-**Possible causes:**
-- Prompt comments disabled in settings
-- GitHub API rate limit
-- PR created outside AutoDev workflow
-- Comment posting failed
-
-**Solution:**
-
-**Check settings:**
-1. Go to Settings
-2. Verify "Enable Prompt Comments" is ON
-3. Save settings if changed
-
-**Verify PR was created by AutoDev:**
-- PR must be created through AutoDev task
-- Manually created PRs won't have comments
-- Check PR was linked to task
-
-**Re-trigger comment posting:**
-1. Sync task status
-2. Comments may be added retroactively
-3. Check task workflow logs for errors
 
 ## Next steps
 

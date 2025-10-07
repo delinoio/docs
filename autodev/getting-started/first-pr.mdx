@@ -171,18 +171,15 @@ When you're satisfied:
 
 ## Common First-Time Issues
 
-### Workflow not triggering
-**Cause**: `autodev.yml` file missing or incorrect
+### AutoDev not responding to reviews
+**Causes**:
+- `autodev.yml` file missing or incorrect
+- Agent not configured or API key missing
 
 **Solution**:
 - Verify workflow file exists at `.github/workflows/autodev.yml`
 - Check file contents match the setup guide
 - Ensure workflow has correct permissions
-
-### AI agent not responding
-**Cause**: Agent not configured or API key missing
-
-**Solution**:
 - Verify AI agent is set up correctly
 - Check API key in repository secrets
 - Review agent configuration guide
