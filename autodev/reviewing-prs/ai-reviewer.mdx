@@ -1,0 +1,322 @@
+---
+title: "Configuring AI Reviewer"
+description: "Enable bot reviews and automated code quality checks"
+---
+
+AutoDev can automatically respond to reviews from bot accounts, enabling automated code quality workflows.
+
+## What is Auto-Apply Bot Reviews?
+
+When enabled, AutoDev automatically triggers update workflows when bot accounts (like linters, formatters, or security scanners) submit pull request reviews.
+
+**Key features:**
+- Bots don't need to connect the repository
+- Uses GitHub App authentication
+- All attempts are logged for audit
+- Can be enabled/disabled per team
+
+## Enabling Auto-Apply Bot Reviews
+
+### Step 1: Access Settings
+
+1. Go to AutoDev dashboard
+2. Navigate to Settings page
+3. Find "Auto-apply Bot Reviews" toggle
+
+### Step 2: Enable the Feature
+
+1. Toggle "Auto-apply Bot Reviews" to **ON**
+2. Settings save automatically
+3. Feature is now active for all repositories in your team
+
+### Step 3: Verify Configuration
+
+Create a test task and have a bot submit a review to verify it works.
+
+## How It Works
+
+### Normal Review Workflow
+
+**Without auto-apply:**
+1. Bot submits review
+2. Nothing happens (bot hasn't connected repository)
+3. Review is ignored
+
+**With auto-apply enabled:**
+1. Bot submits review
+2. AutoDev detects it's a bot account
+3. Automatically triggers update workflow
+4. Uses GitHub App credentials
+5. PR is updated based on bot feedback
+
+### Bot Detection
+
+AutoDev identifies bots using GitHub's API:
+- Checks reviewer's `type` field
+- `type: "Bot"` = automated account
+- `type: "User"` = human account
+
+Common bot accounts:
+- Dependabot
+- Renovate
+- CodeClimate
+- Snyk
+- Custom CI/CD bots
+
+## Use Cases
+
+### Code Quality Bots
+
+**ESLint/Prettier bots:**
+- Bot reviews PR for style violations
+- AutoDev applies formatting fixes
+- PR is updated automatically
+
+**Example workflow:**
+1. AutoDev creates PR
+2. ESLint bot reviews: "Fix 3 style issues"
+3. AutoDev auto-applies fixes
+4. PR is reformatted
+
+### Security Scanning
+
+**Snyk or Dependabot:**
+- Bot flags security vulnerabilities
+- AutoDev attempts fixes
+- Security issues resolved automatically
+
+**Example:**
+1. Dependabot reviews: "Update package to fix CVE"
+2. AutoDev updates dependency
+3. Security issue patched
+
+### Dependency Updates
+
+**Renovate or Dependabot:**
+- Bot suggests dependency updates
+- AutoDev applies changes
+- Dependencies stay current
+
+## Configuration
+
+### Team-Level Setting
+
+Auto-apply is configured per team:
+- All team members use same setting
+- Applies to all connected repositories
+- Can be toggled on/off anytime
+
+### Per-Repository Behavior
+
+Currently, the setting applies to all repositories in the team. Future versions may support per-repository configuration.
+
+## Security Considerations
+
+### Audit Logging
+
+All auto-apply attempts are logged:
+- Which bot triggered the workflow
+- What review feedback was provided
+- Workflow execution results
+- Timestamp and repository
+
+### Review Logs
+
+To view auto-apply logs:
+1. Go to task details page
+2. Check workflow executions
+3. Look for "pr_review" type workflows
+4. Review execution details
+
+### Access Control
+
+**Bot reviews use GitHub App credentials:**
+- Bots don't need individual access
+- Uses AutoDev's app installation token
+- Scoped to repository level
+- No elevated permissions granted
+
+## Disabling Auto-Apply
+
+### When to Disable
+
+Consider disabling if:
+- Bot reviews are too frequent
+- Causing excessive workflow runs
+- Bots give low-quality feedback
+- Cost concerns (workflows = credits)
+
+### How to Disable
+
+1. Go to Settings page
+2. Toggle "Auto-apply Bot Reviews" to **OFF**
+3. Settings save automatically
+4. Future bot reviews are ignored
+
+**Note:** Disabling doesn't affect:
+- Human reviews (still auto-apply if reviewer has access)
+- Existing running workflows
+- Manual PR update requests
+
+## Troubleshooting
+
+For detailed troubleshooting of bot reviews and auto-apply issues, see the [AI Reviewer Troubleshooting](/autodev/troubleshooting/ai-reviewer) guide.
+
+## Best Practices
+
+### Start Conservatively
+
+**Initial setup:**
+1. Test with one bot
+2. Verify workflows work correctly
+3. Gradually enable more bots
+4. Monitor credit usage
+
+### Monitor Costs
+
+**Auto-apply costs:**
+- Each bot review = 1 workflow execution
+- 1 execution = 30,000 credits ($0.03)
+- Multiple bots can add up quickly
+
+**Cost optimization:**
+- Limit which bots trigger auto-apply
+- Configure bots to review less frequently
+- Disable for low-value bot feedback
+
+### Bot Configuration
+
+**Recommended bot settings:**
+- Clear, specific feedback messages
+- Avoid overly frequent reviews
+- Focus on actionable issues
+- Group related issues together
+
+### Audit Regularly
+
+**Monthly review:**
+- Check auto-apply execution logs
+- Verify bots are providing value
+- Adjust settings as needed
+- Monitor credit consumption
+
+## Supported Bot Platforms
+
+AutoDev auto-apply works with any bot account recognized by GitHub:
+
+**Dependency Management:**
+- Dependabot
+- Renovate
+- Greenkeeper
+
+**Code Quality:**
+- CodeClimate
+- SonarCloud
+- Codacy
+- DeepSource
+
+**Security:**
+- Snyk
+- WhiteSource
+- GitHub Advanced Security bots
+
+**Custom Bots:**
+- Any bot created with GitHub App
+- Custom CI/CD bots
+- Internal automation tools
+
+## Limitations
+
+### Current Limitations
+
+1. **Team-level only:**
+   - Cannot configure per-repository
+   - All repos use team setting
+
+2. **All-or-nothing:**
+   - Cannot select specific bots
+   - Either all bots or no bots
+
+3. **No custom rules:**
+   - Cannot filter by bot type
+   - Cannot set conditions
+
+### Future Enhancements
+
+Planned features:
+- Per-repository settings
+- Bot allowlist/blocklist
+- Conditional auto-apply rules
+- Custom workflow templates
+
+## Example Workflows
+
+### ESLint Bot Example
+
+**Setup:**
+1. Add ESLint bot to repository
+2. Enable auto-apply in AutoDev
+3. Create AutoDev task
+
+**Flow:**
+1. AutoDev creates PR
+2. ESLint bot reviews: "3 style violations"
+3. Auto-apply triggers
+4. AI fixes style issues
+5. PR updated
+6. ESLint approves
+
+### Security Bot Example
+
+**Setup:**
+1. Add Snyk to repository
+2. Enable auto-apply
+3. Configure Snyk scanning
+
+**Flow:**
+1. AutoDev PR created
+2. Snyk finds vulnerability
+3. Snyk submits review
+4. Auto-apply triggers
+5. AI attempts security fix
+6. PR updated with patch
+
+### Dependency Bot Example
+
+**Setup:**
+1. Enable Dependabot
+2. Turn on auto-apply
+3. Configure dependency checks
+
+**Flow:**
+1. PR created
+2. Dependabot: "Update package X"
+3. Auto-apply triggers
+4. AI updates dependency
+5. Package.json updated
+6. PR ready
+
+## Alternative: Manual Bot Review Handling
+
+If auto-apply doesn't fit your workflow:
+
+### Option 1: Disable Auto-Apply
+
+- Turn off auto-apply
+- Manually review bot feedback
+- Use "Update PR" when needed
+- More control, more manual work
+
+### Option 2: Selective Application
+
+- Keep auto-apply off
+- Enable for specific tasks
+- Manual trigger for others
+- Balance automation and control
+
+## Next Steps
+
+- [AI Reviewer Troubleshooting](/autodev/troubleshooting/ai-reviewer)
+- [PR Review Process](/autodev/reviewing-prs/index)
+- [Settings Configuration](/autodev/reviewing-prs/index#settings)
+- [Unit Task Guide](/autodev/tasks/unit/index)

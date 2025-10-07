@@ -1,0 +1,335 @@
+---
+title: "Composite Tasks"
+description: "Break down complex projects into AI-planned coordinated tasks"
+---
+
+Composite tasks use AI to break down complex projects into multiple coordinated steps. AutoDev creates a task graph showing dependencies and execution order, allowing parallel work while ensuring tasks build on each other correctly.
+
+## How composite tasks work
+
+### 1. AI Planning Phase
+When you create a composite task:
+- AutoDev analyzes your request
+- AI generates a task graph (DAG structure)
+- Tasks are organized with dependencies
+- Plan is saved for your review
+
+Status: **Planning**
+
+### 2. Review and Start
+After planning completes:
+- View the task graph visualization
+- See all tasks and their dependencies
+- Review the execution plan
+- Click **Start Execution** to begin
+
+Status: **Pending** → **In Progress**
+
+### 3. Task Execution
+Tasks execute based on dependencies:
+- Initial tasks (no dependencies) become **Ready**
+- You approve each ready task
+- Approved tasks spawn unit tasks
+- Tasks run in parallel when possible
+- New tasks become ready as dependencies complete
+
+### 4. Completion
+When all tasks finish:
+- Composite task status: **Completed**
+- All pull requests are created
+
+## Creating a composite task
+
+1. Go to your AutoDev dashboard
+2. Select your repository
+3. Enter your complex project description
+4. **Check "Create as Composite Task"**
+5. (Optional) Configure defaults for all tasks:
+   - AI Agent: Default agent for all nodes
+   - Model Version: Default model for all nodes
+   - Base Branch: Branch for all tasks
+6. Click **Create Task**
+
+## Task graph structure
+
+The task graph shows:
+
+### Nodes
+Each node represents a task to be completed:
+- **Pending** (gray) - Waiting for dependencies
+- **Ready** (blue) - Dependencies met, awaiting approval
+- **Approved** (yellow) - Approved, about to start
+- **In Progress** (orange) - Currently executing
+- **Completed** (green) - Successfully finished
+- **Failed** (red) - Encountered an error
+- **Blocked** (dark gray) - Cannot proceed due to failed dependency
+
+### Edges
+Arrows show dependencies:
+- Task A → Task B means B depends on A
+- Task B starts only after Task A completes
+
+### Parallel execution
+Tasks without dependencies on each other run in parallel:
+```
+    Task A
+   /      \
+Task B    Task C  (B and C run in parallel)
+   \      /
+    Task D        (D waits for both B and C)
+```
+
+## Approving tasks
+
+When a task becomes ready:
+
+1. Review the task's auto-generated prompt
+2. (Optional) Modify the prompt before approving
+3. Click **Approve** to start execution
+4. Task spawns a unit task and begins work
+
+### Auto-approval mode
+
+Enable auto-approval to run tasks automatically:
+
+1. Go to composite task details
+2. Enable **Auto-Approval**
+3. Ready tasks are automatically approved and executed
+4. No manual intervention required
+
+Use auto-approval when:
+- You trust the AI-generated plan
+- Tasks are well-defined and low-risk
+- You want continuous progress without manual steps
+
+Disable auto-approval when:
+- You want to review each task before execution
+- Tasks require careful sequencing
+- You want to modify prompts before execution
+
+## Managing composite tasks
+
+### Task details page
+
+View comprehensive information:
+
+**Overview section:**
+- Title and description
+- Repository and branch
+- Progress (X/Y tasks completed)
+- Current status
+- Creation time
+
+**Task graph visualization:**
+- Interactive diagram of all tasks
+- Color-coded status indicators
+- Click nodes to see details
+- View dependencies
+
+**Ready for approval:**
+- List of tasks ready to execute
+- Option to modify prompts
+- Approve or reject buttons
+
+**Active tasks:**
+- Currently executing tasks
+- Links to spawned unit tasks
+- Real-time status
+
+**Completed tasks:**
+- Finished tasks
+- Links to pull requests
+- Merge status
+
+**Failed/blocked tasks:**
+- Failed tasks with error details
+- Retry options
+- Blocked tasks showing required dependencies
+
+### Editing task prompts
+
+You can edit task prompts before execution:
+
+**During approval:**
+1. Task becomes ready
+2. Review the AI-generated prompt
+3. Click **Edit Prompt**
+4. Make your changes
+5. Approve to execute with modified prompt
+
+**Before approval:**
+1. Go to task graph visualization
+2. Click on a task node (must be pending, ready, or blocked)
+3. Edit the prompt and title
+4. Save changes
+5. Approve when ready
+
+**Note**: You cannot edit prompts for tasks that are approved, in progress, completed, or failed.
+
+### Retrying failed tasks
+
+If a task fails:
+
+1. Review the error details
+2. (Optional) Edit the task prompt
+3. Click **Retry**
+4. A new unit task is created with the same (or updated) configuration
+
+### Syncing composite tasks
+
+The sync feature checks all tasks and updates statuses:
+
+1. Go to composite task details
+2. Click **Sync Composite Task**
+3. AutoDev checks all tasks and PRs:
+   - Updates PR merge statuses from GitHub
+   - Marks completed tasks when PRs are merged
+   - Recalculates node readiness
+   - Triggers auto-approval if enabled
+   - Updates composite task progress
+
+Returns:
+- Tasks updated count
+- Nodes updated count
+- PRs synced count
+- Workflows triggered count
+
+## Task graph best practices
+
+### How AI creates the plan
+
+AutoDev uses advanced prompting to create efficient task graphs:
+
+**Planning priorities:**
+1. **Minimize rebasing** - Structure for parallel execution
+2. **CI/Infrastructure first** - Set up testing before features
+3. **Independent code paths** - Tasks touch different files
+4. **Clear boundaries** - Define interfaces early
+
+**Task ordering:**
+- Phase 1: CI/Infrastructure (no dependencies)
+- Phase 2: Database/Storage setup
+- Phase 3: Core contracts (APIs, models)
+- Phase 4: Parallel features
+- Phase 5: Integration
+- Phase 6: Polish (UI, performance, docs)
+
+**Graph structure:**
+- 5-15 total tasks for most projects
+- Wide and shallow (more parallel, fewer sequential)
+- Each task represents meaningful progress
+
+### Writing effective composite task prompts
+
+**Include comprehensive context:**
+```
+Build a complete e-commerce checkout system including:
+- Shopping cart with session persistence
+- Payment processing with Stripe integration
+- Order confirmation emails
+- Admin order management dashboard
+- Inventory updates after purchase
+```
+
+**Specify technical requirements:**
+```
+Migrate to microservices architecture using:
+- Docker containers for each service
+- API Gateway with Kong
+- Event bus with RabbitMQ
+- Shared PostgreSQL database
+- CI/CD with GitHub Actions
+```
+
+**Reference documentation:**
+```
+Implement authentication following our architecture:
+- Reference: @docs/auth-architecture.md
+- Use our existing JWT library
+- Follow security guidelines in @SECURITY.md
+```
+
+## Deleting composite tasks
+
+Deleting a composite task:
+
+1. Cancels all incomplete unit tasks
+2. Blocks all pending/ready task nodes
+3. Cancels running GitHub Actions workflows
+4. Removes the composite task
+
+**Note**: This action cannot be undone. Unit tasks are cancelled but preserved for history.
+
+## Example composite task
+
+**Prompt:**
+```
+Build a user authentication system with email verification and OAuth
+```
+
+**Generated task graph:**
+
+```
+1. Setup CI/CD pipeline
+   ↓
+2. Create database schema and migrations
+   ↓
+   ├→ 3. Implement email authentication
+   │     ├→ User registration
+   │     ├→ Email verification
+   │     └→ Password reset
+   │
+   ├→ 4. Implement OAuth integration
+   │     ├→ Google OAuth
+   │     ├→ GitHub OAuth
+   │     └→ OAuth callback handling
+   │
+   └→ 5. Build frontend components
+         ├→ Login/register forms
+         ├→ OAuth buttons
+         └→ Email verification UI
+   ↓
+6. Integration tests and documentation
+```
+
+Tasks 3, 4, and 5 run in parallel after task 2 completes.
+
+## Benefits of composite tasks
+
+### Coordinated execution
+- Tasks build on each other
+- Dependencies ensure correct order
+- Parallel work speeds completion
+
+### AI-powered planning
+- Optimal task breakdown
+- Smart dependency management
+- Efficient parallelization
+
+### Flexibility
+- Modify prompts before execution
+- Retry failed tasks
+- Enable/disable auto-approval
+
+### Visibility
+- See entire project plan upfront
+- Track progress across all tasks
+- Understand dependencies
+
+## When not to use composite tasks
+
+Use unit tasks instead when:
+- Task is straightforward and single-purpose
+- No dependencies on other work
+- Quick fix or small change
+- One pull request is sufficient
+
+## Troubleshooting
+
+See the [Composite Task Troubleshooting](/autodev/troubleshooting/composite-task) guide for common issues.
+
+## Next steps
+
+- Learn about [Unit Tasks](/autodev/tasks/unit/index)
+- Understand [PR Review Process](/autodev/reviewing-prs/index)
+- Configure [AI Agents](/autodev/ai-agents/claude-code)

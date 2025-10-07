@@ -1,0 +1,127 @@
+---
+title: "Understanding Tasks"
+description: "Learn about the two types of tasks in AutoDev and when to use each"
+---
+
+AutoDev offers two types of tasks to handle different development scenarios: **Unit Tasks** for straightforward work and **Composite Tasks** for complex projects.
+
+## Unit Tasks
+
+Unit tasks are perfect for single, well-defined development tasks. When you create a unit task, AutoDev's AI agent:
+
+1. Analyzes your request
+2. Writes the necessary code
+3. Creates one or more pull requests
+4. Responds to code reviews automatically
+5. Fixes any CI failures
+
+### When to use unit tasks
+
+- **Bug fixes** - Fix a specific bug or issue
+- **Small features** - Add a single, straightforward feature
+- **Refactoring** - Improve code structure in a focused area
+- **Documentation** - Update or create documentation
+- **Quick updates** - Make targeted changes to existing code
+
+### Example unit tasks
+
+```
+Fix the authentication bug where users can't log in with OAuth
+```
+
+```
+Add input validation to the user registration form
+```
+
+```
+Refactor the payment processing service to use the new API
+```
+
+## Composite Tasks
+
+Composite tasks are designed for complex projects that require multiple coordinated steps. AutoDev uses AI to break down your request into a task graph (DAG structure) where tasks can run in parallel or sequence based on dependencies.
+
+### How composite tasks work
+
+1. **AI Planning** - AutoDev analyzes your request and creates a task graph
+2. **Review Plan** - You see the proposed tasks and their dependencies
+3. **Start Execution** - You approve the plan and start execution
+4. **Sequential Execution** - Tasks become ready as dependencies complete
+5. **Auto-approval (Optional)** - Enable auto-approval to run tasks automatically
+6. **Coordinated Completion** - All tasks work together to complete your project
+
+### When to use composite tasks
+
+- **Large features** - Features that require multiple coordinated changes
+- **System refactoring** - Major code restructure across multiple modules
+- **New projects** - Setting up a new service or application from scratch
+- **Complex integrations** - Integrating multiple systems or APIs
+- **Multi-step migrations** - Database or infrastructure migrations
+
+### Example composite tasks
+
+```
+Build a complete user authentication system with email verification,
+password reset, and OAuth integration
+```
+
+```
+Migrate our REST API to GraphQL, including schema design, resolvers,
+and updating all client code
+```
+
+```
+Set up CI/CD pipeline with automated testing, Docker deployment,
+and monitoring
+```
+
+## Task Configuration
+
+Both task types support optional configuration:
+
+### Repository selection
+Choose which repository the AI should work on. You can only select repositories where you've installed the AutoDev GitHub App.
+
+### AI Agent selection (Optional)
+Choose which AI coding agent to use:
+- Claude Code
+- Gemini CLI
+- opencode
+- Codex CLI
+- Crush CLI
+- GitHub Copilot CLI
+
+If not specified, AutoDev uses your team's default agent.
+
+### Model version (Optional)
+Specify the AI model version (e.g., "sonnet", "gpt-4"). If not specified, the agent's default model is used.
+
+### Base branch (Optional)
+Specify which branch to use as the base for the task. Defaults to your repository's default branch (usually `main` or `master`).
+
+## Task Status
+
+Tasks progress through different statuses:
+
+- **Pending** - Task created but not yet started
+- **In Progress** - AI agent is working on the task
+- **Completed** - All work finished and PRs created
+- **Failed** - Task encountered an error
+- **Cancelled** - Task was cancelled by user
+
+## Pull Requests
+
+Each task can create multiple pull requests. AutoDev automatically:
+
+- Creates descriptive PR titles and descriptions
+- Links PRs back to the task
+- Posts the task prompt as a comment (configurable)
+- Converts PRs to draft during automated updates
+- Responds to code review comments
+- Fixes failing CI checks
+
+## Next steps
+
+- Learn about [Unit Tasks](/autodev/tasks/unit/index)
+- Learn about [Composite Tasks](/autodev/tasks/composite/index)
+- See [Creating your first PR](/autodev/getting-started/first-pr)

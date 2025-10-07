@@ -1,0 +1,294 @@
+---
+title: "Creating Your First PR"
+description: "Step-by-step guide to creating your first AI-generated pull request with AutoDev"
+---
+
+This guide walks you through creating your first pull request with AutoDev.
+
+## Prerequisites
+
+Before starting, ensure you've completed:
+1. ✅ [Prerequisites](/autodev/getting-started/prerequisites)
+2. ✅ [GitHub App Installation](/autodev/getting-started/github-app)
+3. ✅ [GitHub Workflow Setup](/autodev/getting-started/github-workflow)
+4. ✅ [AI Agent Configuration](/autodev/getting-started/ai-agent)
+
+## Step 1: Access AutoDev Dashboard
+
+1. Go to [app.delino.io](https://app.delino.io)
+2. Select your team from the team switcher
+3. Navigate to the AutoDev section
+4. You'll see the task creation form
+
+## Step 2: Select Your Repository
+
+1. Click the **Repository** dropdown
+2. Select the repository where you want to create a PR
+3. Only repositories with the AutoDev GitHub App installed will appear
+
+**Troubleshooting**: If your repository doesn't appear:
+- Verify GitHub App installation
+- Check repository permissions
+- Refresh the page
+
+## Step 3: Write Your Task Prompt
+
+Start with a simple, well-defined task for your first PR:
+
+### Example 1: Bug Fix
+```
+Fix the authentication bug where users get a 500 error
+when logging in with an empty email field. Add proper
+validation and return a 400 error with helpful message.
+```
+
+### Example 2: Small Feature
+```
+Add a dark mode toggle button to the settings page.
+Store the preference in localStorage and apply the
+theme across all pages.
+```
+
+### Example 3: Refactoring
+```
+Refactor the payment processing service to use async/await
+instead of callbacks. Update all related functions in
+@src/services/payment.js
+```
+
+**Tips for good prompts:**
+- Be specific about what to fix or build
+- Include file paths using `@` notation
+- Mention technical requirements
+- Specify expected behavior
+
+## Step 4: Configure Task Settings
+
+### Task Type
+For your first PR, **leave "Create as Composite Task" unchecked**.
+
+This creates a simple unit task, perfect for getting started.
+
+### Advanced Settings (Optional)
+
+**AI Agent**:
+- Leave blank to use your team's default
+- Or select a specific agent (e.g., "Claude Code")
+
+**Model Version**:
+- Leave blank to use the agent's default
+- Or specify a model (e.g., "sonnet", "gpt-4")
+
+**Base Branch**:
+- Leave blank to use the repository's default branch
+- Or specify a branch (e.g., "develop", "staging")
+
+## Step 5: Create the Task
+
+1. Review your prompt
+2. Check repository selection
+3. Click **Create Task**
+4. You'll be redirected to the task details page
+
+## Step 6: Monitor Progress
+
+The task details page shows:
+
+### Initial Status: Pending
+- Task is created and queued
+- GitHub Actions workflow is being triggered
+- Usually completes in seconds
+
+### Status: In Progress
+- AI agent is analyzing your request
+- Code is being written
+- Pull requests are being created
+- This can take 2-10 minutes depending on complexity
+
+### Status: Completed
+- All work is done
+- Pull requests have been created
+- Ready for review
+
+## Step 7: Review the Generated PR
+
+Once completed:
+
+1. Click on the PR in the task details page
+2. Or navigate to GitHub and find the PR
+3. Review the changes:
+   - Check code quality
+   - Verify it meets requirements
+   - Look for any issues
+
+### What to expect
+
+**On GitHub PR page:**
+- AutoDev task link comment
+- Task prompt comment (shows what AI was asked to do)
+- Code changes in files
+- Automated tests running (CI checks)
+
+**Good signs:**
+- Code follows your project's style
+- Tests are passing
+- Changes are focused and relevant
+- Documentation is updated if needed
+
+**Red flags:**
+- Code doesn't compile
+- Tests are failing
+- Changes are unrelated to the task
+- Security issues
+
+## Step 8: Provide Feedback (Optional)
+
+If changes are needed:
+
+### Option 1: GitHub Review Comments
+1. Leave review comments on the PR
+2. Click "Request changes" or "Comment"
+3. AutoDev automatically detects the review
+4. AI agent makes updates based on your feedback
+5. PR is updated with new changes
+
+### Option 2: Manual Update Request
+1. Go to task details page
+2. Click **Update PR**
+3. Enter update instructions
+4. AutoDev triggers update workflow
+5. PR is updated with changes
+
+## Step 9: Merge the PR
+
+When you're satisfied:
+
+1. Ensure all CI checks pass
+2. Get required approvals from team
+3. Merge the PR on GitHub
+4. Delete the branch (optional)
+5. Task status updates to "Completed"
+
+## Common First-Time Issues
+
+### Workflow not triggering
+**Cause**: `autodev.yml` file missing or incorrect
+
+**Solution**:
+- Verify workflow file exists at `.github/workflows/autodev.yml`
+- Check file contents match the setup guide
+- Ensure workflow has correct permissions
+
+### AI agent not responding
+**Cause**: Agent not configured or API key missing
+
+**Solution**:
+- Verify AI agent is set up correctly
+- Check API key in repository secrets
+- Review agent configuration guide
+
+### PR not created
+**Cause**: Task completed but no branches were needed
+
+**Solution**:
+- Check task prompt - was it clear what to create?
+- Review workflow execution logs
+- Task may have determined no changes were needed
+
+### CI checks failing
+**Cause**: Generated code has issues
+
+**Solution**:
+- AutoDev automatically tries to fix CI failures
+- Wait for auto-fix workflow to complete
+- If it fails again, add review comments with guidance
+
+## Next Steps
+
+Now that you've created your first PR:
+
+### Try more complex tasks
+- [Unit Tasks Guide](/autodev/tasks/unit/index)
+- [Composite Tasks Guide](/autodev/tasks/composite/index)
+
+### Learn about PR management
+- [PR Review Process](/autodev/reviewing-prs/index)
+- [Settings Configuration](/autodev/reviewing-prs/index#settings)
+
+### Optimize your workflow
+- [AI Agent Configuration](/autodev/ai-agents/claude-code)
+- [Troubleshooting Guide](/autodev/troubleshooting/unit-task)
+
+### Advanced features
+- Try creating a composite task for complex projects
+- Enable auto-approval for trusted workflows
+- Configure custom CI fix strategies
+
+## Tips for Success
+
+### Start simple
+- Begin with small, well-defined tasks
+- Learn how the AI interprets your prompts
+- Gradually increase complexity
+
+### Iterate on prompts
+- Refine your prompt writing based on results
+- Be more specific if output is too broad
+- Add constraints for better control
+
+### Review carefully
+- Always review AI-generated code
+- Don't merge without understanding changes
+- Treat it like code from a junior developer
+
+### Collaborate with AI
+- Use AutoDev for repetitive tasks
+- Let it handle boilerplate code
+- Focus your time on complex logic and architecture
+
+### Provide feedback
+- Review comments help the AI improve
+- Be specific about what's wrong
+- Guide the AI toward better solutions
+
+## Example: Complete First Task
+
+Let's walk through a complete example:
+
+**Prompt:**
+```
+Add input validation to the user registration form.
+Email must be valid format, password must be at least
+8 characters. Display error messages below each field.
+```
+
+**What happens:**
+1. Task created with auto-generated title: "Add input validation to user registration form"
+2. GitHub Actions workflow triggered
+3. AI agent analyzes the codebase
+4. Finds the registration form component
+5. Adds validation logic
+6. Adds error message display
+7. Writes tests for validation
+8. Creates PR with all changes
+
+**Expected PR:**
+- Frontend: Validation logic in registration component
+- Frontend: Error message UI components
+- Tests: Validation test cases
+- Total: ~100-200 lines across 3-4 files
+
+**Review:**
+1. Check validation logic is correct
+2. Verify error messages are user-friendly
+3. Ensure tests cover edge cases
+4. Confirm no breaking changes
+
+**Result:**
+- PR merged
+- Feature deployed
+- Task completed
+
+**Time saved:** ~1-2 hours of development work
+
+You're now ready to use AutoDev for your development tasks!

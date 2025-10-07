@@ -1,0 +1,192 @@
+---
+title: "Unit Tasks"
+description: "Create and manage single-focus development tasks with AI automation"
+---
+
+Unit tasks are AutoDev's building blocks for straightforward development work. Each unit task focuses on a single objective and can generate multiple pull requests to complete it.
+
+## Creating a unit task
+
+1. Navigate to your AutoDev dashboard
+2. Select your repository from the dropdown
+3. Enter your task description in the prompt field
+4. **Leave "Create as Composite Task" unchecked** for unit tasks
+5. (Optional) Configure advanced settings:
+   - AI Agent: Choose your preferred AI coding agent
+   - Model Version: Specify the model version
+   - Base Branch: Choose the branch to work from
+6. Click **Create Task**
+
+## Task lifecycle
+
+### 1. Pending
+Your task is created and queued for execution. AutoDev prepares to trigger the GitHub Actions workflow.
+
+### 2. In Progress
+The AI agent is actively working on your task:
+- Analyzing your requirements
+- Writing code
+- Creating pull requests
+- Running tests
+
+### 3. Completed
+All work is done and pull requests have been created. You can now:
+- Review the generated code
+- Check the PRs created
+- Merge or request changes
+
+### 4. Failed
+The task encountered an error. Common reasons:
+- GitHub Actions workflow failed
+- Invalid configuration
+- AI agent encountered an issue
+
+You can retry failed tasks from the task details page.
+
+## Task details page
+
+The task details page shows:
+
+### Task overview
+- Task title (automatically generated from your prompt)
+- Original prompt
+- Repository and branch information
+- Current status
+- Creation timestamp
+
+### Pull requests
+All PRs created for this task:
+- PR title and number
+- Status (open/closed/merged)
+- CI check results
+- Review comment count
+- Links to GitHub
+
+### Workflow executions
+History of all workflow runs:
+- Execution status (pending/in_progress/completed/failed)
+- Type (task creation, PR update, review response, CI fix)
+- Timestamps
+- GitHub Actions run link
+- Retry button for failed executions
+
+## Managing pull requests
+
+### Automatic PR comments
+When a PR is created, AutoDev adds two types of comments:
+
+**Task link comment** (always added):
+- Links back to the AutoDev task
+- Provides context for reviewers
+
+**Task prompt comment** (optional, enabled by default):
+- Shows the original task prompt
+- Helps reviewers understand the AI's instructions
+- Can be disabled in [Settings](/autodev/reviewing-prs/index)
+
+### PR workflow
+
+1. **PR Creation** - AI creates PR and opens it for review
+2. **Draft Status** - PR is converted to draft during automated updates
+3. **Code Review** - Team members review the changes
+4. **AI Responds** - AutoDev automatically responds to review comments
+5. **CI Checks** - Automated tests run
+6. **CI Fixes** - AutoDev fixes failing checks automatically
+7. **Ready to Merge** - PR is undrafted when all checks pass
+
+## Updating a pull request
+
+You can manually request updates to any PR:
+
+1. Go to the task details page
+2. Find the PR you want to update
+3. Click **Update PR**
+4. Enter your update instructions
+5. AutoDev converts the PR to draft and makes the changes
+
+## Retrying a task
+
+If a task fails, you can retry it:
+
+1. Go to the task details page
+2. Click **Retry Task** in the workflow executions section
+3. The task will re-execute with the same configuration
+
+## Syncing task status
+
+Use the sync feature to refresh task status from GitHub:
+
+1. Go to the task details page
+2. Click **Sync Task** (usually in a debug or actions menu)
+3. AutoDev checks all PRs and updates the task status:
+   - All PRs merged → Task marked completed
+   - All PRs closed (not merged) → Task marked failed
+   - PRs still open → Status unchanged
+
+## Deleting a task
+
+Deleting a task:
+- Closes all open pull requests
+- Cancels any running workflows
+- Removes the task from your dashboard
+
+**Note**: This action cannot be undone.
+
+## Best practices
+
+### Write clear prompts
+Be specific about what you want:
+
+**Good prompts:**
+```
+Fix the null pointer exception in UserService.java when email is missing
+```
+```
+Add rate limiting to the /api/auth endpoint with 10 requests per minute
+```
+```
+Update the user profile page to show avatar upload with preview
+```
+
+**Avoid vague prompts:**
+```
+Fix the bug
+```
+```
+Make it better
+```
+```
+Update the code
+```
+
+### Include context
+Reference specific files, functions, or error messages:
+```
+Fix the CORS error on line 45 of server.js when calling from localhost:3000
+```
+
+### Use file references
+Include file paths with `@` for better AI understanding:
+```
+Refactor @src/services/payment.ts to use the new PaymentProcessor interface
+```
+
+### Specify requirements
+Include technical requirements or constraints:
+```
+Add user authentication using JWT tokens with 24-hour expiration,
+stored in httpOnly cookies
+```
+
+### Break down large tasks
+For complex work, consider using [Composite Tasks](/autodev/tasks/composite/index) or creating multiple unit tasks.
+
+## Troubleshooting
+
+See the [Unit Task Troubleshooting](/autodev/troubleshooting/unit-task) guide for common issues and solutions.
+
+## Next steps
+
+- Learn about [Composite Tasks](/autodev/tasks/composite/index)
+- Understand [PR Review Process](/autodev/reviewing-prs/index)
+- Configure [AI Agents](/autodev/ai-agents/claude-code)

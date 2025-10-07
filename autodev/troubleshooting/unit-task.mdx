@@ -1,0 +1,561 @@
+---
+title: "Debugging Unit Tasks"
+description: "Common issues with unit tasks and how to resolve them"
+---
+
+This guide helps you troubleshoot common issues with unit tasks in AutoDev.
+
+## Task Creation Issues
+
+### Task Not Starting
+
+**Symptoms:**
+- Task stuck in "Pending" status
+- No workflow execution visible in GitHub Actions
+- Task created but nothing happens
+
+**Possible Causes:**
+1. Workflow file missing or incorrect
+2. GitHub Actions disabled
+3. Repository not properly connected
+4. Workflow dispatch failed
+
+**Solutions:**
+
+**Check workflow file exists:**
+```bash
+# Verify file exists
+ls .github/workflows/autodev.yml
+
+# Check file is on default branch
+git branch --show-current
+```
+
+**Verify GitHub Actions is enabled:**
+1. Go to repository Settings
+2. Navigate to Actions → General
+3. Ensure "Allow all actions and reusable workflows" is selected
+
+**Reconnect repository:**
+1. AutoDev → Repositories
+2. Find your repository
+3. Click "Disconnect" then "Reconnect"
+
+**Manually retry:**
+1. Go to task details page
+2. Click "Retry Task" button
+3. Check workflow execution logs
+
+### Invalid Configuration Error
+
+**Symptoms:**
+- Task fails immediately
+- Error: "Invalid agent configuration"
+- Workflow execution shows configuration error
+
+**Possible Causes:**
+1. AI agent API key not set
+2. Invalid agent type specified
+3. Model type not supported
+
+**Solutions:**
+
+**Verify API key:**
+1. Repository Settings → Secrets → Actions
+2. Check required secret exists (e.g., `ANTHROPIC_API_KEY`)
+3. Regenerate key if needed
+
+**Check agent configuration:**
+- Agent type must be one of: `claude_code`, `gemini_cli`, `opencode`, `codex_cli`, `crush_cli`, `github_copilot_cli`
+- Model type must match agent's supported models
+
+**Use default settings:**
+- Leave agent/model fields empty to use team defaults
+- Verify team defaults in Settings page
+
+## Workflow Execution Issues
+
+### Workflow Fails to Trigger
+
+**Symptoms:**
+- Task status changes to "In Progress" but no GitHub Actions run
+- No workflow run visible in Actions tab
+- Task eventually times out
+
+**Solutions:**
+
+**Check workflow permissions:**
+```yaml
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+  actions: read
+```
+
+**Verify workflow dispatch event:**
+```yaml
+on:
+  workflow_dispatch:  # Must be present
+    inputs:
+      autodev_task_token:
+        required: true
+```
+
+**Check GitHub API status:**
+- Visit [githubstatus.com](https://www.githubstatus.com)
+- Look for API or Actions outages
+
+### Workflow Hangs or Timeouts
+
+**Symptoms:**
+- Workflow runs for extended period
+- Eventually times out (2+ hours)
+- No progress updates
+
+**Solutions:**
+
+**Add timeout to workflow:**
+```yaml
+jobs:
+  autodev:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60  # 1 hour max
+```
+
+**Check runner availability:**
+- If using self-hosted runners, verify they're online
+- Switch to GitHub-hosted runners temporarily
+
+**Simplify the task:**
+- Break large task into smaller pieces
+- Reduce scope of changes requested
+- Be more specific in prompt
+
+### Authentication Errors
+
+**Symptoms:**
+- Error: "Authentication failed"
+- Error: "Invalid task token"
+- Workflow fails at authentication step
+
+**Solutions:**
+
+**Verify OIDC is configured:**
+```yaml
+permissions:
+  id-token: write  # Required for OIDC
+```
+
+**Check task token is passed:**
+```yaml
+- uses: delino-io/autodev-action@v1
+  with:
+    task_token: ${{ inputs.autodev_task_token }}  # Must be present
+```
+
+**Repository must be connected:**
+1. Verify repository appears in AutoDev
+2. Status should be "Connected"
+3. Reconnect if needed
+
+## Pull Request Creation Issues
+
+### No PRs Created
+
+**Symptoms:**
+- Task completes successfully
+- Status changes to "Completed"
+- But no pull requests appear
+
+**Possible Causes:**
+1. AI determined no changes were needed
+2. Changes were made but no branches registered
+3. PR creation failed silently
+
+**Solutions:**
+
+**Check workflow logs:**
+1. Go to GitHub Actions
+2. Find the workflow run
+3. Look for "Creating pull request" steps
+4. Check for any errors
+
+**Verify task prompt was clear:**
+- Was the request specific enough?
+- Did you specify what to create/change?
+- Try rephrasing and creating new task
+
+**Check branch was created:**
+```bash
+# List all branches
+git branch -a
+
+# Look for autodev-* branches
+git branch -a | grep autodev
+```
+
+**Task may have legitimately completed without changes:**
+- AI analyzed request
+- Determined changes weren't needed
+- This is normal behavior for some prompts
+
+### PR Created on Wrong Branch
+
+**Symptoms:**
+- PR targets wrong base branch
+- Changes based on wrong branch
+
+**Solutions:**
+
+**Specify base branch when creating task:**
+1. In task creation form
+2. Expand "Advanced Settings"
+3. Set "Base Branch" to desired branch (e.g., "develop")
+
+**Update workflow default:**
+```yaml
+base_branch:
+  required: false
+  default: 'develop'  # Change from 'main'
+```
+
+**For existing PR:**
+- You can change the base branch on GitHub
+- Go to PR → Click "Edit" near title
+- Change base branch in dropdown
+
+### Multiple Unwanted PRs
+
+**Symptoms:**
+- Task creates too many PRs
+- PRs are fragmented
+- Changes should be in one PR
+
+**Cause:**
+- AI decided to split changes across multiple PRs
+- This is sometimes intentional for large changes
+
+**Solutions:**
+
+**For future tasks:**
+- Add to prompt: "Create all changes in a single PR"
+- Be more specific about scope
+
+**For existing PRs:**
+- Manually merge the branches
+- Close extra PRs
+- Keep the main one
+
+## Code Quality Issues
+
+### Generated Code Doesn't Compile
+
+**Symptoms:**
+- CI checks fail
+- Code has syntax errors
+- Build fails
+
+**Solutions:**
+
+**Let AutoDev auto-fix:**
+- Wait for automatic CI fix workflow
+- AutoDev detects failures and attempts fixes
+- Usually completes in 5-10 minutes
+
+**Provide feedback via review:**
+1. Leave review comment on specific lines
+2. Request changes
+3. AutoDev will update the code
+
+**Manual update request:**
+1. Go to task details
+2. Click "Update PR"
+3. Provide specific fix instructions
+
+### Code Doesn't Match Requirements
+
+**Symptoms:**
+- Code works but doesn't do what you wanted
+- Missing features
+- Wrong approach
+
+**Solutions:**
+
+**Review and request changes:**
+1. Leave detailed review comments
+2. Explain what's wrong and what you expected
+3. Request changes on GitHub PR
+4. AutoDev will address feedback
+
+**Update the PR:**
+1. Task details → Update PR
+2. Provide additional context
+3. Clarify requirements
+
+**Create new task:**
+- If changes are too different
+- Delete current task
+- Create new task with clearer prompt
+
+### Code Style Doesn't Match Project
+
+**Symptoms:**
+- Code formatting is different
+- Naming conventions don't match
+- Structure is inconsistent
+
+**Solutions:**
+
+**Request style fixes:**
+- Leave review comment
+- Reference your style guide
+- Example: "Please follow naming conventions in @CONTRIBUTING.md"
+
+**Set up linters:**
+- Add ESLint, Prettier, or other formatters to CI
+- AutoDev will see failures and auto-fix
+
+**Improve future prompts:**
+```
+Follow the code style in @src/services/example.ts
+Use the same patterns as existing services
+```
+
+## Status and Sync Issues
+
+### Task Stuck "In Progress"
+
+**Symptoms:**
+- Task has been "In Progress" for hours/days
+- Workflow completed but status didn't update
+- PRs are created but task status unchanged
+
+**Solutions:**
+
+**Sync task status:**
+1. Go to task details page
+2. Click "Sync Task" (in debug/actions menu)
+3. AutoDev checks PR status and updates task
+
+**Check workflow execution:**
+- Look at workflow execution history
+- See if workflow actually completed
+- Check for errors in logs
+
+**Manual status check:**
+- If all PRs are merged → Task should be "Completed"
+- If PRs are closed without merge → Task should be "Failed"
+- Sync operation will fix this
+
+### Task Status Incorrect
+
+**Symptoms:**
+- Task shows "Completed" but PRs still open
+- Task shows "Failed" but PRs are merged
+- Status doesn't reflect reality
+
+**Solution:**
+
+**Use Sync Task feature:**
+1. Task details page
+2. Sync Task button
+3. Checks GitHub for actual PR status
+4. Updates task status accordingly
+
+**What Sync does:**
+- Fetches latest PR data from GitHub
+- Checks merge status
+- Updates CI check status
+- Recalculates task status
+
+### Cannot Delete Task
+
+**Symptoms:**
+- Delete button doesn't work
+- Error when trying to delete
+- Task remains after delete attempt
+
+**Solutions:**
+
+**Check permissions:**
+- Only task creator can delete
+- Verify you're logged in as correct user
+
+**Task may be running:**
+- Wait for workflow to complete
+- Cancel workflow first, then delete
+
+**Force delete:**
+1. Close all PRs manually on GitHub
+2. Wait a few seconds
+3. Retry delete in AutoDev
+
+## Performance Issues
+
+### Task Takes Too Long
+
+**Symptoms:**
+- Task runs for 30+ minutes
+- Much slower than expected
+- Workflow seems stuck
+
+**Possible Causes:**
+1. Large codebase
+2. Complex task
+3. Slow AI agent response
+4. Runner resource constraints
+
+**Solutions:**
+
+**Break into smaller tasks:**
+- Split large request into focused tasks
+- Each task completes faster
+- Better for tracking progress
+
+**Use faster agent/model:**
+- Switch to GPT-3.5 or Claude Haiku
+- Faster response times
+- Trade quality for speed
+
+**Optimize workflow:**
+- Remove unnecessary setup steps
+- Cache dependencies
+- Use faster runner (self-hosted)
+
+### Rate Limit Errors
+
+**Symptoms:**
+- Error: "Rate limit exceeded"
+- Task fails with 429 error
+- API quota exceeded
+
+**Solutions:**
+
+**For GitHub API limits:**
+- Wait an hour for reset
+- Reduce concurrent tasks
+- Use GitHub App authentication (automatic)
+
+**For AI provider limits:**
+- Check provider dashboard for quota
+- Upgrade API plan
+- Wait for rate limit reset
+- Switch to different agent temporarily
+
+## Debugging Workflow Logs
+
+### Finding Workflow Logs
+
+1. Go to repository on GitHub
+2. Click "Actions" tab
+3. Find "AutoDev" workflow
+4. Click on the specific run
+5. Click on job name to see logs
+
+### Important Log Sections
+
+**Authentication:**
+```
+Authenticating with AutoDev...
+✓ Task token validated
+✓ OIDC token exchanged
+```
+
+**Agent Execution:**
+```
+Running Claude Code...
+Analyzing codebase...
+Generating changes...
+```
+
+**PR Creation:**
+```
+Creating pull request...
+✓ Branch created: autodev-task-123
+✓ PR #456 created
+```
+
+### Common Error Messages
+
+**"No ANTHROPIC_API_KEY found"**
+- API key not set in repository secrets
+- Add secret and retry task
+
+**"Branch already exists"**
+- Previous task created same branch
+- Delete branch on GitHub
+- Retry task
+
+**"Permission denied"**
+- Workflow permissions missing
+- Add required permissions to workflow file
+
+**"Task token invalid"**
+- Task may have been deleted
+- Try creating new task
+- Check repository is connected
+
+## Getting Help
+
+### Information to Provide
+
+When requesting support, include:
+
+1. **Task Details:**
+   - Task ID
+   - Repository name
+   - Task prompt
+   - Agent and model used
+
+2. **Workflow Information:**
+   - GitHub Actions run URL
+   - Workflow logs (relevant sections)
+   - Error messages
+
+3. **PR Information:**
+   - PR numbers created
+   - PR status
+   - Review comments
+
+4. **Steps Taken:**
+   - What you've tried
+   - Results of each attempt
+
+### Where to Get Help
+
+- **Documentation**: [docs.delino.io](https://docs.delino.io)
+- **Email Support**: support@delino.io
+- **GitHub Issues**: For workflow file problems
+- **AI Provider Support**: For API/model issues
+
+## Prevention Tips
+
+### Write Clear Prompts
+```
+✓ Good: "Fix null pointer exception in UserService.java line 45
+        when email is empty. Add validation and return 400 error."
+
+✗ Vague: "Fix the bug in user service"
+```
+
+### Test Incrementally
+- Start with simple tasks
+- Verify each task works
+- Build confidence before complex tasks
+
+### Monitor Costs
+- Track workflow execution count
+- Monitor AI provider usage
+- Set up usage alerts
+
+### Regular Maintenance
+- Keep workflow file updated
+- Rotate API keys periodically
+- Review and clean up old tasks
+
+## Next Steps
+
+- [Composite Task Troubleshooting](/autodev/troubleshooting/composite-task)
+- [PR Review Process](/autodev/reviewing-prs/index)
+- [AI Agent Configuration](/autodev/getting-started/ai-agent)
