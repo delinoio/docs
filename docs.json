@@ -50,6 +50,10 @@
             ]
           },
           {
+            "group": "Settings",
+            "pages": ["autodev/settings/index"]
+          },
+          {
             "group": "Configuring AI Agents",
             "pages": [
               "autodev/ai-agents/claude-code",
