@@ -195,6 +195,19 @@ Use manual updates when:
 - Need additional features
 - Want to refine the implementation
 
+## Applying reviews from other PRs
+
+You can apply review feedback from other pull requests using the Reflect command:
+
+1. Find the review comment you want to apply from another PR
+2. Copy the comment's direct link (e.g., `https://github.com/delinoio/autodev-example/pull/123#issuecomment-337041341`)
+3. On the current PR, submit a review with "Request changes"
+4. In the review message, use: `Reflect https://github.com/delinoio/autodev-example/pull/123#issuecomment-337041341`
+5. AutoDev will analyze the linked review comment and apply those changes to the current PR
+
+This is useful when:
+- Applying reviews from other people
+
 ## Troubleshooting
 
 For common PR review issues and solutions, see the [PR Review Troubleshooting](/autodev/troubleshooting/pr-reviews) guide.
