@@ -1,0 +1,17 @@
+Anthropic's
+opencode
+Dependabot
+Snyk
+Greenkeeper
+Codacy
+repos
+undrafted
+undraft
+Ruleset
+Rulesets
+ruleset
+rebasing
+parallelization
+bot's
+ci_fix
+formatters
