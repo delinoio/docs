@@ -56,32 +56,6 @@ Auto-apply is configured per team:
 
 Currently, the setting applies to all repositories in the team. Future versions may support per-repository configuration.
 
-## Security Considerations
-
-### Audit Logging
-
-All auto-apply attempts are logged:
-- Which bot triggered the workflow
-- What review feedback was provided
-- Workflow execution results
-- Timestamp and repository
-
-### Review Logs
-
-To view auto-apply logs:
-1. Go to task details page
-2. Check workflow executions
-3. Look for "pr_review" type workflows
-4. Review execution details
-
-### Access Control
-
-**Bot reviews use GitHub App credentials:**
-- Bots don't need individual access
-- Uses AutoDev's app installation token
-- Scoped to repository level
-- No elevated permissions granted
-
 ## Disabling Auto-Apply
 
 For information about when and how to disable this feature, see [when to disable Auto-apply Bot Reviews](/autodev/settings#auto-apply-bot-reviews) in the settings documentation.
@@ -108,11 +82,6 @@ AutoDev auto-apply works with any bot account recognized by GitHub:
 - SonarCloud
 - Codacy
 - DeepSource
-
-**Security:**
-- Snyk
-- WhiteSource
-- GitHub Advanced Security bots
 
 **Custom Bots:**
 - Any bot created with GitHub App
@@ -143,53 +112,6 @@ Planned features:
 - Conditional auto-apply rules
 - Custom workflow templates
 
-## Example Workflows
-
-### ESLint Bot Example
-
-**Setup:**
-1. Add ESLint bot to repository
-2. Enable auto-apply in AutoDev
-3. Create AutoDev task
-
-**Flow:**
-1. AutoDev creates PR
-2. ESLint bot reviews: "3 style violations"
-3. Auto-apply triggers
-4. AI fixes style issues
-5. PR updated
-6. ESLint approves
-
-### Security Bot Example
-
-**Setup:**
-1. Add Snyk to repository
-2. Enable auto-apply
-3. Configure Snyk scanning
-
-**Flow:**
-1. AutoDev PR created
-2. Snyk finds vulnerability
-3. Snyk submits review
-4. Auto-apply triggers
-5. AI attempts security fix
-6. PR updated with patch
-
-### Dependency Bot Example
-
-**Setup:**
-1. Enable Dependabot
-2. Turn on auto-apply
-3. Configure dependency checks
-
-**Flow:**
-1. PR created
-2. Dependabot: "Update package X"
-3. Auto-apply triggers
-4. AI updates dependency
-5. Package.json updated
-6. PR ready
-
 ## Alternative: Manual Bot Review Handling
 
 If auto-apply doesn't fit your workflow:
@@ -207,6 +129,16 @@ If auto-apply doesn't fit your workflow:
 - Enable for specific tasks
 - Manual trigger for others
 - Balance automation and control
+
+### Option 3: Apply Reviews from Other reviewers
+
+You can also manually apply bot review feedback from other PRs using the Reflect command:
+
+1. Copy the bot review comment link from another PR
+2. Submit a review with "Request changes" on the current PR
+3. Use the Reflect command with the comment URL
+
+This allows you to selectively apply bot reviews without enabling auto-apply. For detailed instructions, see [Applying reviews from other PRs](/autodev/reviewing-prs#applying-reviews-from-other-prs).
 
 ## Next Steps
 
