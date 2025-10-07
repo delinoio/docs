@@ -80,7 +80,7 @@ Benefits:
 - Provides context for automated changes
 - Creates audit trail
 
-**To disable**: Go to AutoDev Settings → Disable "Enable Prompt Comments"
+**To disable**: See [Settings](/autodev/settings/index)
 
 ## Review types and behavior
 
@@ -107,15 +107,7 @@ When reviewer approves without comments:
 3. PR ready for merge (if CI passes)
 
 ### Bot Reviews
-When a bot account submits a review:
-- If "Auto-apply Bot Reviews" is enabled in Settings:
-  - Workflow triggers automatically
-  - Uses GitHub App credentials
-  - Bot doesn't need repository access
-  - All attempts logged for audit
-- If disabled:
-  - Bot reviews are ignored
-  - No workflow triggered
+When a bot account submits a review, behavior depends on the "Auto-apply Bot Reviews" setting. See [Settings](/autodev/settings/index) for details.
 
 ## Draft status during updates
 
@@ -168,48 +160,7 @@ When enabled (default), AutoDev automatically undrafts PRs:
 3. Converts PR from draft to ready for review
 4. PR is ready for final approval and merge
 
-**To disable**: Go to Settings → Disable "Auto-undraft PR"
-
-## Settings
-
-AutoDev provides several settings to control PR behavior:
-
-### Auto-apply Bot Reviews
-**Default**: Disabled
-
-When enabled:
-- Automatically triggers workflows when bots submit reviews
-- Uses GitHub App installation tokens
-- Bots don't need to connect the repository
-- All attempts are logged
-
-Use cases:
-- Automated code quality tools (linters, formatters)
-- Security scanning bots
-- Dependency update bots
-
-### Enable Prompt Comments
-**Default**: Enabled
-
-When enabled:
-- Posts task prompt as PR comment
-- Provides context to reviewers
-- Creates audit trail
-
-When disabled:
-- Only task link comment is posted
-- Cleaner PR comment section
-
-### Auto-undraft PR
-**Default**: Enabled
-
-When enabled:
-- Automatically converts PR from draft when CI passes
-- Signals PR is ready for review
-
-When disabled:
-- PRs remain in draft after CI passes
-- Manual conversion required
+To configure this and other PR behaviors, see [Settings](/autodev/settings/index).
 
 ## Best practices
 
