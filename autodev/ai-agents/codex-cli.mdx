@@ -1,7 +1,40 @@
 ---
 title: "Codex CLI by OpenAI"
-description: ""
-
+description: "Setup and usage guide for Codex CLI with AutoDev"
 ---
 
+<Note>
+This guide covers connecting Codex CLI to your repository. To set up AutoDev itself, please refer to the [AutoDev setup guide](/autodev/getting-started/prerequisites).
+</Note>
 
+Codex CLI is OpenAI's AI coding assistant. When integrated with AutoDev, it can automate code generation, bug fixes, refactoring, and more through natural language commands.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+- An OpenAI account
+- Repository access where you want to use AutoDev
+
+## Setup Process
+
+### Step 1: Generate OpenAI API Key
+
+1. Go to the [OpenAI API keys page](https://platform.openai.com/api-keys)
+2. Click **Create new secret key**
+3. Give your key a descriptive name (e.g., "AutoDev")
+4. Copy the generated API key (you won't be able to see it again)
+
+### Step 2: Add API Key to GitHub Repository
+
+1. Navigate to your repository on GitHub
+2. Go to **Settings** > **Secrets and variables** > **Actions**
+3. Click **New repository secret**
+4. Set the name to `OPENAI_API_KEY`
+5. Paste your OpenAI API key in the value field
+6. Click **Add secret**
+
+## Next Steps
+
+- [Create your first PR](/autodev/getting-started/first-pr)
+- [Unit Task Guide](/autodev/tasks/unit)
+- [Composite Task Guide](/autodev/tasks/composite)
