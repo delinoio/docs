@@ -346,6 +346,21 @@ Create one PR per module.
 Include tests for each error case.
 ```
 
+**Security audits and testing:**
+```
+Review each RPC method one by one, checking for security issues and adding tests.
+Create one PR per RPC method.
+If tests are already comprehensive, skip creating a PR for that method.
+```
+
+AutoDev will:
+- Plan separate tasks for each RPC method
+- Conduct security review and add tests for each one
+- Create PRs only when improvements are needed
+- Process methods independently for cleaner review
+
+**Tip:** Requesting "one PR per item" helps create focused, reviewable changes rather than one massive PR with all changes combined.
+
 This approach allows you to describe the logic once and let AutoDev apply it systematically across many items, while maintaining clean, reviewable PRs for each change.
 
 ## When not to use composite tasks
