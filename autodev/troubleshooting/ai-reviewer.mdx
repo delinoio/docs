@@ -10,28 +10,11 @@ description: "Troubleshoot bot reviews and auto-apply issues in AutoDev"
 - No workflow triggered
 - PR not updated
 
-**Possible Causes:**
+**Common Cause:**
 
-**1. Auto-apply disabled:**
-- Check Settings page
-- Ensure "Auto-apply Bot Reviews" toggle is ON
+Auto-apply bot reviews may be disabled. See [troubleshooting bot reviews](/autodev/settings/index#bot-reviews-not-triggering-workflows) in the settings documentation for complete troubleshooting steps.
 
-**2. Bot not detected as bot:**
-- Some accounts appear as users in GitHub API
-- Check GitHub API for account type
-- May need manual trigger
-
-**3. Webhook delivery failure:**
-- Check GitHub webhook logs
-- Repository settings → Webhooks
-- Look for failed deliveries
-
-**Solutions:**
-
-**Verify auto-apply is enabled:**
-```
-Settings → Auto-apply Bot Reviews → ON
-```
+**Quick Solutions:**
 
 **Check bot account type:**
 1. Go to bot's GitHub profile
@@ -325,46 +308,7 @@ Optimized: 3 bots × 2 reviews/day = 6 workflows
 
 ## Best Practices
 
-### Start Conservatively
-
-**Initial setup:**
-1. Test with one bot first
-2. Verify workflows work correctly
-3. Gradually enable more bots
-4. Monitor costs closely
-
-### Monitor Costs
-
-**Auto-apply costs:**
-- Each bot review = 1 workflow execution
-- 1 execution = $0.03
-- Multiple bots can add up quickly
-
-**Monthly cost example:**
-```
-3 bots × 20 PRs/month × 2 reviews/PR = 120 workflows
-120 workflows × $0.03 = $3.60/month
-```
-
-### Configure Bots Properly
-
-**Recommended bot settings:**
-- Clear, specific feedback messages
-- Avoid overly frequent reviews
-- Focus on actionable issues
-- Group related issues together
-- Include file paths and line numbers
-- Provide fix suggestions
-
-### Audit Regularly
-
-**Monthly review checklist:**
-- Check auto-apply execution logs
-- Verify bots are providing value
-- Review costs
-- Identify problematic bots
-- Adjust settings as needed
-- Remove unused bots
+For best practices on configuring bot reviews, monitoring costs, and regular auditing, see the [Auto-apply Bot Reviews configuration tips](/autodev/settings/index#configuration-tips) in the settings documentation.
 
 ## Next Steps
 

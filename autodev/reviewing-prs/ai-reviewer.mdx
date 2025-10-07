@@ -7,31 +7,7 @@ AutoDev can automatically respond to reviews from bot accounts, enabling automat
 
 ## What is Auto-Apply Bot Reviews?
 
-When enabled, AutoDev automatically triggers update workflows when bot accounts (like linters, formatters, or security scanners) submit pull request reviews.
-
-**Key features:**
-- Bots don't need to connect the repository
-- Uses GitHub App authentication
-- All attempts are logged for audit
-- Can be enabled/disabled per team
-
-## Enabling Auto-Apply Bot Reviews
-
-### Step 1: Access Settings
-
-1. Go to AutoDev dashboard
-2. Navigate to Settings page
-3. Find "Auto-apply Bot Reviews" toggle
-
-### Step 2: Enable the Feature
-
-1. Toggle "Auto-apply Bot Reviews" to **ON**
-2. Settings save automatically
-3. Feature is now active for all repositories in your team
-
-### Step 3: Verify Configuration
-
-Create a test task and have a bot submit a review to verify it works.
+AutoDev can automatically respond to reviews from bot accounts. For detailed information about this setting including how to enable it, when to use it, and configuration options, see the [Auto-apply Bot Reviews](/autodev/settings/index#auto-apply-bot-reviews) documentation.
 
 ## How It Works
 
@@ -65,37 +41,7 @@ Common bot accounts:
 
 ## Use Cases
 
-### Code Quality Bots
-
-**ESLint/Prettier bots:**
-- Bot reviews PR for style violations
-- AutoDev applies formatting fixes
-- PR is updated automatically
-
-**Example workflow:**
-1. AutoDev creates PR
-2. ESLint bot reviews: "Fix 3 style issues"
-3. AutoDev auto-applies fixes
-4. PR is reformatted
-
-### Security Scanning
-
-**Snyk or Dependabot:**
-- Bot flags security vulnerabilities
-- AutoDev attempts fixes
-- Security issues resolved automatically
-
-**Example:**
-1. Dependabot reviews: "Update package to fix CVE"
-2. AutoDev updates dependency
-3. Security issue patched
-
-### Dependency Updates
-
-**Renovate or Dependabot:**
-- Bot suggests dependency updates
-- AutoDev applies changes
-- Dependencies stay current
+For common use cases including code quality bots, security scanning, and dependency updates, see the [Auto-apply Bot Reviews use cases](/autodev/settings/index#auto-apply-bot-reviews) in the settings documentation.
 
 ## Configuration
 
@@ -138,25 +84,7 @@ To view auto-apply logs:
 
 ## Disabling Auto-Apply
 
-### When to Disable
-
-Consider disabling if:
-- Bot reviews are too frequent
-- Causing excessive workflow runs
-- Bots give low-quality feedback
-- Cost concerns (workflows cost money)
-
-### How to Disable
-
-1. Go to Settings page
-2. Toggle "Auto-apply Bot Reviews" to **OFF**
-3. Settings save automatically
-4. Future bot reviews are ignored
-
-**Note:** Disabling doesn't affect:
-- Human reviews (still auto-apply if reviewer has access)
-- Existing running workflows
-- Manual PR update requests
+For information about when and how to disable this feature, see [when to disable Auto-apply Bot Reviews](/autodev/settings/index#auto-apply-bot-reviews) in the settings documentation.
 
 ## Troubleshooting
 
@@ -164,41 +92,7 @@ For detailed troubleshooting of bot reviews and auto-apply issues, see the [AI R
 
 ## Best Practices
 
-### Start Conservatively
-
-**Initial setup:**
-1. Test with one bot
-2. Verify workflows work correctly
-3. Gradually enable more bots
-4. Monitor costs
-
-### Monitor Costs
-
-**Auto-apply costs:**
-- Each bot review = 1 workflow execution
-- 1 execution = $0.03
-- Multiple bots can add up quickly
-
-**Cost optimization:**
-- Limit which bots trigger auto-apply
-- Configure bots to review less frequently
-- Disable for low-value bot feedback
-
-### Bot Configuration
-
-**Recommended bot settings:**
-- Clear, specific feedback messages
-- Avoid overly frequent reviews
-- Focus on actionable issues
-- Group related issues together
-
-### Audit Regularly
-
-**Monthly review:**
-- Check auto-apply execution logs
-- Verify bots are providing value
-- Adjust settings as needed
-- Monitor costs
+For best practices and configuration recommendations, see the [Auto-apply Bot Reviews configuration tips](/autodev/settings/index#configuration-tips) in the settings documentation.
 
 ## Supported Bot Platforms
 
