@@ -332,6 +332,19 @@ AutoDev will:
 - Create individual PRs only when improvements are needed
 - Process pages in parallel for faster completion
 
+**Pro tip**: Creating one task per page is highly effective because:
+- **Parallelization**: Multiple pages are processed simultaneously
+- **Focus**: Each AI agent works on a single page, preventing the common issue of AI agents forgetting their tasks midway through complex work
+- **Isolation**: Problems in one page don't affect others
+
+Example prompt:
+```
+Make the translation of each AutoDev page smooth and natural.
+
+Create one task per page. Each task should handle one page.
+Each task should not create a PR if there are no translation issues.
+```
+
 **Codebase-wide refactoring:**
 ```
 Update all API endpoints to use the new authentication middleware.
