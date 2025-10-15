@@ -95,7 +95,7 @@ jobs:
       # Setup step.
       # See next section for the documentation
       # - name: Setup Node.js
-      #   uses: ./.github/actions/setup-node
+      #   uses: actions/setup-node
 
       - name: Run AutoDev
         uses: delinoio/autodev-action@main
@@ -118,17 +118,28 @@ The workflow includes a setup step that you should customize for your repository
 
 ```yaml
 - name: Setup Node.js
-  uses: ./.github/actions/setup-node
+  uses: actions/setup-node
 ```
 
-Replace these with your project's build or setup requirements. For reference, the Delino monorepo includes steps like
+Replace these with your project's setup steps. The steps here should configure a complete development environment for the AI agent.
+
+<Info>
+
+For example, the Delino monorepo includes steps for
 
  - installing protoc for RPC definitions
  - installing golang for backend servers
  - installing nodejs for next.js apps
  - fetching environment variables for development environment
 
-### 4. Commit to your main branch
+</Info>
+
+
+### 4. Configure `DELINO_ACCESS_TOKEN`
+
+Create a new API key following the guide at [Creating API Keys](/core/api-keys/creation) and add it as a repository secret on GitHub settings.
+
+### 5. Commit to your main branch
 
 Commit the workflow file to your repository's main branch:
 
