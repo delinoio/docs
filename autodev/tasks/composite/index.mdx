@@ -21,9 +21,17 @@ After planning completes:
 - View the task graph visualization
 - See all tasks and their dependencies
 - Review the execution plan
-- Click **Start Execution** to begin
+- **If auto-approval is disabled**: Click **Start Execution** to begin
+- **If auto-approval is enabled**: Execution starts automatically
 
 Status: **Pending** → **In Progress**
+
+**Auto-Start Behavior**:
+- When `auto_approval_enabled` is true, execution starts automatically after planning
+- No "Start Execution" button click needed
+- Initial nodes (without dependencies) are marked as "ready" immediately
+- Saves time and enables fully automated workflows
+- Can be configured via tenant settings or per-task toggle
 
 ### 3. Task Execution
 Tasks execute based on dependencies:
@@ -97,15 +105,43 @@ Enable auto-approval to run tasks automatically:
 3. Ready tasks are automatically approved and executed
 4. No manual intervention required
 
+**Two-Level Auto-Approval:**
+
+1. **Tenant-Level Default** (Settings):
+   - Set "Default Composite Task Auto-Approval" in tenant settings
+   - Determines auto-approval status for NEW composite tasks
+   - Existing tasks are not affected
+
+2. **Per-Task Toggle** (Task Details):
+   - Enable/disable for individual composite tasks
+   - Overrides the tenant default for that specific task
+   - Can be changed at any time
+
+**What Auto-Approval Enables:**
+
+1. **Auto-Start Execution** (after planning completes):
+   - No need to click "Start Execution"
+   - Automatically transitions from "pending" to "in_progress"
+   - Initial nodes become "ready" immediately
+
+2. **Auto-Approve Ready Nodes**:
+   - Ready nodes automatically spawn unit tasks
+   - No manual approval required
+   - Continuous task progression
+
 Use auto-approval when:
 - You trust the AI-generated plan
 - Tasks are well-defined and low-risk
 - You want continuous progress without manual steps
+- Running repetitive or batch operations
+- Full automation from creation to completion
 
 Disable auto-approval when:
 - You want to review each task before execution
 - Tasks require careful sequencing
 - You want to modify prompts before execution
+- Learning or evaluating task plans
+- Complex projects requiring oversight
 
 ## Managing composite tasks
 
