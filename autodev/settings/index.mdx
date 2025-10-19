@@ -74,10 +74,13 @@ Controls whether AutoDev posts the full task prompt as a PR comment.
 ### Auto-undraft PR
 
 **Default**: Enabled
+**Status**: **TEMPORARILY DISABLED** ⚠️
+
+This feature is currently disabled globally due to a bug and is under development. The toggle appears disabled in the UI with a warning message.
 
 Controls whether AutoDev automatically converts draft PRs to ready-for-review when CI passes.
 
-**When enabled:**
+**When enabled (after re-enablement):**
 - Automatically marks PR ready when checks pass
 - Signals completion to team
 - Reduces manual workflow steps
@@ -100,6 +103,103 @@ Controls whether AutoDev automatically converts draft PRs to ready-for-review wh
 - Additional quality assurance needed
 - Learning/training environments
 - Complex PRs requiring verification
+
+**Current Behavior**: All PRs will remain in draft status even when CI passes until this feature is re-enabled.
+
+### Default Planning Agent & Model
+
+**Purpose**: Configure default AI agent and model for CompositeTask planning phase
+
+These settings control which AI agent and model are used when AutoDev generates task graphs for composite tasks.
+
+**Planning Agent Options:**
+- `claude_code` - Claude Code agent (recommended)
+- `opencode` - OpenCode agent
+- `crush_cli` - Crush CLI agent
+- `codex_cli` - Codex CLI agent
+- `gemini_cli` - Gemini CLI agent
+- `github_copilot_cli` - GitHub Copilot CLI agent
+
+**Planning Model Options:**
+- Varies by agent (e.g., `sonnet`, `opus`, `haiku` for Claude Code)
+
+**When set:**
+- New composite tasks use these defaults for AI planning
+- Generates task breakdown and dependency graph
+- Creates execution plan
+
+**When not set:**
+- System defaults are used
+
+**Use cases:**
+- Choose more powerful models for complex project planning
+- Select faster/cheaper models for simple decomposition
+- Match agent capabilities to your planning needs
+
+### Default Execution Agent & Model
+
+**Purpose**: Configure default AI agent and model for task execution
+
+These settings control which AI agent and model are used when:
+- Creating and executing unit tasks
+- Executing individual nodes in composite task graphs
+
+**Execution Agent Options:**
+Same as planning agent options above.
+
+**Execution Model Options:**
+Varies by agent.
+
+**When set:**
+- Unit tasks use these defaults
+- Composite task nodes use these defaults
+- Actual code writing and PR creation uses these
+
+**When not set:**
+- System defaults are used
+
+**Use cases:**
+- Different agent for planning vs. execution (e.g., powerful planner, fast executor)
+- Balance cost and quality across workflow phases
+- Optimize for execution speed or quality
+
+### Default Composite Task Auto-Approval
+
+**Default**: Disabled
+
+Controls whether newly created composite tasks have auto-approval enabled by default.
+
+**When enabled:**
+- New composite tasks are created with auto-approval turned on
+- After planning completes,     ecution starts automatically
+- Ready nodes are automatically approved without manual review
+- Full workflow automation from creation to completion
+
+**When disabled:**
+- New composite tasks require manual execution start
+- Each ready node requires manual approval
+- More control over task progression
+
+**What happens with auto-approval:**
+1. You create a composite task
+2. AI planning completes automatically
+3. **Execution starts automatically** (no "Start Execution" click needed)
+4. **Ready nodes auto-approve** (no manual approval needed)
+5. Tasks complete without any manual intervention
+
+**Note**: This setting only affects NEW composite tasks at creation time. You can still manually toggle auto-approval on individual composite tasks after they're created.
+
+**Best for enabling:**
+- Trusted workflows
+- Repetitive tasks
+- High confidence in AI planning
+- Want hands-off automation
+
+**Best for disabling:**
+- Want to review plans before execution
+- Need to modify prompts before running
+- Careful control over task progression
+- Learning/evaluating AutoDev
 
 ## Configuration Tips
 
