@@ -29,6 +29,14 @@ The AI agent is actively working on your task:
 - Creating pull requests
 - Running tests
 
+**Detailed Status**: When a task is in progress, AutoDev shows detailed information about what's currently happening:
+- "Creating initial implementation..." - AI is writing the first version
+- "Addressing PR review feedback..." - Responding to review comments
+- "Fixing CI failures..." - Attempting to fix failing tests
+- "Updating pull request..." - Making requested changes
+
+This gives you real-time visibility into the current workflow execution phase.
+
 ### 3. Completed
 The task is marked complete when all pull requests are merged. This means:
 - All code changes have been reviewed and approved
@@ -63,11 +71,22 @@ All PRs created for this task:
 - Links to GitHub
 
 ### Workflow executions
-History of all workflow runs:
+History of all workflow runs for this task, including:
+
+**Direct task workflows:**
+- Task creation - Initial implementation
+- Task retries - Retry after failure
+
+**PR-related workflows:**
+- PR updates - Manual update requests
+- PR reviews - Responses to review feedback
+- PR CI fixes - Automatic fixes for failing checks
+
+**Details shown:**
 - Execution status (pending/in_progress/completed/failed)
-- Type (task creation, PR update, review response, CI fix)
-- Timestamps
-- GitHub Actions run link
+- Workflow type
+- Timestamps (created, started, completed)
+- GitHub Actions run link (when available)
 - Retry button for failed executions
 
 ## Managing pull requests
