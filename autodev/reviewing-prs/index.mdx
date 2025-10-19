@@ -93,6 +93,37 @@ When reviewer approves without comments:
 ### Bot Reviews
 When a bot account submits a review, behavior depends on the "Auto-apply Bot Reviews" setting. See [Settings](/autodev/settings) for details.
 
+## Reviewer permissions
+
+For security, AutoDev verifies that reviewers have appropriate permissions before triggering workflows:
+
+### Write Access Requirement
+**For human reviewers:**
+- Must have **Write** (Push) or **Admin** access to the repository
+- Verified via GitHub API permission check
+- Reviews from users without write access are silently ignored
+- All permission checks are logged for security auditing
+
+**For bot reviewers:**
+- Exempt from permission checks when "Auto-apply Bot Reviews" is enabled
+- Use GitHub App installation token for authentication
+- Bypasses individual permission requirements
+
+### Why write access is required
+This security measure prevents:
+- Unauthorized users from triggering workflows via PR reviews
+- Potential abuse of compute resources
+- Unauthorized code execution in your workflows
+
+### Troubleshooting permission issues
+If your reviews aren't triggering workflows:
+1. Verify you have **Write** or **Admin** access to the repository
+2. Check that you've connected the repository in AutoDev
+3. Ensure the repository has AutoDev webhook configured
+4. Review webhook delivery logs for permission errors
+
+**Note**: Read-only collaborators cannot trigger AutoDev workflows through PR reviews, even if they've connected the repository.
+
 ## Draft status during updates
 
 AutoDev converts PRs to draft during automated updates to:
