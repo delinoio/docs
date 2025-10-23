@@ -15,78 +15,90 @@
         "groups": [
           {
             "group": "Getting started",
-            "pages": ["index"]
+            "pages": [
+              "index"
+            ]
           },
           {
             "group": "Authentication",
-            "pages": ["core/api-keys/creation"]
+            "pages": [
+              "core/api-keys/creation"
+            ]
           },
           {
             "group": "Teams",
-            "pages": ["core/teams/creation"]
+            "pages": [
+              "core/teams/creation"
+            ]
           }
         ]
       },
       {
-        "tab": "AutoDev",
+        "tab": "DevBird",
         "groups": [
           {
             "group": "Getting started",
             "pages": [
-              "autodev/index",
-              "autodev/comparison",
-              "autodev/getting-started/prerequisites",
-              "autodev/getting-started/github-app",
-              "autodev/getting-started/github-workflow",
-              "autodev/getting-started/ai-agent",
-              "autodev/getting-started/first-pr"
+              "devbird/index",
+              "devbird/comparison",
+              "devbird/getting-started/prerequisites",
+              "devbird/getting-started/github-app",
+              "devbird/getting-started/github-workflow",
+              "devbird/getting-started/ai-agent",
+              "devbird/getting-started/first-pr"
             ]
           },
           {
             "group": "Managing Tasks",
             "pages": [
-              "autodev/tasks/index",
-              "autodev/tasks/unit/index",
-              "autodev/tasks/composite/index"
+              "devbird/tasks/index",
+              "devbird/tasks/unit/index",
+              "devbird/tasks/composite/index"
             ]
           },
           {
             "group": "Settings",
-            "pages": ["autodev/settings/index"]
+            "pages": [
+              "devbird/settings/index"
+            ]
           },
           {
             "group": "Configuring AI Agents",
             "pages": [
-              "autodev/ai-agents/claude-code",
-              "autodev/ai-agents/codex-cli",
-              "autodev/ai-agents/opencode",
-              "autodev/ai-agents/gemini-cli",
-              "autodev/ai-agents/crush-cli",
-              "autodev/ai-agents/github-copilot-cli"
+              "devbird/ai-agents/claude-code",
+              "devbird/ai-agents/codex-cli",
+              "devbird/ai-agents/opencode",
+              "devbird/ai-agents/gemini-cli",
+              "devbird/ai-agents/crush-cli",
+              "devbird/ai-agents/github-copilot-cli"
             ]
           },
           {
             "group": "Architecture",
-            "pages": ["autodev/architecture/webhook"]
+            "pages": [
+              "devbird/architecture/webhook"
+            ]
           },
           {
             "group": "Cost reduction (optional)",
-            "pages": ["autodev/cost-reduction/github-runner"]
+            "pages": [
+              "devbird/cost-reduction/github-runner"
+            ]
           },
           {
             "group": "Reviewing PRs",
             "pages": [
-              "autodev/reviewing-prs/index",
-              "autodev/reviewing-prs/ai-reviewer"
+              "devbird/reviewing-prs/index",
+              "devbird/reviewing-prs/ai-reviewer"
             ]
           },
           {
             "group": "Troubleshooting",
             "pages": [
-              "autodev/troubleshooting/unit-task",
-              "autodev/troubleshooting/composite-task",
-              "autodev/troubleshooting/pr-reviews",
-              "autodev/troubleshooting/ai-reviewer"
+              "devbird/troubleshooting/unit-task",
+              "devbird/troubleshooting/composite-task",
+              "devbird/troubleshooting/pr-reviews",
+              "devbird/troubleshooting/ai-reviewer"
             ]
           }
         ]
