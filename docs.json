@@ -154,5 +154,11 @@
       "domain": "docs.delino.io",
       "server": "plausible.internal.delino.io"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/autodev/:path*",
+      "destination": "/devbird/:path*"
+    }
+  ]
 }
