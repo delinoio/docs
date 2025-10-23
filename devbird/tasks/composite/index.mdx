@@ -3,13 +3,15 @@ title: "Composite Tasks"
 description: "Break down complex projects into AI-planned coordinated tasks"
 ---
 
-Composite tasks use AI to break down complex projects into multiple coordinated steps. AutoDev creates a task graph showing dependencies and execution order, allowing parallel work while ensuring tasks build on each other correctly.
+Composite tasks use AI to break down complex projects into multiple coordinated steps. DevBird creates a task graph showing dependencies and execution order, allowing parallel work while ensuring tasks build on each other correctly.
 
 ## How composite tasks work
 
 ### 1. AI Planning Phase
+
 When you create a composite task:
-- AutoDev analyzes your request
+
+- DevBird analyzes your request
 - AI generates a task graph (DAG structure)
 - Tasks are organized with dependencies
 - Plan is saved for your review
@@ -17,7 +19,9 @@ When you create a composite task:
 Status: **Planning**
 
 ### 2. Review and Start
+
 After planning completes:
+
 - View the task graph visualization
 - See all tasks and their dependencies
 - Review the execution plan
@@ -27,6 +31,7 @@ After planning completes:
 Status: **Pending** → **In Progress**
 
 **Auto-Start Behavior**:
+
 - When `auto_approval_enabled` is true, execution starts automatically after planning
 - No "Start Execution" button click needed
 - Initial nodes (without dependencies) are marked as "ready" immediately
@@ -34,7 +39,9 @@ Status: **Pending** → **In Progress**
 - Can be configured via tenant settings or per-task toggle
 
 ### 3. Task Execution
+
 Tasks execute based on dependencies:
+
 - Initial tasks (no dependencies) become **Ready**
 - You approve each ready task
 - Approved tasks spawn unit tasks
@@ -42,13 +49,15 @@ Tasks execute based on dependencies:
 - New tasks become ready as dependencies complete
 
 ### 4. Completion
+
 When all tasks finish:
+
 - Composite task status: **Completed**
 - All pull requests are created
 
 ## Creating a composite task
 
-1. Go to your AutoDev dashboard
+1. Go to your DevBird dashboard
 2. Select your repository
 3. Enter your complex project description
 4. **Check "Create as Composite Task"**
@@ -63,7 +72,9 @@ When all tasks finish:
 The task graph shows:
 
 ### Nodes
+
 Each node represents a task to be completed:
+
 - **Pending** (gray) - Waiting for dependencies
 - **Ready** (blue) - Dependencies met, awaiting approval
 - **Approved** (yellow) - Approved, about to start
@@ -73,12 +84,16 @@ Each node represents a task to be completed:
 - **Blocked** (dark gray) - Cannot proceed due to failed dependency
 
 ### Edges
+
 Arrows show dependencies:
+
 - Task A → Task B means B depends on A
 - Task B starts only after Task A completes
 
 ### Parallel execution
+
 Tasks without dependencies on each other run in parallel:
+
 ```
     Task A
    /      \
@@ -108,6 +123,7 @@ Enable auto-approval to run tasks automatically:
 **Two-Level Auto-Approval:**
 
 1. **Tenant-Level Default** (Settings):
+
    - Set "Default Composite Task Auto-Approval" in tenant settings
    - Determines auto-approval status for NEW composite tasks
    - Existing tasks are not affected
@@ -120,6 +136,7 @@ Enable auto-approval to run tasks automatically:
 **What Auto-Approval Enables:**
 
 1. **Auto-Start Execution** (after planning completes):
+
    - No need to click "Start Execution"
    - Automatically transitions from "pending" to "in_progress"
    - Initial nodes become "ready" immediately
@@ -130,6 +147,7 @@ Enable auto-approval to run tasks automatically:
    - Continuous task progression
 
 Use auto-approval when:
+
 - You trust the AI-generated plan
 - Tasks are well-defined and low-risk
 - You want continuous progress without manual steps
@@ -137,6 +155,7 @@ Use auto-approval when:
 - Full automation from creation to completion
 
 Disable auto-approval when:
+
 - You want to review each task before execution
 - Tasks require careful sequencing
 - You want to modify prompts before execution
@@ -150,6 +169,7 @@ Disable auto-approval when:
 View comprehensive information:
 
 **Overview section:**
+
 - Title and description
 - Repository and branch
 - Progress (X/Y tasks completed)
@@ -157,27 +177,32 @@ View comprehensive information:
 - Creation time
 
 **Task graph visualization:**
+
 - Interactive diagram of all tasks
 - Color-coded status indicators
 - Click nodes to see details
 - View dependencies
 
 **Ready for approval:**
+
 - List of tasks ready to execute
 - Option to modify prompts
 - Approve or reject buttons
 
 **Active tasks:**
+
 - Currently executing tasks
 - Links to spawned unit tasks
 - Real-time status
 
 **Completed tasks:**
+
 - Finished tasks
 - Links to pull requests
 - Merge status
 
 **Failed/blocked tasks:**
+
 - Failed tasks with error details
 - Retry options
 - Blocked tasks showing required dependencies
@@ -187,6 +212,7 @@ View comprehensive information:
 You can edit task prompts before execution:
 
 **During approval:**
+
 1. Task becomes ready
 2. Review the AI-generated prompt
 3. Click **Edit Prompt**
@@ -194,6 +220,7 @@ You can edit task prompts before execution:
 5. Approve to execute with modified prompt
 
 **Before approval:**
+
 1. Go to task graph visualization
 2. Click on a task node (must be pending, ready, or blocked)
 3. Edit the prompt and title
@@ -217,7 +244,7 @@ The sync feature checks all tasks and updates statuses:
 
 1. Go to composite task details
 2. Click **Sync Composite Task**
-3. AutoDev checks all tasks and PRs:
+3. DevBird checks all tasks and PRs:
    - Updates PR merge statuses from GitHub
    - Marks completed tasks when PRs are merged
    - Recalculates node readiness
@@ -225,6 +252,7 @@ The sync feature checks all tasks and updates statuses:
    - Updates composite task progress
 
 Returns:
+
 - Tasks updated count
 - Nodes updated count
 - PRs synced count
@@ -234,15 +262,17 @@ Returns:
 
 ### How AI creates the plan
 
-AutoDev uses advanced prompting to create efficient task graphs:
+DevBird uses advanced prompting to create efficient task graphs:
 
 **Planning priorities:**
+
 1. **Minimize rebasing** - Structure for parallel execution
 2. **CI/Infrastructure first** - Set up testing before features
 3. **Independent code paths** - Tasks touch different files
 4. **Clear boundaries** - Define interfaces early
 
 **Task ordering:**
+
 - Phase 1: CI/Infrastructure (no dependencies)
 - Phase 2: Database/Storage setup
 - Phase 3: Core contracts (APIs, models)
@@ -251,12 +281,14 @@ AutoDev uses advanced prompting to create efficient task graphs:
 - Phase 6: Polish (UI, performance, docs)
 
 **Graph structure:**
+
 - Wide and shallow (more parallel, fewer sequential)
 - Each task represents meaningful progress
 
 ### Writing effective composite task prompts
 
 **Include comprehensive context:**
+
 ```
 Build a complete e-commerce checkout system including:
 - Shopping cart with session persistence
@@ -267,6 +299,7 @@ Build a complete e-commerce checkout system including:
 ```
 
 **Specify technical requirements:**
+
 ```
 Migrate to microservices architecture using:
 - Docker containers for each service
@@ -277,6 +310,7 @@ Migrate to microservices architecture using:
 ```
 
 **Reference documentation:**
+
 ```
 Implement authentication following our architecture:
 - Reference: @docs/auth-architecture.md
@@ -298,6 +332,7 @@ Deleting a composite task:
 ## Example composite task
 
 **Prompt:**
+
 ```
 Build a user authentication system with email verification and OAuth
 ```
@@ -332,21 +367,25 @@ Tasks 3, 4, and 5 run in parallel after task 2 completes.
 ## Benefits of composite tasks
 
 ### Coordinated execution
+
 - Tasks build on each other
 - Dependencies ensure correct order
 - Parallel work speeds completion
 
 ### AI-powered planning
+
 - Optimal task breakdown
 - Smart dependency management
 - Efficient parallelization
 
 ### Flexibility
+
 - Modify prompts before execution
 - Retry failed tasks
 - Enable/disable auto-approval
 
 ### Visibility
+
 - See entire project plan upfront
 - Track progress across all tasks
 - Understand dependencies
@@ -356,32 +395,37 @@ Tasks 3, 4, and 5 run in parallel after task 2 completes.
 Composite tasks excel at applying the same logic across multiple independent items, creating separate PRs for each one. This is ideal for:
 
 **Translation and localization:**
+
 ```
-Review all AutoDev documentation pages one by one and fix awkward translations.
+Review all DevBird documentation pages one by one and fix awkward translations.
 Check each supported language individually.
 Create one PR per page. Only create PRs if translations need fixing.
 ```
 
-AutoDev will:
+DevBird will:
+
 - Plan separate tasks for each documentation page
 - Apply the same review logic to each language version
 - Create individual PRs only when improvements are needed
 - Process pages in parallel for faster completion
 
 **Pro tip**: Creating one task per page is highly effective because:
+
 - **Parallelization**: Multiple pages are processed simultaneously
 - **Focus**: Each AI agent works on a single page, preventing the common issue of AI agents forgetting their tasks midway through complex work
 - **Isolation**: Problems in one page don't affect others
 
 Example prompt:
+
 ```
-Make the translation of each AutoDev page smooth and natural.
+Make the translation of each DevBird page smooth and natural.
 
 Create one task per page. Each task should handle one page.
 Each task should not create a PR if there are no translation issues.
 ```
 
 **Codebase-wide refactoring:**
+
 ```
 Update all API endpoints to use the new authentication middleware.
 Create one PR per endpoint group.
@@ -391,6 +435,7 @@ Ensure backward compatibility in each change.
 ## When not to use composite tasks
 
 Use unit tasks instead when:
+
 - Task is straightforward and single-purpose
 - No dependencies on other work
 - Quick fix or small change
@@ -398,10 +443,10 @@ Use unit tasks instead when:
 
 ## Troubleshooting
 
-See the [Composite Task Troubleshooting](/autodev/troubleshooting/composite-task) guide for common issues.
+See the [Composite Task Troubleshooting](/devbird/troubleshooting/composite-task) guide for common issues.
 
 ## Next steps
 
-- Learn about [Unit Tasks](/autodev/tasks/unit)
-- Understand [PR Review Process](/autodev/reviewing-prs)
-- Configure [AI Agents](/autodev/ai-agents/claude-code)
+- Learn about [Unit Tasks](/devbird/tasks/unit)
+- Understand [PR Review Process](/devbird/reviewing-prs)
+- Configure [AI Agents](/devbird/ai-agents/claude-code)

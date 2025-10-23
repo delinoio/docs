@@ -1,20 +1,23 @@
 ---
 title: "Claude Code"
-description: "Setup and usage guide for Claude Code with AutoDev"
+description: "Setup and usage guide for Claude Code with DevBird"
 ---
 
 <Note>
-This guide covers connecting Claude Code to your repository. To set up AutoDev itself, please refer to the [AutoDev setup guide](/autodev/getting-started/prerequisites).
+  This guide covers connecting Claude Code to your repository. To set up DevBird
+  itself, please refer to the [DevBird setup
+  guide](/devbird/getting-started/prerequisites).
 </Note>
 
-Claude Code is Anthropic's AI coding assistant. When integrated with AutoDev, it can automate code generation, bug fixes, refactoring, and more through natural language commands.
+Claude Code is Anthropic's AI coding assistant. When integrated with DevBird, it can automate code generation, bug fixes, refactoring, and more through natural language commands.
 
 ## Prerequisites
 
 Before you begin, ensure you have:
+
 - Claude Code installed on your machine
 - A Claude subscription (recommended for long-lived token option)
-- Repository access where you want to use AutoDev
+- Repository access where you want to use DevBird
 
 ## Setup Process
 
@@ -26,6 +29,7 @@ Before you begin, ensure you have:
 ### Step 2: Install GitHub App
 
 1. In the Claude Code terminal, run:
+
    ```bash
    /install-github-app
    ```
@@ -34,11 +38,11 @@ Before you begin, ensure you have:
 
 ### Step 3: Select Repository
 
-Select the repository where you want to use AutoDev from the list presented.
+Select the repository where you want to use DevBird from the list presented.
 
 ### Step 4: Install GitHub App
 
-Follow the GitHub prompts to install the AutoDev app to your selected repository.
+Follow the GitHub prompts to install the DevBird app to your selected repository.
 
 ### Step 5: Configure Workflows
 
@@ -49,6 +53,7 @@ When Claude Code displays the `Select GitHub workflows to install` screen, press
 Claude Code will present the `Install GitHub App` screen with authentication options:
 
 - **Create a long-lived token with your Claude subscription** (Recommended)
+
   - Uses your existing Claude subscription (flat rate billing)
   - More cost-effective for regular use
   - Requires approval on the Anthropic website
@@ -58,7 +63,8 @@ Claude Code will present the `Install GitHub App` screen with authentication opt
   - Charges based on usage
 
 <Note>
-We recommend the long-lived token option if you have a Claude subscription, as it provides predictable costs.
+  We recommend the long-lived token option if you have a Claude subscription, as
+  it provides predictable costs.
 </Note>
 
 ### Step 7: Approve on Anthropic Website
@@ -70,12 +76,11 @@ If you selected the long-lived token option, approve the connection on the Anthr
 Claude Code will automatically create a setup pull request in your repository:
 
 - **If you plan to use Claude Code directly**: Review and merge the PR
-- **If you only plan to use AutoDev (without using Claude Code directly)**: You don't need this PR - you can close it without merging
+- **If you only plan to use DevBird (without using Claude Code directly)**: You don't need this PR - you can close it without merging
 - **If you're just testing**: You can close the PR without merging
 
 ## Next Steps
 
-- [Create your first PR](/autodev/getting-started/first-pr)
-- [Unit Task Guide](/autodev/tasks/unit)
-- [Composite Task Guide](/autodev/tasks/composite)
-
+- [Create your first PR](/devbird/getting-started/first-pr)
+- [Unit Task Guide](/devbird/tasks/unit)
+- [Composite Task Guide](/devbird/tasks/composite)

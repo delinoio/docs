@@ -1,36 +1,43 @@
 ---
 title: "Adding GitHub Workflow"
-description: "Set up the AutoDev GitHub Workflow in your repository to automate development tasks"
+description: "Set up the DevBird GitHub Workflow in your repository to automate development tasks"
 ---
+
+<Note>
+  Recently `autodev.yml` is renamed to `devbird.yml` because the product is
+  rebranded. But for backward compatibility, `autodev.yml` will just work as
+  before.
+</Note>
 
 ## Prerequisites
 
 Before you begin, ensure you have:
-- Completed the [GitHub App installation](/autodev/getting-started/github-app)
+
+- Completed the [GitHub App installation](/devbird/getting-started/github-app)
 - Admin or write access to your repository
 - Required secrets configured in your GitHub repository
 
 ## Setting up the workflow
 
-Follow these steps to add the AutoDev workflow to your repository:
+Follow these steps to add the DevBird workflow to your repository:
 
 ### 1. Create the workflow file
 
-Create a new file at `.github/workflows/autodev.yml` in your repository.
+Create a new file at `.github/workflows/devbird.yml` in your repository.
 
 ### 2. Add the workflow configuration
 
 Copy the following YAML configuration into the file:
 
 ```yaml
-name: 'AutoDev'
-run-name: 'AutoDev: ${{ inputs.task_title }}'
+name: "DevBird"
+run-name: "DevBird: ${{ inputs.task_title }}"
 
 on:
   workflow_dispatch:
     inputs:
       prompt:
-        description: "Instructions for AutoDev. Can be a direct prompt or custom template."
+        description: "Instructions for DevBird. Can be a direct prompt or custom template."
         type: string
         required: true
 
@@ -38,49 +45,48 @@ on:
         description: "The branch to use as the base/source when creating new branches (defaults to repository default branch)"
         type: string
         required: false
-        default: 'main'
+        default: "main"
 
       agent:
-          description: "The agent to use for the action. Can be 'claude_code', 'gemini_cli', 'codex_cli' or 'opencode'"
-          type: choice
-          default: 'claude_code'
-          options:
-            - claude_code
-            - gemini_cli
-            - codex_cli
-            - opencode
-            - crush_cli
-            - github_copilot_cli
+        description: "The agent to use for the action. Can be 'claude_code', 'gemini_cli', 'codex_cli' or 'opencode'"
+        type: choice
+        default: "claude_code"
+        options:
+          - claude_code
+          - gemini_cli
+          - codex_cli
+          - opencode
+          - crush_cli
+          - github_copilot_cli
 
       agent_model:
         description: "The (optional) model to use for the agent"
         type: string
         required: false
-        default: ''
+        default: ""
 
-
-      autodev_workflow_execution_token:
-        description: "The token to use for the AutoDev task"
+      devbird_workflow_execution_token:
+        description: "The token to use for the DevBird task"
         type: string
         required: false
-        default: ''
+        default: ""
 
-      autodev_mode:
-        description: "The AutoDev execution mode. Can be 'develop' (default) or 'plan' (for task graph planning)"
+      devbird_mode:
+        description: "The DevBird execution mode. Can be 'develop' (default) or 'plan' (for task graph planning)"
         type: choice
-        default: 'develop'
+        default: "develop"
         options:
           - develop
           - plan
 
       task_title:
-        description: "The title of the AutoDev task"
+        description: "The title of the DevBird task"
         type: string
         required: false
-        default: ''
+        default: ""
 
 jobs:
-  autodev:
+  devbird:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -97,13 +103,13 @@ jobs:
       # - name: Setup Node.js
       #   uses: actions/setup-node
 
-      - name: Run AutoDev
-        uses: delinoio/autodev-action@main
+      - name: Run DevBird
+        uses: delinoio/devbird-action@main
         with:
           agent: ${{ inputs.agent }}
           agent_model: ${{ inputs.agent_model }}
-          autodev_mode: ${{ inputs.autodev_mode }}
-          autodev_workflow_execution_token: ${{ inputs.autodev_workflow_execution_token }}
+          devbird_mode: ${{ inputs.devbird_mode }}
+          devbird_workflow_execution_token: ${{ inputs.devbird_workflow_execution_token }}
           prompt: ${{ inputs.prompt }}
           base_branch: ${{ inputs.base_branch }}
           delino_access_token: ${{ secrets.DELINO_ACCESS_TOKEN }}
@@ -126,13 +132,12 @@ Replace these with your project's setup steps. The steps here should configure a
 
 For example, the Delino monorepo includes steps for
 
- - installing protoc for RPC definitions
- - installing golang for backend servers
- - installing nodejs for next.js apps
- - fetching environment variables for development environment
+- installing protoc for RPC definitions
+- installing golang for backend servers
+- installing nodejs for next.js apps
+- fetching environment variables for development environment
 
 </Info>
-
 
 ### 4. Configure `DELINO_ACCESS_TOKEN`
 
@@ -143,11 +148,11 @@ Create a new API key following the guide at [Creating API Keys](/core/api-keys/c
 Commit the workflow file to your repository's main branch:
 
 ```bash
-git add .github/workflows/autodev.yml
-git commit -m "Add AutoDev workflow"
+git add .github/workflows/devbird.yml
+git commit -m "Add DevBird workflow"
 git push
 ```
 
 ## Next steps
 
-Once the workflow is set up, you can start using AutoDev to automate development tasks. Learn how to trigger your first AutoDev task in the [Creating your first PR](/autodev/getting-started/first-pr) guide.
+Once the workflow is set up, you can start using DevBird to automate development tasks. Learn how to trigger your first DevBird task in the [Creating your first PR](/devbird/getting-started/first-pr) guide.

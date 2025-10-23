@@ -1,13 +1,13 @@
 ---
 title: "Understanding Tasks"
-description: "Learn about the two types of tasks in AutoDev and when to use each"
+description: "Learn about the two types of tasks in DevBird and when to use each"
 ---
 
-AutoDev offers two types of tasks to handle different development scenarios: **Unit Tasks** for straightforward work and **Composite Tasks** for complex projects.
+DevBird offers two types of tasks to handle different development scenarios: **Unit Tasks** for straightforward work and **Composite Tasks** for complex projects.
 
 ## Unit Tasks
 
-Unit tasks are perfect for single, well-defined development tasks. When you create a unit task, AutoDev's AI agent:
+Unit tasks are perfect for single, well-defined development tasks. When you create a unit task, DevBird's AI agent:
 
 1. Analyzes your request
 2. Writes the necessary code
@@ -39,11 +39,11 @@ Refactor the payment processing service to use the new API
 
 ## Composite Tasks
 
-Composite tasks are designed for complex projects that require multiple coordinated steps. AutoDev uses AI to break down your request into a task graph (DAG structure) where tasks can run in parallel or sequence based on dependencies.
+Composite tasks are designed for complex projects that require multiple coordinated steps. DevBird uses AI to break down your request into a task graph (DAG structure) where tasks can run in parallel or sequence based on dependencies.
 
 ### How composite tasks work
 
-1. **AI Planning** - AutoDev analyzes your request and creates a task graph
+1. **AI Planning** - DevBird analyzes your request and creates a task graph
 2. **Review Plan** - You see the proposed tasks and their dependencies
 3. **Start Execution** - You approve the plan and start execution
 4. **Sequential Execution** - Tasks become ready as dependencies complete
@@ -80,17 +80,21 @@ and monitoring
 Both task types support optional configuration:
 
 ### Repository selection
-Choose which repository the AI should work on. You can only select repositories where you've installed the AutoDev GitHub App.
+
+Choose which repository the AI should work on. You can only select repositories where you've installed the DevBird GitHub App.
 
 ### AI Agent selection (Optional)
-Choose which AI coding agent to use. See [available AI agents](/autodev/getting-started/ai-agent) for the full list.
 
-If not specified, AutoDev uses your team's default agent.
+Choose which AI coding agent to use. See [available AI agents](/devbird/getting-started/ai-agent) for the full list.
+
+If not specified, DevBird uses your team's default agent.
 
 ### Model version (Optional)
+
 Specify the AI model version (e.g., "sonnet", "gpt-4"). If not specified, the agent's default model is used.
 
 ### Base branch (Optional)
+
 Specify which branch to use as the base for the task. Defaults to your repository's default branch (usually `main` or `master`).
 
 ## Task Status
@@ -105,7 +109,7 @@ Tasks progress through different statuses:
 
 ## Pull Requests
 
-Each task can create multiple pull requests. AutoDev automatically:
+Each task can create multiple pull requests. DevBird automatically:
 
 - Creates descriptive PR titles and descriptions
 - Links PRs back to the task
@@ -116,6 +120,6 @@ Each task can create multiple pull requests. AutoDev automatically:
 
 ## Next steps
 
-- Learn about [Unit Tasks](/autodev/tasks/unit)
-- Learn about [Composite Tasks](/autodev/tasks/composite)
-- See [Creating your first PR](/autodev/getting-started/first-pr)
+- Learn about [Unit Tasks](/devbird/tasks/unit)
+- Learn about [Composite Tasks](/devbird/tasks/composite)
+- See [Creating your first PR](/devbird/getting-started/first-pr)
