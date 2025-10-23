@@ -4,21 +4,24 @@ description: "Common issues with composite tasks and task graphs"
 ---
 
 <Warning>
-This document is still under review. The content may be inaccurate or outdated.
+  This document is still under review. The content may be inaccurate or
+  outdated.
 </Warning>
 
-This guide helps you troubleshoot common issues with composite tasks and task graph execution in AutoDev.
+This guide helps you troubleshoot common issues with composite tasks and task graph execution in DevBird.
 
 ## Planning Phase Issues
 
 ### Planning Stuck or Takes Too Long
 
 **Symptoms:**
+
 - Composite task stuck in "Planning" status
 - Planning workflow running for 30+ minutes
 - No task graph generated
 
 **Possible Causes:**
+
 1. Complex project requiring extensive planning
 2. Vague or unclear prompt
 3. Workflow timeout
@@ -27,16 +30,19 @@ This guide helps you troubleshoot common issues with composite tasks and task gr
 **Solutions:**
 
 **Check planning workflow status:**
+
 1. Go to GitHub Actions
 2. Find the planning workflow run
 3. Check logs for errors or stuck steps
 
 **Simplify the prompt:**
+
 - Break very large projects into smaller composite tasks
 - Be more specific about requirements
 - Provide clear scope boundaries
 
 **Retry planning:**
+
 1. Delete the composite task
 2. Create new task with refined prompt
 3. Monitor planning progress
@@ -44,6 +50,7 @@ This guide helps you troubleshoot common issues with composite tasks and task gr
 ### No Plan Generated
 
 **Symptoms:**
+
 - Planning completes but no task graph appears
 - Status changes from "Planning" to "Failed"
 - Error: "Failed to generate plan"
@@ -51,6 +58,7 @@ This guide helps you troubleshoot common issues with composite tasks and task gr
 **Solutions:**
 
 **Check planning workflow logs:**
+
 ```
 Look for:
 - "Generating task graph..."
@@ -59,17 +67,20 @@ Look for:
 ```
 
 **Verify prompt is actionable:**
+
 - Does it describe a concrete project?
 - Are requirements clear?
 - Is scope reasonable for AI planning?
 
 **Example good prompts:**
+
 ```
 Build a REST API for user management with
 authentication, CRUD operations, and testing
 ```
 
 **Example problematic prompts:**
+
 ```
 Make the app better
 Build something cool
@@ -78,11 +89,13 @@ Build something cool
 ### Invalid Task Graph
 
 **Symptoms:**
+
 - Plan uploaded but status shows "Failed"
 - Error: "Invalid task graph structure"
 - Circular dependencies detected
 
 **Causes:**
+
 - AI generated invalid DAG structure
 - Circular dependencies in plan
 - Missing required fields
@@ -90,10 +103,12 @@ Build something cool
 **Solutions:**
 
 **This is rare - usually indicates:**
+
 - Very complex/unclear requirements
 - Edge case in planning algorithm
 
 **Retry with clearer prompt:**
+
 1. Delete failed composite task
 2. Simplify project description
 3. Break into smaller composite tasks
@@ -104,12 +119,14 @@ Build something cool
 ### No Tasks Marked as Ready
 
 **Symptoms:**
+
 - Clicked "Start Execution"
 - Status is "In Progress"
 - But no tasks show as "Ready"
 - Nothing happens
 
 **Causes:**
+
 - All nodes have dependencies (no starting point)
 - Graph structure issue
 - Status calculation error
@@ -117,12 +134,14 @@ Build something cool
 **Solutions:**
 
 **Use Sync feature:**
+
 1. Composite task details page
 2. Click "Sync Composite Task"
 3. System recalculates node statuses
 4. Initial nodes should become ready
 
 **Check task graph visualization:**
+
 - Are there nodes without dependencies?
 - These should be ready first
 - If all nodes have dependencies, graph is invalid
@@ -130,6 +149,7 @@ Build something cool
 ### Tasks Not Becoming Ready
 
 **Symptoms:**
+
 - Some tasks completed
 - But dependent tasks not marked as ready
 - Tasks stuck in "Pending" or "Blocked"
@@ -137,18 +157,21 @@ Build something cool
 **Solutions:**
 
 **Sync composite task:**
+
 1. Go to composite task details
 2. Click "Sync Composite Task"
 3. System checks dependencies
 4. Updates node readiness
 
 **What Sync does:**
+
 - Checks all task PRs in GitHub
 - Updates merge statuses
 - Recalculates dependencies
 - Marks ready nodes
 
 **Check dependency completion:**
+
 - All dependencies must be "Completed"
 - If any dependency "Failed", node is "Blocked"
 - Review failed dependencies
@@ -156,6 +179,7 @@ Build something cool
 ### Cannot Approve Task
 
 **Symptoms:**
+
 - Task shows as "Ready"
 - Approve button doesn't work
 - Error when trying to approve
@@ -163,18 +187,22 @@ Build something cool
 **Solutions:**
 
 **Check task status is "Ready":**
+
 - Only ready tasks can be approved
 - Pending/blocked tasks cannot be approved
 
 **Verify you own the composite task:**
+
 - Only the user who created it can approve nodes
 - Check you're logged in correctly
 
 **Refresh the page:**
+
 - Status may have changed
 - Reload to get latest state
 
 **Sync composite task:**
+
 - Updates all task statuses
 - Resolves state inconsistencies
 
@@ -183,6 +211,7 @@ Build something cool
 ### Auto-Approval Not Working
 
 **Symptoms:**
+
 - Auto-approval enabled
 - Tasks become ready
 - But not automatically approved/executed
@@ -190,17 +219,20 @@ Build something cool
 **Solutions:**
 
 **Verify auto-approval is enabled:**
+
 1. Go to composite task details
 2. Check "Auto-Approval" toggle is ON
 3. Re-enable if needed
 
 **Sync to trigger auto-approval:**
+
 1. Click "Sync Composite Task"
 2. System detects ready tasks
 3. Auto-approves if enabled
 4. Spawns unit tasks
 
 **Check for errors:**
+
 - Review composite task logs
 - Look for auto-approval failures
 - Verify repository connection
@@ -208,12 +240,14 @@ Build something cool
 ### Want to Disable Auto-Approval
 
 **How to disable mid-execution:**
+
 1. Go to composite task details
 2. Toggle "Auto-Approval" to OFF
 3. Future ready tasks won't auto-execute
 4. Currently running tasks continue
 
 **Note:**
+
 - Already approved tasks continue running
 - Only affects tasks that haven't been approved yet
 
@@ -222,11 +256,13 @@ Build something cool
 ### Cannot Edit Task Prompt
 
 **Symptoms:**
+
 - Want to modify task prompt
 - Edit button disabled or missing
 - Changes don't save
 
 **Possible Causes:**
+
 - Task is in wrong status for editing
 - Don't have permission
 - Task already executing
@@ -234,15 +270,18 @@ Build something cool
 **Solutions:**
 
 **Check task status:**
+
 - Can edit: `pending`, `ready`, `blocked`
 - Cannot edit: `approved`, `in_progress`, `completed`, `failed`
 
 **For approved tasks:**
+
 - Cannot edit (already executing)
 - Cancel spawned unit task if needed
 - Retry the node after failure
 
 **For completed/failed tasks:**
+
 - Cannot edit completed work
 - Can retry failed tasks
 - Retry creates new unit task
@@ -250,6 +289,7 @@ Build something cool
 ### Retry Not Working
 
 **Symptoms:**
+
 - Click "Retry" on failed task
 - Nothing happens
 - Task remains failed
@@ -257,15 +297,18 @@ Build something cool
 **Solutions:**
 
 **Check if task is actually failed:**
+
 - Status must be "Failed" or "Approved"
 - Can only retry these statuses
 
 **Verify associated unit task:**
+
 - Failed nodes have spawned tasks
 - Check unit task status
 - May need to delete unit task first
 
 **Sync before retry:**
+
 1. Sync composite task
 2. Verifies current state
 3. Then retry the node
@@ -273,12 +316,14 @@ Build something cool
 ### Node Stuck in "Approved" Status
 
 **Symptoms:**
+
 - Approved a task
 - Status is "Approved"
 - But no unit task spawned
 - Stays approved indefinitely
 
 **Causes:**
+
 - Unit task creation failed
 - System error during spawn
 - Connection issue
@@ -286,16 +331,19 @@ Build something cool
 **Solutions:**
 
 **Retry the node:**
+
 1. Click retry on the approved node
 2. Creates new unit task
 3. Monitors execution
 
 **Check error logs:**
+
 - Look for task spawn errors
 - Verify repository connection
 - Check workflow execution permissions
 
 **Sync composite task:**
+
 - May resolve status issues
 - Updates task relationships
 
@@ -304,29 +352,34 @@ Build something cool
 ### Tasks Don't Build on Previous Work
 
 **Symptoms:**
+
 - Later tasks don't reference earlier PRs
 - Work is duplicated
 - Missing context from dependencies
 
 **Cause:**
+
 - System should automatically include PR references
 - May be a timing issue
 
 **Solutions:**
 
 **Ensure dependencies are completed:**
+
 - Wait for dependency PRs to merge
 - System includes PR numbers in prompts
 - Later tasks reference completed work
 
 **Manual context in prompt edit:**
 When approving a task, edit prompt to add:
+
 ```
 Reference the work completed in PR #123 and PR #456.
 Build upon the authentication system from those PRs.
 ```
 
 **Check dependency PRs are merged:**
+
 - Dependencies should complete before children
 - Merged PRs provide context
 - Open PRs may not provide enough context
@@ -334,6 +387,7 @@ Build upon the authentication system from those PRs.
 ### AI Misunderstands Task Context
 
 **Symptoms:**
+
 - Generated code doesn't align with plan
 - Task seems unrelated to project
 - Wrong approach taken
@@ -341,6 +395,7 @@ Build upon the authentication system from those PRs.
 **Solutions:**
 
 **Edit prompt before approval:**
+
 1. When task becomes ready
 2. Click "Edit Prompt"
 3. Add specific context:
@@ -351,21 +406,24 @@ Build upon the authentication system from those PRs.
    ```
 
 **Provide file references:**
+
 ```
 Update @src/services/auth.ts to use the new
 JWT tokens from the authentication task.
 ```
 
 **Request changes via review:**
+
 - After PR is created
 - Leave specific guidance
-- AutoDev will update
+- DevBird will update
 
 ## Dependency and Blocking Issues
 
 ### Task Blocked by Failed Dependency
 
 **Symptoms:**
+
 - Task shows "Blocked" status
 - Dependency task failed
 - Cannot proceed
@@ -373,12 +431,14 @@ JWT tokens from the authentication task.
 **Solutions:**
 
 **Fix the failed dependency:**
+
 1. Navigate to failed dependency task
 2. Review what went wrong
 3. Retry the failed task
 4. Once it completes, blocked task becomes ready
 
 **Or modify the graph:**
+
 - Delete the blocked task (if not needed)
 - Create new unit task as workaround
 - Manually complete the work
@@ -386,15 +446,18 @@ JWT tokens from the authentication task.
 ### Circular Dependency Detected
 
 **Symptoms:**
+
 - Some tasks never become ready
 - Mutual dependencies
 - Graph seems stuck
 
 **This shouldn't happen:**
+
 - Planning should prevent this
 - DAG validation should catch it
 
 **If it does occur:**
+
 1. Report to support with task details
 2. Delete composite task
 3. Create new task with clearer prompt
@@ -405,6 +468,7 @@ JWT tokens from the authentication task.
 ### Sync Operation Fails
 
 **Symptoms:**
+
 - Click "Sync Composite Task"
 - Error message appears
 - No updates occur
@@ -412,16 +476,19 @@ JWT tokens from the authentication task.
 **Solutions:**
 
 **Check repository connection:**
+
 1. Verify repository is connected
 2. Check GitHub App is installed
 3. Reconnect if needed
 
 **Try again:**
+
 - Temporary GitHub API issues
 - Wait a few minutes
 - Retry sync operation
 
 **Check permissions:**
+
 - Must have repository access
 - GitHub App needs permissions
 - Verify in repository settings
@@ -429,6 +496,7 @@ JWT tokens from the authentication task.
 ### Sync Shows Wrong Results
 
 **Symptoms:**
+
 - Sync completes
 - But task statuses still wrong
 - PRs not reflecting correctly
@@ -436,16 +504,19 @@ JWT tokens from the authentication task.
 **What to check:**
 
 **PR merge status in GitHub:**
+
 1. Go to GitHub repository
 2. Check actual PR status
-3. Compare with AutoDev display
+3. Compare with DevBird display
 
 **Wait for GitHub API:**
+
 - GitHub webhooks may be delayed
 - Wait 1-2 minutes
 - Retry sync
 
 **Force refresh:**
+
 1. Sync composite task
 2. Refresh browser page
 3. Check updated statuses
@@ -455,11 +526,13 @@ JWT tokens from the authentication task.
 ### Composite Task Very Slow
 
 **Symptoms:**
+
 - Taking days to complete
 - Many tasks waiting
 - Progress is slow
 
 **Causes:**
+
 1. Sequential dependencies
 2. Waiting for approvals
 3. Long-running unit tasks
@@ -467,16 +540,19 @@ JWT tokens from the authentication task.
 **Solutions:**
 
 **Enable auto-approval:**
+
 - Eliminates approval delays
 - Tasks execute immediately when ready
 - Faster overall completion
 
 **Review task graph structure:**
+
 - Too many sequential dependencies?
 - Could some tasks be parallel?
 - May need better planning
 
 **For future tasks:**
+
 - Provide better context in prompt
 - AI will optimize parallelization
 - Reduce sequential dependencies
@@ -484,22 +560,26 @@ JWT tokens from the authentication task.
 ### Too Many Nodes
 
 **Symptoms:**
+
 - Composite task created 50+ nodes
 - Overwhelming to manage
 - Many small tasks
 
 **Cause:**
+
 - AI over-decomposed the project
 - Prompt was too broad
 
 **Solutions:**
 
 **For current task:**
+
 - Enable auto-approval to reduce management
 - Let it run automatically
 - Monitor progress
 
 **For future tasks:**
+
 - Be more specific about scope
 - Request specific number of major steps
 - Example: "Break this into 5-8 major tasks"
@@ -509,6 +589,7 @@ JWT tokens from the authentication task.
 ### Cannot Delete Composite Task
 
 **Symptoms:**
+
 - Delete button disabled
 - Error when trying to delete
 - Task remains
@@ -516,33 +597,39 @@ JWT tokens from the authentication task.
 **Solutions:**
 
 **Check for running tasks:**
+
 - Running unit tasks prevent deletion
 - Wait for completion
 - Or cancel unit tasks first
 
 **Force delete process:**
+
 1. Delete composite task
 2. System cancels incomplete unit tasks
 3. Blocks all pending nodes
 4. Removes composite task
 
 **Verify permissions:**
+
 - Only creator can delete
 - Check correct user is logged in
 
 ### Partial Deletion Issues
 
 **Symptoms:**
+
 - Composite task deleted
 - But some unit tasks remain
 - PRs still open
 
 **This is expected:**
+
 - Unit tasks are preserved for history
 - PRs remain open (you can close manually)
 - Task graph is removed
 
 **To clean up:**
+
 1. Close remaining PRs on GitHub
 2. Review unit task history if needed
 3. Unit tasks show as "Cancelled"
@@ -552,6 +639,7 @@ JWT tokens from the authentication task.
 ### Status Shows Incorrect Progress
 
 **Symptoms:**
+
 - Progress shows "3/10 completed"
 - But more tasks actually done
 - Counts don't match
@@ -559,11 +647,13 @@ JWT tokens from the authentication task.
 **Solutions:**
 
 **Sync composite task:**
+
 - Recalculates progress
 - Updates node counts
 - Fixes display
 
 **What affects count:**
+
 - Only "Completed" nodes count
 - Failed nodes don't count as complete
 - In-progress nodes don't count yet
@@ -571,6 +661,7 @@ JWT tokens from the authentication task.
 ### Task Graph Visualization Not Loading
 
 **Symptoms:**
+
 - Graph diagram doesn't appear
 - Shows loading spinner forever
 - Blank visualization area
@@ -578,15 +669,18 @@ JWT tokens from the authentication task.
 **Solutions:**
 
 **Refresh the page:**
+
 - Browser cache issue
 - Hard refresh (Ctrl+Shift+R)
 
 **Check browser console:**
+
 - Open dev tools (F12)
 - Look for JavaScript errors
 - Report if errors found
 
 **Try different browser:**
+
 - Temporary browser issue
 - Test in Chrome/Firefox/Safari
 
@@ -595,6 +689,7 @@ JWT tokens from the authentication task.
 ### Writing Better Prompts
 
 **Include project structure:**
+
 ```
 Build a blogging platform with:
 1. Backend API (Node.js + Express)
@@ -605,12 +700,14 @@ Build a blogging platform with:
 ```
 
 **Specify technical stack:**
+
 ```
 Use TypeScript, follow REST API best practices,
 include unit tests, and set up CI/CD.
 ```
 
 **Define clear boundaries:**
+
 ```
 Only include core CRUD operations.
 Do not include admin panel or analytics.
@@ -620,16 +717,19 @@ Focus on MVP functionality.
 ### Monitoring Progress
 
 **Use auto-approval wisely:**
+
 - Enable for trusted, well-defined tasks
 - Disable for complex/critical work
 - Monitor execution regularly
 
 **Review task graph regularly:**
+
 - Check for blocked nodes
 - Identify failed dependencies
 - Keep tasks moving forward
 
 **Sync periodically:**
+
 - Ensures accurate status
 - Catches missed updates
 - Prevents stuck states
@@ -637,16 +737,19 @@ Focus on MVP functionality.
 ### Managing Complexity
 
 **Start smaller:**
+
 - First composite task: 5-8 nodes
 - Build confidence
 - Scale up gradually
 
 **Break mega-projects:**
+
 - Don't try to build entire app in one task
 - Create multiple composite tasks
 - Each for a major feature/milestone
 
 **Monitor costs:**
+
 - Composite tasks can be expensive
 - Each node = separate workflow execution
 - Plan accordingly
@@ -658,17 +761,20 @@ Focus on MVP functionality.
 When reporting composite task issues:
 
 1. **Composite Task Info:**
+
    - Composite task ID
    - Original prompt
    - Number of nodes in graph
    - Current status
 
 2. **Problematic Nodes:**
+
    - Node IDs having issues
    - Node statuses
    - Dependencies
 
 3. **Spawned Tasks:**
+
    - Unit task IDs
    - Their statuses
    - PR numbers
@@ -687,6 +793,6 @@ When reporting composite task issues:
 
 ## Next Steps
 
-- [Unit Task Troubleshooting](/autodev/troubleshooting/unit-task)
-- [Understanding Composite Tasks](/autodev/tasks/composite)
-- [Task Graph Best Practices](/autodev/tasks/composite#task-graph-best-practices)
+- [Unit Task Troubleshooting](/devbird/troubleshooting/unit-task)
+- [Understanding Composite Tasks](/devbird/tasks/composite)
+- [Task Graph Best Practices](/devbird/tasks/composite#task-graph-best-practices)

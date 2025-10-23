@@ -1,9 +1,9 @@
 ---
 title: Settings
-description: Configure AutoDev behavior for your tenant
+description: Configure DevBird behavior for your tenant
 ---
 
-AutoDev provides several settings to control how it handles tasks, PRs, and reviews. Settings are configured at the tenant level (your team or user account) and apply to all repositories under that tenant.
+DevBird provides several settings to control how it handles tasks, PRs, and reviews. Settings are configured at the tenant level (your team or user account) and apply to all repositories under that tenant.
 
 ## Accessing Settings
 
@@ -18,26 +18,30 @@ AutoDev provides several settings to control how it handles tasks, PRs, and revi
 
 **Default**: Disabled
 
-Controls whether AutoDev automatically triggers workflows when bot accounts submit PR reviews.
+Controls whether DevBird automatically triggers workflows when bot accounts submit PR reviews.
 
 **When enabled:**
+
 - Workflows trigger automatically on bot reviews
 - Uses GitHub App installation tokens
 - Bots don't need to connect the repository
 - All attempts are logged for debugging
 
 **Use cases:**
+
 - AI code review tools (Claude Code, Cursor, GitHub Copilot)
 - AI-powered PR analysis and suggestions
 - Automated code quality assistants
 - AI pair programming tools
 
 **When to enable:**
+
 - You have trusted bot integrations
 - You want fully automated workflows
 - You're using automated code review tools
 
 **When to disable:**
+
 - You want manual control over bot-triggered workflows
 - You're concerned about excessive workflow runs
 - You prefer reviewing bot suggestions first
@@ -46,27 +50,31 @@ Controls whether AutoDev automatically triggers workflows when bot accounts subm
 
 **Default**: Enabled
 
-Controls whether AutoDev posts the full task prompt as a PR comment.
+Controls whether DevBird posts the full task prompt as a PR comment.
 
 **When enabled:**
+
 - Posts complete task prompt to PR comments
 - Provides full context to reviewers
 - Creates comprehensive audit trail
 - Makes task requirements transparent
 
 **When disabled:**
+
 - Only posts task link comment
 - Cleaner PR comment section
 - Reduces comment noise
 - Reviewers access details via link
 
 **Best for enabling:**
+
 - Teams who want inline context
 - Compliance/audit requirements
 - Transparent task tracking
 - Quick reference without clicking links
 
 **Best for disabling:**
+
 - Teams preferring minimal PR comments
 - Projects with many automated tasks
 - When task details are sensitive
@@ -78,27 +86,31 @@ Controls whether AutoDev posts the full task prompt as a PR comment.
 
 This feature is currently disabled globally due to a bug and is under development. The toggle appears disabled in the UI with a warning message.
 
-Controls whether AutoDev automatically converts draft PRs to ready-for-review when CI passes.
+Controls whether DevBird automatically converts draft PRs to ready-for-review when CI passes.
 
 **When enabled (after re-enablement):**
+
 - Automatically marks PR ready when checks pass
 - Signals completion to team
 - Reduces manual workflow steps
 - Enables automated review requests
 
 **When disabled:**
+
 - PRs remain in draft after CI passes
 - Manual conversion required
 - Additional quality control gate
 - Gives time for self-review
 
 **Best for enabling:**
+
 - Fast-moving teams
 - High confidence in CI/CD
 - Automated workflows
 - Trust in AI agent output
 
 **Best for disabling:**
+
 - Teams wanting manual review gates
 - Additional quality assurance needed
 - Learning/training environments
@@ -110,9 +122,10 @@ Controls whether AutoDev automatically converts draft PRs to ready-for-review wh
 
 **Purpose**: Configure default AI agent and model for CompositeTask planning phase
 
-These settings control which AI agent and model are used when AutoDev generates task graphs for composite tasks.
+These settings control which AI agent and model are used when DevBird generates task graphs for composite tasks.
 
 **Planning Agent Options:**
+
 - `claude_code` - Claude Code agent (recommended)
 - `opencode` - OpenCode agent
 - `crush_cli` - Crush CLI agent
@@ -121,17 +134,21 @@ These settings control which AI agent and model are used when AutoDev generates 
 - `github_copilot_cli` - GitHub Copilot CLI agent
 
 **Planning Model Options:**
+
 - Varies by agent (e.g., `sonnet`, `opus`, `haiku` for Claude Code)
 
 **When set:**
+
 - New composite tasks use these defaults for AI planning
 - Generates task breakdown and dependency graph
 - Creates execution plan
 
 **When not set:**
+
 - System defaults are used
 
 **Use cases:**
+
 - Choose more powerful models for complex project planning
 - Select faster/cheaper models for simple decomposition
 - Match agent capabilities to your planning needs
@@ -141,6 +158,7 @@ These settings control which AI agent and model are used when AutoDev generates 
 **Purpose**: Configure default AI agent and model for task execution
 
 These settings control which AI agent and model are used when:
+
 - Creating and executing unit tasks
 - Executing individual nodes in composite task graphs
 
@@ -151,14 +169,17 @@ Same as planning agent options above.
 Varies by agent.
 
 **When set:**
+
 - Unit tasks use these defaults
 - Composite task nodes use these defaults
 - Actual code writing and PR creation uses these
 
 **When not set:**
+
 - System defaults are used
 
 **Use cases:**
+
 - Different agent for planning vs. execution (e.g., powerful planner, fast executor)
 - Balance cost and quality across workflow phases
 - Optimize for execution speed or quality
@@ -170,17 +191,20 @@ Varies by agent.
 Controls whether newly created composite tasks have auto-approval enabled by default.
 
 **When enabled:**
+
 - New composite tasks are created with auto-approval turned on
-- After planning completes,     ecution starts automatically
+- After planning completes, ecution starts automatically
 - Ready nodes are automatically approved without manual review
 - Full workflow automation from creation to completion
 
 **When disabled:**
+
 - New composite tasks require manual execution start
 - Each ready node requires manual approval
 - More control over task progression
 
 **What happens with auto-approval:**
+
 1. You create a composite task
 2. AI planning completes automatically
 3. **Execution starts automatically** (no "Start Execution" click needed)
@@ -190,16 +214,18 @@ Controls whether newly created composite tasks have auto-approval enabled by def
 **Note**: This setting only affects NEW composite tasks at creation time. You can still manually toggle auto-approval on individual composite tasks after they're created.
 
 **Best for enabling:**
+
 - Trusted workflows
 - Repetitive tasks
 - High confidence in AI planning
 - Want hands-off automation
 
 **Best for disabling:**
+
 - Want to review plans before execution
 - Need to modify prompts before running
 - Careful control over task progression
-- Learning/evaluating AutoDev
+- Learning/evaluating DevBird
 
 ## Configuration Tips
 
@@ -238,6 +264,7 @@ Provides maximum control and review opportunities at each step.
 ### Settings not saving
 
 **Check:**
+
 1. Verify you have tenant admin permissions
 2. Refresh the page and try again
 3. Check browser console for errors
@@ -246,6 +273,7 @@ Provides maximum control and review opportunities at each step.
 ### Settings not taking effect
 
 **Verify:**
+
 1. Settings page shows your changes
 2. Wait a few minutes for propagation
 3. Test with a new task/PR (not existing ones)
@@ -254,18 +282,20 @@ Provides maximum control and review opportunities at each step.
 ### Bot reviews not triggering workflows
 
 **When "Auto-apply Bot Reviews" is enabled:**
+
 1. Verify bot account exists in your organization
 2. Check GitHub webhook deliveries for errors
 3. Ensure bot has correct permissions
 4. Review workflow logs for failures
 
 **When disabled:**
+
 - This is expected behavior
 - Enable the setting if you want automation
 
 ## Next Steps
 
-- [Create your first task](/autodev/tasks)
-- [Configure AI agents](/autodev/ai-agents/claude-code)
-- [Review PRs efficiently](/autodev/reviewing-prs)
-- [Troubleshoot common issues](/autodev/troubleshooting/unit-task)
+- [Create your first task](/devbird/tasks)
+- [Configure AI agents](/devbird/ai-agents/claude-code)
+- [Review PRs efficiently](/devbird/reviewing-prs)
+- [Troubleshoot common issues](/devbird/troubleshooting/unit-task)

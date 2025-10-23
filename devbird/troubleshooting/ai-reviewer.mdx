@@ -1,32 +1,36 @@
 ---
 title: "AI Reviewer Troubleshooting"
-description: "Troubleshoot bot reviews and auto-apply issues in AutoDev"
+description: "Troubleshoot bot reviews and auto-apply issues in DevBird"
 ---
 
 <Warning>
-This document is still under review. The content may be inaccurate or outdated.
+  This document is still under review. The content may be inaccurate or
+  outdated.
 </Warning>
 
 ## Bot Reviews Not Triggering Workflows
 
 **Symptoms:**
+
 - Bot submits review
 - No workflow triggered
 - PR not updated
 
 **Common Cause:**
 
-Auto-apply bot reviews may be disabled. See [troubleshooting bot reviews](/autodev/settings#bot-reviews-not-triggering-workflows) in the settings documentation for complete troubleshooting steps.
+Auto-apply bot reviews may be disabled. See [troubleshooting bot reviews](/devbird/settings#bot-reviews-not-triggering-workflows) in the settings documentation for complete troubleshooting steps.
 
 **Quick Solutions:**
 
 **Check bot account type:**
+
 1. Go to bot's GitHub profile
 2. Verify it shows "Bot" badge
 3. Check via API: `https://api.github.com/users/{bot-username}`
 4. Look for `"type": "Bot"` in response
 
 **Manual trigger alternative:**
+
 - Use "Update PR" feature
 - Manually apply bot feedback
 - Trigger workflow explicitly
@@ -34,12 +38,14 @@ Auto-apply bot reviews may be disabled. See [troubleshooting bot reviews](/autod
 ## Too Many Bot Workflows
 
 **Symptoms:**
+
 - Bots triggering too many workflows
 - High costs
 - Excessive automation
 - Workflow queue backlog
 
 **Causes:**
+
 - Multiple bots reviewing same PR
 - Bots reviewing too frequently
 - Auto-apply enabled with many bots
@@ -48,23 +54,27 @@ Auto-apply bot reviews may be disabled. See [troubleshooting bot reviews](/autod
 **Solutions:**
 
 **Disable auto-apply:**
+
 - Temporarily turn off the feature
 - Manually review bot feedback
 - Selectively apply changes
 
 **Configure bots to review less:**
+
 - Adjust bot settings in repository
 - Reduce review frequency
 - Filter what bots review
 - Limit bot triggers
 
 **Monitor usage:**
+
 - Check costs
 - Review workflow execution history
 - Identify which bots trigger most workflows
 - Adjust bot configuration accordingly
 
 **Cost optimization:**
+
 ```
 Each bot review = 1 workflow execution
 1 execution = $0.03
@@ -74,12 +84,14 @@ Multiple bots × frequent reviews = high costs
 ## Bot Feedback Not Applied Correctly
 
 **Symptoms:**
+
 - Workflow runs but doesn't fix issues
 - Bot re-reviews with same feedback
 - Changes don't match bot requests
 - AI misunderstands bot comments
 
 **Causes:**
+
 - Bot feedback unclear for AI
 - Complex fixes beyond AI capability
 - Conflicting feedback from multiple bots
@@ -88,24 +100,28 @@ Multiple bots × frequent reviews = high costs
 **Solutions:**
 
 **Review workflow logs:**
+
 1. Check what AI agent attempted
 2. See if it understood bot feedback
 3. Identify where it failed
 4. Look for error messages
 
 **Manual intervention:**
+
 1. Disable auto-apply temporarily
 2. Manually fix based on bot feedback
 3. Push updates to PR
 4. Re-enable auto-apply after resolution
 
 **Improve bot feedback:**
+
 - Configure bots to give specific guidance
 - Use structured feedback formats
 - Limit scope of bot reviews
 - Ensure bots provide file paths and line numbers
 
 **Example of good bot feedback:**
+
 ```
 In src/utils/auth.js:45, change:
   if (user == null)
@@ -116,6 +132,7 @@ Use strict equality for null checks.
 ```
 
 **Example of poor bot feedback:**
+
 ```
 Fix the equality checks
 ```
@@ -123,12 +140,14 @@ Fix the equality checks
 ## Bots Not Detected
 
 **Symptoms:**
+
 - Bot has "Bot" badge on GitHub
 - Auto-apply enabled
 - Reviews still don't trigger workflows
 - Bot appears to be ignored
 
 **Causes:**
+
 - Bot account not properly configured
 - GitHub API inconsistency
 - Webhook not receiving bot reviews
@@ -137,24 +156,28 @@ Fix the equality checks
 **Solutions:**
 
 **Verify bot configuration:**
+
 1. Check bot is properly installed on repository
 2. Verify bot has review permissions
 3. Confirm bot is active
 
 **Test with manual trigger:**
+
 1. Have bot submit review
 2. Manually use "Update PR" feature
 3. Paste bot feedback
 4. See if AI can handle it
 
 **Check webhook logs:**
+
 1. Repository settings → Webhooks
-2. Find AutoDev webhook
+2. Find DevBird webhook
 3. Check for bot review events
 4. Verify event payload contains bot info
 
 **Alternative solution:**
-- Contact AutoDev support
+
+- Contact DevBird support
 - Provide bot account details
 - Share webhook logs
 - Request investigation
@@ -162,12 +185,14 @@ Fix the equality checks
 ## Conflicting Bot Reviews
 
 **Symptoms:**
+
 - Multiple bots review same PR
 - Give conflicting feedback
 - AI applies one fix, breaks another
 - Endless update loop
 
 **Causes:**
+
 - Bots have different standards
 - One bot's fix triggers another bot's review
 - Circular dependencies in bot rules
@@ -176,18 +201,21 @@ Fix the equality checks
 **Solutions:**
 
 **Disable auto-apply for conflicting bots:**
+
 1. Turn off auto-apply temporarily
 2. Manually reconcile bot feedback
 3. Apply fixes that satisfy all bots
 4. Re-enable auto-apply
 
 **Configure bots to align:**
+
 1. Review bot configuration files
 2. Ensure linting rules are compatible
 3. Disable overlapping checks
 4. Use single bot for similar checks
 
 **Manual reconciliation:**
+
 1. Collect all bot feedback
 2. Identify conflicts
 3. Determine correct approach
@@ -195,6 +223,7 @@ Fix the equality checks
 5. Test with all bots
 
 **Example:**
+
 ```
 ESLint: Use single quotes
 Prettier: Use double quotes
@@ -205,12 +234,14 @@ Solution: Configure both to use same quote style
 ## Bot Review Permissions
 
 **Symptoms:**
+
 - Bot cannot submit reviews
 - Bot comments appear but not as reviews
 - Auto-apply doesn't recognize bot feedback
 - Bot shows access errors
 
 **Causes:**
+
 - Bot lacks review permissions
 - Bot not invited to repository
 - Bot installation incomplete
@@ -219,18 +250,21 @@ Solution: Configure both to use same quote style
 **Solutions:**
 
 **Grant bot review permissions:**
+
 1. Repository settings → Collaborators
 2. Add bot account if missing
 3. Grant "Write" permission minimum
 4. Ensure bot can access repository
 
 **For GitHub App bots:**
+
 1. Check app installation
 2. Verify repository is included
 3. Review app permissions
 4. Reinstall app if needed
 
 **Check bot configuration:**
+
 1. Review bot's settings
 2. Verify repository is enabled
 3. Check bot is active
@@ -239,12 +273,14 @@ Solution: Configure both to use same quote style
 ## Webhook Not Receiving Bot Events
 
 **Symptoms:**
+
 - Manual reviews trigger workflows
 - Bot reviews don't
 - Webhook logs show user reviews but not bot reviews
-- Bot reviews invisible to AutoDev
+- Bot reviews invisible to DevBird
 
 **Causes:**
+
 - Webhook event filters
 - GitHub webhook configuration
 - Bot reviews sent differently
@@ -253,58 +289,67 @@ Solution: Configure both to use same quote style
 **Solutions:**
 
 **Check webhook event subscriptions:**
+
 1. Repository settings → Webhooks
-2. Click AutoDev webhook
+2. Click DevBird webhook
 3. Verify "Pull request reviews" is checked
 4. Save webhook configuration
 
 **Test webhook delivery:**
+
 1. Have bot submit review
 2. Check webhook Recent Deliveries
 3. Look for review event
 4. Check event payload
 
 **Verify event format:**
+
 1. Review webhook payload
 2. Ensure contains reviewer info
 3. Check reviewer type field
 4. Verify action is "submitted"
 
 **Re-register webhook:**
-1. Remove AutoDev webhook
-2. Reinstall AutoDev GitHub App
+
+1. Remove DevBird webhook
+2. Reinstall DevBird GitHub App
 3. Webhook will be recreated
 4. Test with bot review
 
 ## Rate Limiting Issues
 
 **Symptoms:**
+
 - First bot review works
 - Subsequent reviews don't trigger workflows
 - Error messages about rate limits
 - Workflows rejected
 
 **Causes:**
+
 - GitHub API rate limiting
-- AutoDev usage limits
+- DevBird usage limits
 - Too many workflow triggers
 - Excessive bot activity
 
 **Solutions:**
 
 **GitHub API limits:**
+
 - Wait for rate limit reset (usually 1 hour)
 - Reduce bot review frequency
 - Stagger bot reviews
 - Contact GitHub for higher limits
 
-**AutoDev usage limits:**
+**DevBird usage limits:**
+
 - Check usage
 - Upgrade plan if needed
 - Optimize bot usage
 - Disable less important bots
 
 **Reduce bot activity:**
+
 ```
 Current: 10 bots × 5 reviews/day = 50 workflows
 Optimized: 3 bots × 2 reviews/day = 6 workflows
@@ -312,10 +357,10 @@ Optimized: 3 bots × 2 reviews/day = 6 workflows
 
 ## Best Practices
 
-For best practices on configuring bot reviews, monitoring costs, and regular auditing, see the [Auto-apply Bot Reviews configuration tips](/autodev/settings#configuration-tips) in the settings documentation.
+For best practices on configuring bot reviews, monitoring costs, and regular auditing, see the [Auto-apply Bot Reviews configuration tips](/devbird/settings#configuration-tips) in the settings documentation.
 
 ## Next Steps
 
-- [AI Reviewer Configuration](/autodev/reviewing-prs/ai-reviewer)
-- [PR Review Process](/autodev/reviewing-prs)
-- [Unit Task Troubleshooting](/autodev/troubleshooting/unit-task)
+- [AI Reviewer Configuration](/devbird/reviewing-prs/ai-reviewer)
+- [PR Review Process](/devbird/reviewing-prs)
+- [Unit Task Troubleshooting](/devbird/troubleshooting/unit-task)

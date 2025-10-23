@@ -4,21 +4,24 @@ description: "Common issues with unit tasks and how to resolve them"
 ---
 
 <Warning>
-This document is still under review. The content may be inaccurate or outdated.
+  This document is still under review. The content may be inaccurate or
+  outdated.
 </Warning>
 
-This guide helps you troubleshoot common issues with unit tasks in AutoDev.
+This guide helps you troubleshoot common issues with unit tasks in DevBird.
 
 ## Task Creation Issues
 
 ### Task Not Starting
 
 **Symptoms:**
+
 - Task stuck in "Pending" status
 - No workflow execution visible in GitHub Actions
 - Task created but nothing happens
 
 **Possible Causes:**
+
 1. Workflow file missing or incorrect
 2. GitHub Actions disabled
 3. Repository not properly connected
@@ -27,25 +30,29 @@ This guide helps you troubleshoot common issues with unit tasks in AutoDev.
 **Solutions:**
 
 **Check workflow file exists:**
+
 ```bash
 # Verify file exists
-ls .github/workflows/autodev.yml
+ls .github/workflows/devbird.yml
 
 # Check file is on default branch
 git branch --show-current
 ```
 
 **Verify GitHub Actions is enabled:**
+
 1. Go to repository Settings
 2. Navigate to Actions → General
 3. Ensure "Allow all actions and reusable workflows" is selected
 
 **Reconnect repository:**
-1. AutoDev → Repositories
+
+1. DevBird → Repositories
 2. Find your repository
 3. Click "Disconnect" then "Reconnect"
 
 **Manually retry:**
+
 1. Go to task details page
 2. Click "Retry Task" button
 3. Check workflow execution logs
@@ -53,11 +60,13 @@ git branch --show-current
 ### Invalid Configuration Error
 
 **Symptoms:**
+
 - Task fails immediately
 - Error: "Invalid agent configuration"
 - Workflow execution shows configuration error
 
 **Possible Causes:**
+
 1. AI agent API key not set
 2. Invalid agent type specified
 3. Model type not supported
@@ -65,15 +74,18 @@ git branch --show-current
 **Solutions:**
 
 **Verify API key:**
+
 1. Repository Settings → Secrets → Actions
 2. Check required secret exists (e.g., `ANTHROPIC_API_KEY`)
 3. Regenerate key if needed
 
 **Check agent configuration:**
-- Agent type must be one of the [supported AI agents](/autodev/getting-started/ai-agent)
+
+- Agent type must be one of the [supported AI agents](/devbird/getting-started/ai-agent)
 - Model type must match agent's supported models
 
 **Use default settings:**
+
 - Leave agent/model fields empty to use team defaults
 - Verify team defaults in Settings page
 
@@ -82,6 +94,7 @@ git branch --show-current
 ### Workflow Fails to Trigger
 
 **Symptoms:**
+
 - Task status changes to "In Progress" but no GitHub Actions run
 - No workflow run visible in Actions tab
 - Task eventually times out
@@ -89,6 +102,7 @@ git branch --show-current
 **Solutions:**
 
 **Check workflow permissions:**
+
 ```yaml
 permissions:
   id-token: write
@@ -98,21 +112,24 @@ permissions:
 ```
 
 **Verify workflow dispatch event:**
+
 ```yaml
 on:
-  workflow_dispatch:  # Must be present
+  workflow_dispatch: # Must be present
     inputs:
-      autodev_task_token:
+      devbird_task_token:
         required: true
 ```
 
 **Check GitHub API status:**
+
 - Visit [githubstatus.com](https://www.githubstatus.com)
 - Look for API or Actions outages
 
 ### Workflow Hangs or Timeouts
 
 **Symptoms:**
+
 - Workflow runs for extended period
 - Eventually times out (2+ hours)
 - No progress updates
@@ -120,18 +137,21 @@ on:
 **Solutions:**
 
 **Add timeout to workflow:**
+
 ```yaml
 jobs:
-  autodev:
+  devbird:
     runs-on: ubuntu-latest
-    timeout-minutes: 60  # 1 hour max
+    timeout-minutes: 60 # 1 hour max
 ```
 
 **Check runner availability:**
+
 - If using self-hosted runners, verify they're online
 - Switch to GitHub-hosted runners temporarily
 
 **Simplify the task:**
+
 - Break large task into smaller pieces
 - Reduce scope of changes requested
 - Be more specific in prompt
@@ -139,6 +159,7 @@ jobs:
 ### Authentication Errors
 
 **Symptoms:**
+
 - Error: "Authentication failed"
 - Error: "Invalid task token"
 - Workflow fails at authentication step
@@ -146,20 +167,23 @@ jobs:
 **Solutions:**
 
 **Verify OIDC is configured:**
+
 ```yaml
 permissions:
-  id-token: write  # Required for OIDC
+  id-token: write # Required for OIDC
 ```
 
 **Check task token is passed:**
+
 ```yaml
-- uses: delino-io/autodev-action@v1
+- uses: delino-io/devbird-action@v1
   with:
-    task_token: ${{ inputs.autodev_task_token }}  # Must be present
+    task_token: ${{ inputs.devbird_task_token }} # Must be present
 ```
 
 **Repository must be connected:**
-1. Verify repository appears in AutoDev
+
+1. Verify repository appears in DevBird
 2. Status should be "Connected"
 3. Reconnect if needed
 
@@ -168,11 +192,13 @@ permissions:
 ### No PRs Created
 
 **Symptoms:**
+
 - Task completes successfully
 - Status changes to "Completed"
 - But no pull requests appear
 
 **Possible Causes:**
+
 1. AI determined no changes were needed
 2. Changes were made but no branches registered
 3. PR creation failed silently
@@ -180,26 +206,30 @@ permissions:
 **Solutions:**
 
 **Check workflow logs:**
+
 1. Go to GitHub Actions
 2. Find the workflow run
 3. Look for "Creating pull request" steps
 4. Check for any errors
 
 **Verify task prompt was clear:**
+
 - Was the request specific enough?
 - Did you specify what to create/change?
 - Try rephrasing and creating new task
 
 **Check branch was created:**
+
 ```bash
 # List all branches
 git branch -a
 
-# Look for autodev-* branches
-git branch -a | grep autodev
+# Look for devbird-* branches
+git branch -a | grep devbird
 ```
 
 **Task may have legitimately completed without changes:**
+
 - AI analyzed request
 - Determined changes weren't needed
 - This is normal behavior for some prompts
@@ -207,24 +237,28 @@ git branch -a | grep autodev
 ### PR Created on Wrong Branch
 
 **Symptoms:**
+
 - PR targets wrong base branch
 - Changes based on wrong branch
 
 **Solutions:**
 
 **Specify base branch when creating task:**
+
 1. In task creation form
 2. Expand "Advanced Settings"
 3. Set "Base Branch" to desired branch (e.g., "develop")
 
 **Update workflow default:**
+
 ```yaml
 base_branch:
   required: false
-  default: 'develop'  # Change from 'main'
+  default: "develop" # Change from 'main'
 ```
 
 **For existing PR:**
+
 - You can change the base branch on GitHub
 - Go to PR → Click "Edit" near title
 - Change base branch in dropdown
@@ -232,21 +266,25 @@ base_branch:
 ### Multiple Unwanted PRs
 
 **Symptoms:**
+
 - Task creates too many PRs
 - PRs are fragmented
 - Changes should be in one PR
 
 **Cause:**
+
 - AI decided to split changes across multiple PRs
 - This is sometimes intentional for large changes
 
 **Solutions:**
 
 **For future tasks:**
+
 - Add to prompt: "Create all changes in a single PR"
 - Be more specific about scope
 
 **For existing PRs:**
+
 - Manually merge the branches
 - Close extra PRs
 - Keep the main one
@@ -256,23 +294,27 @@ base_branch:
 ### Generated Code Doesn't Compile
 
 **Symptoms:**
+
 - CI checks fail
 - Code has syntax errors
 - Build fails
 
 **Solutions:**
 
-**Let AutoDev auto-fix:**
+**Let DevBird auto-fix:**
+
 - Wait for automatic CI fix workflow
-- AutoDev detects failures and attempts fixes
+- DevBird detects failures and attempts fixes
 - Usually completes in 5-10 minutes
 
 **Provide feedback via review:**
+
 1. Leave review comment on specific lines
 2. Request changes
-3. AutoDev will update the code
+3. DevBird will update the code
 
 **Manual update request:**
+
 1. Go to task details
 2. Click "Update PR"
 3. Provide specific fix instructions
@@ -280,6 +322,7 @@ base_branch:
 ### Code Doesn't Match Requirements
 
 **Symptoms:**
+
 - Code works but doesn't do what you wanted
 - Missing features
 - Wrong approach
@@ -287,17 +330,20 @@ base_branch:
 **Solutions:**
 
 **Review and request changes:**
+
 1. Leave detailed review comments
 2. Explain what's wrong and what you expected
 3. Request changes on GitHub PR
-4. AutoDev will address feedback
+4. DevBird will address feedback
 
 **Update the PR:**
+
 1. Task details → Update PR
 2. Provide additional context
 3. Clarify requirements
 
 **Create new task:**
+
 - If changes are too different
 - Delete current task
 - Create new task with clearer prompt
@@ -305,6 +351,7 @@ base_branch:
 ### Code Style Doesn't Match Project
 
 **Symptoms:**
+
 - Code formatting is different
 - Naming conventions don't match
 - Structure is inconsistent
@@ -312,15 +359,18 @@ base_branch:
 **Solutions:**
 
 **Request style fixes:**
+
 - Leave review comment
 - Reference your style guide
 - Example: "Please follow naming conventions in @CONTRIBUTING.md"
 
 **Set up linters:**
+
 - Add ESLint, Prettier, or other formatters to CI
-- AutoDev will see failures and auto-fix
+- DevBird will see failures and auto-fix
 
 **Improve future prompts:**
+
 ```
 Follow the code style in @src/services/example.ts
 Use the same patterns as existing services
@@ -331,6 +381,7 @@ Use the same patterns as existing services
 ### Task Stuck "In Progress"
 
 **Symptoms:**
+
 - Task has been "In Progress" for hours/days
 - Workflow completed but status didn't update
 - PRs are created but task status unchanged
@@ -338,16 +389,19 @@ Use the same patterns as existing services
 **Solutions:**
 
 **Sync task status:**
+
 1. Go to task details page
 2. Click "Sync Task" (in debug/actions menu)
-3. AutoDev checks PR status and updates task
+3. DevBird checks PR status and updates task
 
 **Check workflow execution:**
+
 - Look at workflow execution history
 - See if workflow actually completed
 - Check for errors in logs
 
 **Manual status check:**
+
 - If all PRs are merged → Task should be "Completed"
 - If PRs are closed without merge → Task should be "Failed"
 - Sync operation will fix this
@@ -355,6 +409,7 @@ Use the same patterns as existing services
 ### Task Status Incorrect
 
 **Symptoms:**
+
 - Task shows "Completed" but PRs still open
 - Task shows "Failed" but PRs are merged
 - Status doesn't reflect reality
@@ -362,12 +417,14 @@ Use the same patterns as existing services
 **Solution:**
 
 **Use Sync Task feature:**
+
 1. Task details page
 2. Sync Task button
 3. Checks GitHub for actual PR status
 4. Updates task status accordingly
 
 **What Sync does:**
+
 - Fetches latest PR data from GitHub
 - Checks merge status
 - Updates CI check status
@@ -376,6 +433,7 @@ Use the same patterns as existing services
 ### Cannot Delete Task
 
 **Symptoms:**
+
 - Delete button doesn't work
 - Error when trying to delete
 - Task remains after delete attempt
@@ -383,28 +441,33 @@ Use the same patterns as existing services
 **Solutions:**
 
 **Check permissions:**
+
 - Only task creator can delete
 - Verify you're logged in as correct user
 
 **Task may be running:**
+
 - Wait for workflow to complete
 - Cancel workflow first, then delete
 
 **Force delete:**
+
 1. Close all PRs manually on GitHub
 2. Wait a few seconds
-3. Retry delete in AutoDev
+3. Retry delete in DevBird
 
 ## Performance Issues
 
 ### Task Takes Too Long
 
 **Symptoms:**
+
 - Task runs for 30+ minutes
 - Much slower than expected
 - Workflow seems stuck
 
 **Possible Causes:**
+
 1. Large codebase
 2. Complex task
 3. Slow AI agent response
@@ -413,16 +476,19 @@ Use the same patterns as existing services
 **Solutions:**
 
 **Break into smaller tasks:**
+
 - Split large request into focused tasks
 - Each task completes faster
 - Better for tracking progress
 
 **Use faster agent/model:**
+
 - Switch to GPT-3.5 or Claude Haiku
 - Faster response times
 - Trade quality for speed
 
 **Optimize workflow:**
+
 - Remove unnecessary setup steps
 - Cache dependencies
 - Use faster runner (self-hosted)
@@ -430,6 +496,7 @@ Use the same patterns as existing services
 ### Rate Limit Errors
 
 **Symptoms:**
+
 - Error: "Rate limit exceeded"
 - Task fails with 429 error
 - API quota exceeded
@@ -437,11 +504,13 @@ Use the same patterns as existing services
 **Solutions:**
 
 **For GitHub API limits:**
+
 - Wait an hour for reset
 - Reduce concurrent tasks
 - Use GitHub App authentication (automatic)
 
 **For AI provider limits:**
+
 - Check provider dashboard for quota
 - Upgrade API plan
 - Wait for rate limit reset
@@ -453,20 +522,22 @@ Use the same patterns as existing services
 
 1. Go to repository on GitHub
 2. Click "Actions" tab
-3. Find "AutoDev" workflow
+3. Find "DevBird" workflow
 4. Click on the specific run
 5. Click on job name to see logs
 
 ### Important Log Sections
 
 **Authentication:**
+
 ```
-Authenticating with AutoDev...
+Authenticating with DevBird...
 ✓ Task token validated
 ✓ OIDC token exchanged
 ```
 
 **Agent Execution:**
+
 ```
 Running Claude Code...
 Analyzing codebase...
@@ -474,28 +545,33 @@ Generating changes...
 ```
 
 **PR Creation:**
+
 ```
 Creating pull request...
-✓ Branch created: autodev-task-123
+✓ Branch created: devbird-task-123
 ✓ PR #456 created
 ```
 
 ### Common Error Messages
 
 **"No ANTHROPIC_API_KEY found"**
+
 - API key not set in repository secrets
 - Add secret and retry task
 
 **"Branch already exists"**
+
 - Previous task created same branch
 - Delete branch on GitHub
 - Retry task
 
 **"Permission denied"**
+
 - Workflow permissions missing
 - Add required permissions to workflow file
 
 **"Task token invalid"**
+
 - Task may have been deleted
 - Try creating new task
 - Check repository is connected
@@ -507,17 +583,20 @@ Creating pull request...
 When requesting support, include:
 
 1. **Task Details:**
+
    - Task ID
    - Repository name
    - Task prompt
    - Agent and model used
 
 2. **Workflow Information:**
+
    - GitHub Actions run URL
    - Workflow logs (relevant sections)
    - Error messages
 
 3. **PR Information:**
+
    - PR numbers created
    - PR status
    - Review comments
@@ -536,6 +615,7 @@ When requesting support, include:
 ## Prevention Tips
 
 ### Write Clear Prompts
+
 ```
 ✓ Good: "Fix null pointer exception in UserService.java line 45
         when email is empty. Add validation and return 400 error."
@@ -544,22 +624,25 @@ When requesting support, include:
 ```
 
 ### Test Incrementally
+
 - Start with simple tasks
 - Verify each task works
 - Build confidence before complex tasks
 
 ### Monitor Costs
+
 - Track workflow execution count
 - Monitor AI provider usage
 - Set up usage alerts
 
 ### Regular Maintenance
+
 - Keep workflow file updated
 - Rotate API keys periodically
 - Review and clean up old tasks
 
 ## Next Steps
 
-- [Composite Task Troubleshooting](/autodev/troubleshooting/composite-task)
-- [PR Review Process](/autodev/reviewing-prs)
-- [AI Agent Configuration](/autodev/getting-started/ai-agent)
+- [Composite Task Troubleshooting](/devbird/troubleshooting/composite-task)
+- [PR Review Process](/devbird/reviewing-prs)
+- [AI Agent Configuration](/devbird/getting-started/ai-agent)

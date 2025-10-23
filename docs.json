@@ -157,7 +157,7 @@
   },
   "redirects": [
     {
-      "source": "/autodev/:path*",
+      "source": "/devbird/:path*",
       "destination": "/devbird/:path*"
     }
   ]
