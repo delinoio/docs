@@ -1,4 +1,49 @@
 ---
-title: "GitHub Webhook"
-description: "Learn how DevBird works with GitHub Webhook"
+title: "Webhook Architecture"
+description: "Learn how DevBird processes webhooks from Git providers"
 ---
+
+## Overview
+
+DevBird uses webhooks to receive real-time notifications from GitHub about events in your repositories. This enables DevBird to automatically respond to pull request reviews, CI status changes, and other repository events.
+
+## GitHub Webhooks
+
+DevBird uses GitHub App webhooks to receive events:
+
+- Uses GitHub App webhooks or repository webhooks
+- Validates webhook signatures using the webhook secret
+- Receives events via the GitHub App installation
+
+## Webhook Events
+
+DevBird listens for the following webhook events:
+
+### Pull Request Events
+
+- **Pull Request Opened**: Triggered when a new PR is created
+  - DevBird posts task context as a comment
+  - Links the PR to the originating task
+- **Pull Request Closed**: Triggered when a PR is merged or closed
+  - Updates task status
+  - Triggers completion notifications if all PRs are merged
+- **Pull Request Synchronized**: Triggered when new commits are pushed
+  - Updates PR status in DevBird
+
+### Review Events
+
+- **Pull Request Review Submitted**: Triggered when a review is posted
+  - DevBird analyzes review comments
+  - Triggers AI agent to address feedback
+  - Creates new commits to address comments
+- **Pull Request Review Comment**: Triggered when inline comments are added
+  - Triggers targeted code fixes for specific comments
+
+### Status Events
+
+- **Check Run Completed**: Triggered when CI checks finish
+  - DevBird monitors for failures
+  - Automatically triggers CI fix workflow for failed checks
+  - Undrafts PR when all checks pass (if auto-undraft is enabled)
+- **Status**: Legacy status API events
+  - Backward compatibility for older CI systems
