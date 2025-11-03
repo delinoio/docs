@@ -153,6 +153,26 @@ git commit -m "Add DevBird workflow"
 git push
 ```
 
+## Understanding workflow execution
+
+<Info>
+**Important: Workflow runs on the main branch**
+
+For security reasons, the DevBird GitHub Action always executes on your repository's default branch (typically `main`). This means:
+
+- The workflow runs from the main branch codebase
+- GitHub Actions logs will show the workflow running on `main`
+- This is by design to prevent security vulnerabilities
+
+The `base_branch` parameter controls which branch DevBird uses as the base when creating new feature branches, but the workflow execution itself always happens on the default branch.
+</Info>
+
+This security design prevents potential issues such as:
+
+- Malicious workflow modifications in feature branches
+- Unauthorized access to repository secrets
+- Tampering with the DevBird workflow configuration
+
 ## Next steps
 
 Once the workflow is set up, you can start using DevBird to automate development tasks. Learn how to trigger your first DevBird task in the [Creating your first PR](/devbird/getting-started/first-pr) guide.
