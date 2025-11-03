@@ -3,9 +3,21 @@ title: "Debugging Composite Tasks"
 description: "Common issues with composite tasks and task graphs"
 ---
 
+## Multiple concurrent PRs
+
+DevBird may create multiple pull requests simultaneously for different tasks. This is expected behavior.
+
+Each PR:
+
+- Represents a separate task or feature
+- Can be reviewed independently
+- Should be merged individually after approval
+
+Simply review and merge each PR based on its own merits, in any order that makes sense for your workflow.
+
 <Warning>
-  This document is still under review. The content may be inaccurate or
-  outdated.
+  The content below this warning is still under review. The content may be
+  inaccurate or outdated.
 </Warning>
 
 This guide helps you troubleshoot common issues with composite tasks and task graph execution in DevBird.
