@@ -1,0 +1,505 @@
+---
+title: "Managing Team Members"
+description: "Learn how to invite, manage roles, and remove team members."
+---
+
+Effective team member management is crucial for collaboration and security. This guide covers inviting members, managing roles, and handling member lifecycle.
+
+## Viewing Team Members
+
+Navigate to your team's members page:
+- **URL Pattern**: `/teams/[team-slug]/members`
+- **Example**: `/teams/engineering/members`
+
+### Member Information
+
+Each team member entry shows:
+
+<ResponseField name="User" type="object">
+  Member profile information
+  - Name
+  - Email address
+  - Avatar (if available)
+</ResponseField>
+
+<ResponseField name="Role" type="enum">
+  Current role assignment
+  - Owner
+  - Admin
+  - Member
+</ResponseField>
+
+<ResponseField name="Joined" type="timestamp">
+  When the member joined the team
+</ResponseField>
+
+<ResponseField name="Actions" type="menu">
+  Available actions based on your role
+  - Change role (Admin/Owner only)
+  - Remove member (Admin/Owner only)
+</ResponseField>
+
+## Inviting Team Members
+
+<Warning>
+Only Owners and Admins can invite new members
+</Warning>
+
+### Invitation Process
+
+<Steps>
+  <Step title="Navigate to Members Page">
+    Go to `/teams/[team-slug]/members`
+  </Step>
+
+  <Step title="Click Invite Button">
+    Click the "Invite Member" button in the top-right
+  </Step>
+
+  <Step title="Enter Details">
+    Fill in the invitation form:
+
+    <ParamField path="email" type="string" required>
+      Email address of the person to invite
+
+      Must be a valid email address
+    </ParamField>
+
+    <ParamField path="role" type="enum" required>
+      Role to assign to the new member
+
+      Options:
+      - Member (default)
+      - Admin
+      - Owner
+    </ParamField>
+  </Step>
+
+  <Step title="Send Invitation">
+    Click "Send Invitation"
+
+    The system will:
+    - Validate the email address
+    - Check for existing membership
+    - Generate a secure invitation token
+    - Send invitation email via Plunk
+  </Step>
+
+  <Step title="Track Status">
+    Monitor invitation status in the Invitations tab
+
+    Statuses:
+    - Pending
+    - Accepted
+    - Expired (after 24 hours)
+    - Cancelled
+  </Step>
+</Steps>
+
+### Invitation Email
+
+Recipients receive an email containing:
+
+```
+Subject: You've been invited to join [Team Name]
+
+[Inviter Name] has invited you to join [Team Name] as a [Role].
+
+[Accept Invitation Button]
+
+This invitation expires in 24 hours.
+```
+
+**Email Contents**:
+- Team name
+- Inviter's name
+- Assigned role
+- Secure invitation link with token
+- Expiration time (24 hours)
+- Delino branding
+
+### Invitation Validation
+
+The system validates several conditions:
+
+<AccordionGroup>
+  <Accordion title="Email Format">
+    Email must be a valid format
+
+    ✅ Valid: `user@example.com`
+    ❌ Invalid: `not-an-email`
+  </Accordion>
+
+  <Accordion title="No Existing Membership">
+    User cannot already be a team member
+
+    If the user is already a member, change their role instead
+  </Accordion>
+
+  <Accordion title="No Pending Invitations">
+    User cannot have a pending invitation
+
+    If an invitation exists, resend it instead
+  </Accordion>
+
+  <Accordion title="Rate Limits">
+    Maximum 50 pending invitations per team
+
+    Cancel or wait for expired invitations to free up slots
+  </Accordion>
+
+  <Accordion title="Permission Check">
+    Only Admins and Owners can send invitations
+
+    Members cannot invite others
+  </Accordion>
+</AccordionGroup>
+
+## Managing Invitations
+
+### Viewing Pending Invitations
+
+Navigate to the Invitations tab on the members page:
+
+<ResponseField name="Email" type="string">
+  Email address of the invited user
+</ResponseField>
+
+<ResponseField name="Role" type="enum">
+  Role that will be assigned when accepted
+</ResponseField>
+
+<ResponseField name="Invited By" type="string">
+  Name of the team member who sent the invitation
+</ResponseField>
+
+<ResponseField name="Sent" type="timestamp">
+  When the invitation was sent
+</ResponseField>
+
+<ResponseField name="Expires" type="timestamp">
+  When the invitation will expire (24 hours from sent time)
+</ResponseField>
+
+<ResponseField name="Status" type="enum">
+  Current invitation status
+  - Pending
+  - Accepted
+  - Expired
+  - Cancelled
+</ResponseField>
+
+### Resending Invitations
+
+If a member didn't receive the invitation email:
+
+1. Navigate to Invitations tab
+2. Find the pending invitation
+3. Click "Resend"
+
+<Note>
+Resending uses the **same token and expiration time**. It doesn't extend the 24-hour deadline.
+</Note>
+
+### Cancelling Invitations
+
+To cancel a pending invitation:
+
+1. Navigate to Invitations tab
+2. Find the invitation to cancel
+3. Click "Cancel"
+
+The invitation is immediately invalidated and the link becomes unusable.
+
+## Changing Member Roles
+
+<Warning>
+Only Owners and Admins can change roles. Admins cannot modify Owner roles.
+</Warning>
+
+### Role Change Process
+
+<Steps>
+  <Step title="Navigate to Members">
+    Go to the team members page
+  </Step>
+
+  <Step title="Select Member">
+    Find the member whose role you want to change
+  </Step>
+
+  <Step title="Open Actions Menu">
+    Click the actions menu (⋮) for that member
+  </Step>
+
+  <Step title="Select New Role">
+    Choose the new role:
+    - Member
+    - Admin
+    - Owner
+  </Step>
+
+  <Step title="Confirm Change">
+    Confirm the role change
+
+    The change takes effect immediately
+  </Step>
+</Steps>
+
+### Role Change Permissions
+
+| Your Role | Can Change To |
+|-----------|---------------|
+| Owner | Any role for any member |
+| Admin | Member ↔ Admin (cannot touch Owners) |
+| Member | None (no permission) |
+
+### Role Change Restrictions
+
+<AccordionGroup>
+  <Accordion title="Last Owner Protection">
+    Cannot remove or demote the last Owner
+
+    **Error**: "Team must have at least one Owner"
+
+    **Solution**: Promote another member to Owner first
+  </Accordion>
+
+  <Accordion title="Admin Limitations">
+    Admins cannot modify Owners
+
+    **Error**: "Insufficient permissions"
+
+    **Solution**: Ask an Owner to make the change
+  </Accordion>
+
+  <Accordion title="Self-Demotion">
+    Owners can demote themselves if other Owners exist
+
+    <Warning>Be careful not to lock yourself out</Warning>
+  </Accordion>
+</AccordionGroup>
+
+## Removing Team Members
+
+<Warning>
+Removing a member immediately revokes their access to all team resources
+</Warning>
+
+### Removal Process
+
+<Steps>
+  <Step title="Navigate to Members">
+    Go to the team members page
+  </Step>
+
+  <Step title="Select Member">
+    Find the member to remove
+  </Step>
+
+  <Step title="Open Actions Menu">
+    Click the actions menu (⋮) for that member
+  </Step>
+
+  <Step title="Click Remove">
+    Select "Remove from team"
+  </Step>
+
+  <Step title="Confirm Removal">
+    Confirm the removal
+
+    The member is immediately removed
+  </Step>
+</Steps>
+
+### What Happens When Removed
+
+When a member is removed:
+
+1. **Immediate Access Revocation**: All team access is revoked
+2. **API Keys**: Team API keys no longer work for the removed user
+3. **Resources**: No longer can access team resources
+4. **Billing**: No longer counts toward team billing
+5. **Audit Log**: Removal is recorded in audit logs
+
+<Note>
+The user's personal account and personal teams are not affected
+</Note>
+
+### Removal Restrictions
+
+<AccordionGroup>
+  <Accordion title="Last Owner Protection">
+    Cannot remove the last Owner
+
+    **Error**: "Team must have at least one Owner"
+
+    **Solution**: Promote another member to Owner first, or delete the team
+  </Accordion>
+
+  <Accordion title="Permission Requirements">
+    Only Admins and Owners can remove members
+
+    Admins cannot remove Owners
+  </Accordion>
+
+  <Accordion title="Self-Removal">
+    Members can leave teams voluntarily
+
+    Navigate to team settings → "Leave Team"
+  </Accordion>
+</AccordionGroup>
+
+## Offboarding Members
+
+### Offboarding Checklist
+
+When a team member leaves:
+
+<Steps>
+  <Step title="Review Access">
+    Audit what resources the member had access to
+    - Team API keys they created
+    - Services they used
+    - Projects they worked on
+  </Step>
+
+  <Step title="Transfer Ownership">
+    If needed, transfer ownership of resources
+    - Reassign projects
+    - Transfer API key ownership
+    - Update documentation
+  </Step>
+
+  <Step title="Rotate Keys">
+    Rotate any shared credentials
+    - Team API keys
+    - Service credentials
+    - Deployment keys
+  </Step>
+
+  <Step title="Remove Member">
+    Remove the member from the team
+  </Step>
+
+  <Step title="Verify Removal">
+    Confirm access is revoked
+    - Test API keys
+    - Check resource access
+    - Review audit logs
+  </Step>
+
+  <Step title="Document Change">
+    Update team documentation
+    - Remove from team roster
+    - Update contact lists
+    - Archive relevant communications
+  </Step>
+</Steps>
+
+### Emergency Removal
+
+For immediate security concerns:
+
+1. **Remove member immediately** from the team
+2. **Revoke all API keys** they had access to
+3. **Rotate credentials** for all shared services
+4. **Review audit logs** for suspicious activity
+5. **Notify team** of the security incident
+6. **Document the incident** for future reference
+
+## Member Limits and Quotas
+
+<ResponseField name="Maximum Members" type="number">
+  No hard limit
+
+  <Info>Teams can have unlimited members</Info>
+</ResponseField>
+
+<ResponseField name="Pending Invitations" type="number">
+  Maximum 50 per team
+
+  <Warning>Rate limit to prevent abuse</Warning>
+</ResponseField>
+
+<ResponseField name="Invitation Expiry" type="duration">
+  24 hours
+
+  <Note>Invitations automatically expire after 24 hours</Note>
+</ResponseField>
+
+<ResponseField name="Minimum Owners" type="number">
+  At least 1 Owner required
+
+  <Warning>Cannot remove or demote the last Owner</Warning>
+</ResponseField>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Principle of Least Privilege" icon="shield">
+    Grant minimum role needed for each member's responsibilities
+  </Card>
+  <Card title="Regular Audits" icon="clipboard-check">
+    Review team membership monthly to remove inactive members
+  </Card>
+  <Card title="Clear Roles" icon="user-shield">
+    Document what each role can do in your team
+  </Card>
+  <Card title="Onboarding Docs" icon="book">
+    Create onboarding documentation for new members
+  </Card>
+  <Card title="Multiple Owners" icon="users">
+    Have 2-3 Owners to prevent lockout scenarios
+  </Card>
+  <Card title="Prompt Offboarding" icon="user-minus">
+    Remove departing members within 24 hours
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### Invitation Not Received
+
+If a member didn't receive the invitation email:
+
+1. **Check spam folder**: Invitation may be filtered
+2. **Verify email address**: Ensure it's correct
+3. **Resend invitation**: Use the resend feature
+4. **Check Plunk status**: Verify email service is operational
+5. **Contact support**: If problem persists
+
+### Cannot Change Role
+
+If you can't change a member's role:
+
+1. **Check your role**: Only Admins and Owners can change roles
+2. **Target role**: Admins cannot modify Owners
+3. **Last Owner**: Cannot demote the last Owner
+4. **Permission error**: Verify your permissions
+
+### Cannot Remove Member
+
+If you can't remove a member:
+
+1. **Last Owner**: Cannot remove the last Owner
+2. **Permission check**: Verify you're an Admin or Owner
+3. **Admin limitations**: Admins cannot remove Owners
+4. **Contact Owner**: Ask an Owner to perform the action
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Team Settings" icon="gear" href="/core/teams/settings">
+    Configure team name and other settings
+  </Card>
+  <Card title="Team Invitations" icon="envelope" href="/core/teams/invitations">
+    Deep dive into the invitation system
+  </Card>
+  <Card title="API Keys" icon="key" href="/core/api-keys/overview">
+    Manage team API keys for programmatic access
+  </Card>
+  <Card title="Billing" icon="credit-card" href="/core/billing/overview">
+    Understand team billing and usage
+  </Card>
+</CardGroup>
