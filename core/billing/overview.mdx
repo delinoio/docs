@@ -1,0 +1,191 @@
+---
+title: "Billing Overview"
+description: "Understand Delino's billing system, subscription tiers, and payment processing."
+---
+
+Delino uses a transparent, credit-based billing system for payment processing. This guide covers subscription tiers, billing cycles, and how credits work.
+
+## Billing System
+
+### Credit-Based Model
+
+Delino uses a credit system for precise usage tracking:
+
+<ResponseField name="Conversion Rate" type="number">
+  **$1 USD = 1,000,000 credits**
+
+  All internal calculations use credits for precision, with conversion to USD only at invoice generation.
+</ResponseField>
+
+**Examples**:
+```
+$0.001 USD = 1,000 credits
+$0.01 USD = 10,000 credits
+$0.10 USD = 100,000 credits
+$1.00 USD = 1,000,000 credits
+$10.00 USD = 10,000,000 credits
+```
+
+### Why Credits?
+
+<AccordionGroup>
+  <Accordion title="Precision">
+    Credits allow for sub-cent pricing without floating-point errors
+
+    Example: 150 credits = $0.00015 USD (precise to 6 decimals)
+  </Accordion>
+
+  <Accordion title="Performance">
+    Integer arithmetic is faster and more reliable than decimal calculations
+
+    All database operations use bigint for credits
+  </Accordion>
+
+  <Accordion title="Consistency">
+    No rounding errors or currency conversion issues
+
+    Credits are the single source of truth for billing
+  </Accordion>
+</AccordionGroup>
+
+## Subscription Tier
+
+Delino offers a Pro subscription tier for all accounts:
+
+<Info>
+**Pro tier is required for all accounts** (both personal and team accounts)
+</Info>
+
+**Pricing**: $10/month
+
+**Includes**:
+- $10 worth of credits (10,000,000 credits) per month
+- Access to all services
+- Priority support
+- Advanced features
+
+**Trial**:
+- **Personal Pro**: 7-day free trial on first subscription
+- **Team Pro**: No free trial, immediate payment required
+
+**Usage Charges**: Pay-as-you-go for usage beyond included credits
+
+**Checkout**: Handled through secure payment gateway
+
+### Pro Tier Details
+
+<CardGroup cols={2}>
+  <Card title="Personal Pro" icon="user">
+    **Subscription**: $10/month
+
+    **Free Trial**: 7 days on first subscription
+
+    **Included Credits**: $10 (10,000,000 credits)
+  </Card>
+  <Card title="Team Pro" icon="users">
+    **Subscription**: $10/month per team
+
+    **Free Trial**: None (immediate payment)
+
+    **Included Credits**: $10 (10,000,000 credits)
+  </Card>
+</CardGroup>
+
+## Billing Accounts
+
+Every user and team has a separate billing account:
+
+- **Personal Account**: Individual billing with 7-day trial
+- **Team Account**: Team billing, no trial, immediate payment required
+
+## Billing Cycle
+
+Billing cycles are monthly, based on your account creation date. At the end of each cycle, credits are reset and a new billing period begins.
+
+
+## Account Status
+
+Billing accounts can have different statuses:
+
+<Tabs>
+  <Tab title="Active">
+    **Status**: Normal operation
+
+    **Characteristics**:
+    - Payment method configured
+    - Recent payment successful
+    - All services accessible
+    - No restrictions
+
+    **Actions**: None required
+  </Tab>
+
+  <Tab title="Grace Period">
+    **Status**: Recent payment failed
+
+    **Characteristics**:
+    - Payment failure occurred
+    - 3-day grace period active
+    - Services still accessible
+    - Warning displayed
+
+    **Duration**: 3 days from payment failure
+
+    **Actions**: Update payment method before grace period ends
+  </Tab>
+
+  <Tab title="Suspended">
+    **Status**: Payment failed, grace period expired
+
+    **Characteristics**:
+    - Grace period expired without payment
+    - Services suspended
+    - No API access
+    - Data retained
+
+    **Actions**: Update payment method to restore service immediately
+  </Tab>
+</Tabs>
+
+### Grace Period Details
+
+<Info>
+3-day grace period on payment failure before service suspension
+</Info>
+
+**Timeline**:
+```
+Day 0: Payment fails → Status: grace_period
+Day 1: Grace period active → Services accessible
+Day 2: Grace period active → Services accessible
+Day 3: Grace period ends → Status: suspended
+```
+
+**During Grace Period**:
+- All services remain accessible
+- Warning messages displayed
+- Email notifications sent
+- Payment retry attempts
+
+**After Grace Period**:
+- Services immediately suspended
+- API requests rejected
+- Dashboard access limited
+- Service restoration upon successful payment
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Pricing Details" icon="tag" href="/core/billing/pricing">
+    Understand service pricing and usage charges
+  </Card>
+  <Card title="Usage Tracking" icon="chart-line" href="/core/billing/usage">
+    Learn how to monitor your usage and costs
+  </Card>
+  <Card title="Invoices" icon="file-invoice" href="/core/billing/invoices">
+    View and download invoices
+  </Card>
+  <Card title="Payment Methods" icon="credit-card" href="/core/billing/payment-methods">
+    Manage payment methods via Polar.sh
+  </Card>
+</CardGroup>
