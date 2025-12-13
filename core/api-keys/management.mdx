@@ -1,0 +1,271 @@
+---
+title: "Managing API Keys"
+description: "Learn how to view, rotate, and revoke your API keys."
+---
+
+Proper API key management is essential for maintaining security and access control. This guide covers viewing, monitoring, and revoking your API keys.
+
+## Viewing API Keys
+
+Navigate to the API Keys page for your account:
+- **Personal Account**: `/teams/~/api-keys`
+- **Team Account**: `/teams/[team-slug]/api-keys`
+
+### Key Information Displayed
+
+Each API key shows the following information:
+
+<ResponseField name="Name" type="string">
+  The display name you chose when creating the key
+</ResponseField>
+
+<ResponseField name="Key Value" type="string">
+  Masked token value (e.g., `deli_****...****abcd`)
+
+  <Info>The full token is only shown once at creation time</Info>
+</ResponseField>
+
+<ResponseField name="Permissions" type="string">
+  Summary of scopes assigned to the key:
+  - "Full Access" for `["*"]`
+  - "X services" for service-level access
+  - "X scopes" for granular permissions
+
+  Click to view detailed scope list
+</ResponseField>
+
+<ResponseField name="Created" type="timestamp">
+  When the key was created
+</ResponseField>
+
+<ResponseField name="Last Used" type="date">
+  When the key was last used
+
+  <Note>Helps identify unused keys for cleanup</Note>
+</ResponseField>
+
+<ResponseField name="Expires" type="date">
+  Expiration date (or "Never" if no expiration)
+</ResponseField>
+
+## Monitoring Usage
+
+### Last Used Timestamp
+
+The "Last Used" column updates whenever the API key successfully authenticates a request. This helps you:
+
+- **Identify Active Keys**: See which keys are actively in use
+- **Detect Unused Keys**: Find keys that haven't been used recently
+- **Security Auditing**: Track key usage patterns
+- **Cleanup Planning**: Identify candidates for revocation
+
+<Tip>
+Review the "Last Used" column monthly to identify and remove unused keys.
+</Tip>
+
+### Permission Details
+
+Click on any key's permission summary to view the complete list of scopes:
+
+```
+Full Access
+├── * (all services and operations)
+
+2 services
+├── service-a:*
+└── service-b:*
+
+3 scopes
+├── service:resource:read
+├── service:resource:write
+└── appcore:payment:update
+```
+
+## Revoking API Keys
+
+<Warning>
+Revoking an API key is **permanent and immediate**. Any applications using the key will lose access immediately.
+</Warning>
+
+### How to Revoke
+
+1. Navigate to the API Keys page
+2. Find the key you want to revoke
+3. Click the **Delete** button (trash icon)
+4. Confirm the deletion
+
+The key is immediately revoked and can no longer be used for authentication.
+
+### When to Revoke
+
+Revoke keys in these situations:
+
+<AccordionGroup>
+  <Accordion title="Key Compromise">
+    If a key has been exposed or leaked:
+    1. Immediately revoke the compromised key
+    2. Create a new key with the same permissions
+    3. Update your applications with the new key
+    4. Review recent usage for suspicious activity
+  </Accordion>
+
+  <Accordion title="Unused Keys">
+    If a key hasn't been used in a long time:
+    1. Verify the key is truly unused
+    2. Check with your team if it's a team key
+    3. Revoke the key to reduce attack surface
+  </Accordion>
+
+  <Accordion title="Project Decommissioned">
+    When a project or service is retired:
+    1. Document which keys were used
+    2. Revoke all associated keys
+    3. Remove keys from any documentation
+  </Accordion>
+
+  <Accordion title="Team Member Departure">
+    When a team member leaves:
+    1. Review keys created by the member
+    2. Revoke personal keys if applicable
+    3. Rotate shared keys they had access to
+  </Accordion>
+
+  <Accordion title="Regular Rotation">
+    As part of security best practices:
+    1. Create new keys with same permissions
+    2. Update applications with new keys
+    3. Revoke old keys after verification
+    4. Document rotation date
+  </Accordion>
+</AccordionGroup>
+
+## Key Rotation
+
+Key rotation is a security best practice that involves regularly replacing API keys.
+
+### Rotation Process
+
+<Steps>
+  <Step title="Create New Key">
+    Generate a new API key with the same scopes as the old key
+
+    ```bash
+    Name: "Production - Image Processing v2"
+    Scopes: Same as old key
+    Expiration: 1 year (or same as old key)
+    ```
+  </Step>
+
+  <Step title="Update Applications">
+    Update your applications to use the new key
+
+    ```bash
+    # Example: Update environment variable
+    export DELINO_API_KEY="deli_new_key_value"
+
+    # Restart services
+    systemctl restart myapp
+    ```
+  </Step>
+
+  <Step title="Test New Key">
+    Verify the new key works correctly
+
+    ```bash
+    # Test API call with new key
+    curl -H "Authorization: Bearer deli_new_key_value" \
+      https://api.delino.io/...
+    ```
+  </Step>
+
+  <Step title="Monitor Old Key">
+    Wait 24-48 hours and monitor "Last Used" timestamp
+
+    If old key is still being used:
+    - Identify which service is using it
+    - Update that service
+    - Wait and verify again
+  </Step>
+
+  <Step title="Revoke Old Key">
+    Once confirmed the old key is no longer used:
+    1. Revoke the old key
+    2. Monitor for any errors
+    3. Document the rotation
+  </Step>
+</Steps>
+
+### Rotation Schedule
+
+Recommended rotation frequencies:
+
+| Environment | Frequency | Reason |
+|-------------|-----------|--------|
+| Development | 30-90 days | Frequent changes, lower risk |
+| Staging | 60-180 days | Balance of security and stability |
+| Production | 90-365 days | Stability critical, planned rotations |
+| CI/CD | 60-180 days | Automated environments easier to update |
+
+<Note>
+These are recommendations. Adjust based on your organization's security policies.
+</Note>
+
+## Troubleshooting
+
+### Key Not Working
+
+If an API key stops working:
+
+1. **Check Expiration**: Verify the key hasn't expired
+2. **Verify Scopes**: Ensure the key has required permissions
+3. **Test Authentication**: Try a simple API call
+4. **Check Last Used**: See if it's being used at all
+5. **Review Logs**: Check application logs for error messages
+
+### Permission Denied
+
+If you get permission errors:
+
+1. **Review Scopes**: Check the key's scope list
+2. **Verify Endpoint**: Ensure the endpoint matches a scope
+3. **Check Wildcards**: Understand wildcard coverage
+4. **Contact Support**: If scope seems correct but fails
+
+### Cannot Delete Key
+
+If you cannot delete a key:
+
+1. **Check Permissions**: Ensure you have admin rights
+2. **Verify Ownership**: Confirm the key belongs to your account
+3. **Try Again**: Temporary network issues may occur
+
+## Best Practices Summary
+
+<CardGroup cols={2}>
+  <Card title="Regular Audits" icon="clipboard-check">
+    Review API keys monthly for unused or expired keys
+  </Card>
+  <Card title="Descriptive Names" icon="tag">
+    Use names that identify purpose and version (e.g., "Production v2")
+  </Card>
+  <Card title="Monitor Usage" icon="chart-line">
+    Track "Last Used" to identify active and inactive keys
+  </Card>
+  <Card title="Rotate Regularly" icon="rotate">
+    Implement key rotation based on environment risk level
+  </Card>
+  <Card title="Document Keys" icon="book">
+    Maintain internal documentation of key purposes
+  </Card>
+  <Card title="Revoke Promptly" icon="trash">
+    Remove unused keys immediately to reduce attack surface
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Scope Reference" icon="list" href="/core/api-keys/scopes">
+    Complete list of available API key scopes
+  </Card>
+</CardGroup>

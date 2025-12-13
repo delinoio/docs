@@ -1,0 +1,325 @@
+---
+title: "API Key Scopes Reference"
+description: "Complete reference of all available API key scopes and their permissions."
+---
+
+API key scopes control what operations an API key can perform. This page provides a comprehensive reference of all available scopes across Delino public APIs.
+
+## Scope Format
+
+Scopes follow the format: `service:resource:action`
+
+- **service**: The Delino service (e.g., `real-prompter`)
+- **resource**: The resource type (e.g., `project`, `prompt`, `chat`)
+- **action**: The operation (e.g., `read`, `create`, `delete`)
+
+## Wildcard Scopes
+
+<CardGroup cols={2}>
+  <Card title="Full Access" icon="asterisk">
+    `*`
+
+    Grants access to all public API services and operations
+  </Card>
+  <Card title="All Real Prompter Operations" icon="layer-group">
+    `real-prompter:*`
+
+    Full access to Real Prompter service
+  </Card>
+</CardGroup>
+
+## Real Prompter Scopes
+
+Real Prompter provides prompt engineering through interactive conversations.
+
+<Accordion title="Project Operations">
+  <ResponseField name="real-prompter:project:create" type="scope">
+    **Description**: Create new prompt projects
+
+    **Use Cases**:
+    - Automated project provisioning
+    - Integration tools that create projects
+    - Workflow automation
+  </ResponseField>
+
+  <ResponseField name="real-prompter:project:read" type="scope">
+    **Description**: View project information
+
+    **Use Cases**:
+    - Dashboard applications
+    - Project listing tools
+    - Monitoring systems
+  </ResponseField>
+
+  <ResponseField name="real-prompter:project:delete" type="scope">
+    **Description**: Delete projects
+
+    **Use Cases**:
+    - Admin tools
+    - Cleanup automation
+    - Project management integrations
+  </ResponseField>
+</Accordion>
+
+<Accordion title="Prompt Operations">
+  <ResponseField name="real-prompter:prompt:create" type="scope">
+    **Description**: Create and improve prompts
+
+    **Use Cases**:
+    - Prompt creation tools
+    - Automated prompt generation
+    - Content creation workflows
+  </ResponseField>
+
+  <ResponseField name="real-prompter:prompt:read" type="scope">
+    **Description**: View prompt content and versions
+
+    **Use Cases**:
+    - Prompt browsers
+    - Version control integrations
+    - Analytics tools
+  </ResponseField>
+
+  <ResponseField name="real-prompter:prompt:improve" type="scope">
+    **Description**: Request prompt improvements
+
+    **Use Cases**:
+    - AI-assisted prompt optimization
+    - Automated refinement workflows
+    - Quality enhancement tools
+  </ResponseField>
+
+  <ResponseField name="real-prompter:prompt:revert" type="scope">
+    **Description**: Revert to previous versions
+
+    **Use Cases**:
+    - Version management tools
+    - Rollback automation
+    - Change control systems
+  </ResponseField>
+</Accordion>
+
+<Accordion title="Chat Operations">
+  <ResponseField name="real-prompter:chat:send" type="scope">
+    **Description**: Send messages in chat sessions
+
+    **Use Cases**:
+    - Chat bots
+    - Interactive applications
+    - Automated conversation tools
+  </ResponseField>
+
+  <ResponseField name="real-prompter:chat:read" type="scope">
+    **Description**: View chat history
+
+    **Use Cases**:
+    - Chat viewers
+    - Analytics tools
+    - Conversation export tools
+  </ResponseField>
+
+  <ResponseField name="real-prompter:chat:delete" type="scope">
+    **Description**: Delete chat messages
+
+    **Use Cases**:
+    - Moderation tools
+    - Privacy management
+    - Data cleanup automation
+  </ResponseField>
+</Accordion>
+
+<Accordion title="Subset Operations">
+  <ResponseField name="real-prompter:subset:create" type="scope">
+    **Description**: Create prompt subsets
+
+    **Use Cases**:
+    - Organization tools
+    - Categorization automation
+    - Workflow management
+  </ResponseField>
+
+  <ResponseField name="real-prompter:subset:read" type="scope">
+    **Description**: View prompt subsets
+
+    **Use Cases**:
+    - Browsing tools
+    - Analytics dashboards
+    - Export utilities
+  </ResponseField>
+</Accordion>
+
+<Accordion title="Diagram Operations">
+  <ResponseField name="real-prompter:diagram:read" type="scope">
+    **Description**: View project diagrams
+
+    **Use Cases**:
+    - Visualization tools
+    - Documentation generation
+    - Project overview displays
+  </ResponseField>
+</Accordion>
+
+<Accordion title="Wildcard">
+  <ResponseField name="real-prompter:*" type="scope">
+    **Description**: All Real Prompter operations
+
+    Grants access to all Real Prompter service operations including projects, prompts, chats, subsets, and diagrams.
+  </ResponseField>
+</Accordion>
+
+## Scope Validation
+
+### How Scopes Are Validated
+
+When an API request is made with an API key:
+
+1. **Extract Token**: The API key token is extracted from the request
+2. **Retrieve Scopes**: The key's scopes are fetched from the database
+3. **Check Permission**: The required scope is checked against the key's scopes
+4. **Wildcard Matching**: Wildcards are evaluated hierarchically
+5. **Grant/Deny**: Access is granted or denied based on the match
+
+### Validation Rules
+
+<CodeGroup>
+```typescript Full Access
+// Scope: ["*"]
+// Matches: Any operation on any service
+hasPermission("*", "real-prompter:project:read") // ✅ true
+hasPermission("*", "real-prompter:prompt:create") // ✅ true
+hasPermission("*", "real-prompter:chat:send") // ✅ true
+```
+
+```typescript Service Access
+// Scope: ["real-prompter:*"]
+// Matches: Any operation on Real Prompter service
+hasPermission("real-prompter:*", "real-prompter:project:read") // ✅ true
+hasPermission("real-prompter:*", "real-prompter:prompt:create") // ✅ true
+hasPermission("real-prompter:*", "real-prompter:chat:send") // ✅ true
+```
+
+```typescript Resource Access
+// Scope: ["real-prompter:project:*"]
+// Matches: Any action on Real Prompter projects
+hasPermission("real-prompter:project:*", "real-prompter:project:read") // ✅ true
+hasPermission("real-prompter:project:*", "real-prompter:project:create") // ✅ true
+hasPermission("real-prompter:project:*", "real-prompter:prompt:read") // ❌ false
+```
+
+```typescript Specific Scope
+// Scope: ["real-prompter:prompt:read"]
+// Matches: Only prompt reading
+hasPermission("real-prompter:prompt:read", "real-prompter:prompt:read") // ✅ true
+hasPermission("real-prompter:prompt:read", "real-prompter:prompt:create") // ❌ false
+```
+
+```typescript Multiple Scopes
+// Scope: ["real-prompter:project:read", "real-prompter:prompt:read"]
+// Matches: Specific operations only
+hasPermission(["..."], "real-prompter:project:read") // ✅ true
+hasPermission(["..."], "real-prompter:prompt:read") // ✅ true
+hasPermission(["..."], "real-prompter:prompt:create") // ❌ false
+```
+</CodeGroup>
+
+## Common Scope Combinations
+
+### Read-Only Access
+```json
+{
+  "scopes": [
+    "real-prompter:project:read",
+    "real-prompter:prompt:read",
+    "real-prompter:chat:read"
+  ]
+}
+```
+Perfect for dashboards and reporting tools that need to display project and prompt information.
+
+### Content Creation
+```json
+{
+  "scopes": [
+    "real-prompter:project:create",
+    "real-prompter:prompt:create",
+    "real-prompter:prompt:improve"
+  ]
+}
+```
+For tools that create and optimize prompts but don't need deletion permissions.
+
+### Chat Bot Integration
+```json
+{
+  "scopes": [
+    "real-prompter:chat:send",
+    "real-prompter:chat:read"
+  ]
+}
+```
+Enable interactive chat features without project management access.
+
+### Full Project Management
+```json
+{
+  "scopes": [
+    "real-prompter:project:*",
+    "real-prompter:prompt:*",
+    "real-prompter:subset:*"
+  ]
+}
+```
+Complete control over projects, prompts, and organization without chat access.
+
+### Full Platform Access
+```json
+{
+  "scopes": ["*"]
+}
+```
+Complete access to all Real Prompter operations (use with caution).
+
+## Best Practices
+
+<AccordionGroup>
+  <Accordion title="Start Minimal">
+    Begin with the minimum required scopes and add more only when needed.
+
+    **Example**: Start with `real-prompter:project:read` instead of `real-prompter:*`
+  </Accordion>
+
+  <Accordion title="Use Resource Wildcards">
+    For specific resources, use resource-level wildcards instead of service-level access.
+
+    **Example**: Use `real-prompter:project:*` instead of `real-prompter:*` if only managing projects
+  </Accordion>
+
+  <Accordion title="Separate Keys">
+    Create different keys for different purposes with appropriate scopes.
+
+    **Example**: Separate keys for read-only dashboards, chat bots, and project management
+  </Accordion>
+
+  <Accordion title="Document Scopes">
+    Document why each scope is needed in your internal documentation.
+
+    **Example**: "real-prompter:chat:send - Required for customer support chatbot integration"
+  </Accordion>
+
+  <Accordion title="Audit Regularly">
+    Review scope assignments regularly and remove unnecessary permissions.
+
+    **Example**: Monthly audit of API keys and their scopes
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Create API Key" icon="plus" href="/core/api-keys/creation">
+    Create your first API key with appropriate scopes
+  </Card>
+  <Card title="Management" icon="list-check" href="/core/api-keys/management">
+    Learn how to manage and rotate API keys
+  </Card>
+</CardGroup>

@@ -1,0 +1,217 @@
+---
+title: "Teams Overview"
+description: "Learn about teams, collaboration features, and how to manage team members effectively."
+---
+
+Teams enable collaboration by allowing multiple users to share resources, billing, and access to Delino services. Teams provide the structure needed for effective collaboration.
+
+## Team Features
+
+Teams created by individual users for their projects:
+- Creator is automatically the owner
+- Individual billing account
+- Shared resources and billing among members
+
+## Team Roles
+
+Teams use role-based access control (RBAC) to manage permissions:
+
+<AccordionGroup>
+  <Accordion title="Owner" icon="crown">
+    **Full Control**: Complete administrative access
+
+    **Permissions**:
+    - All Admin permissions
+    - Delete team
+    - Transfer ownership
+    - Change billing settings
+    - Remove other owners
+
+    **Limits**: Each team must have at least one owner
+  </Accordion>
+
+  <Accordion title="Admin" icon="user-shield">
+    **Team Management**: Administrative tasks without destructive actions
+
+    **Permissions**:
+    - All Member permissions
+    - Invite and remove members
+    - Update team settings
+    - Manage team API keys
+    - View billing information
+    - Change member roles (except Owner)
+
+    **Limits**: Cannot delete team or modify owners
+  </Accordion>
+
+  <Accordion title="Member" icon="user">
+    **Standard Access**: Use team resources
+
+    **Permissions**:
+    - Access team resources
+    - View team information
+    - Use team services
+    - View own membership details
+
+    **Limits**: Cannot manage team or members
+  </Accordion>
+</AccordionGroup>
+
+## Team Features
+
+### Shared Resources
+- **Unified Billing**: All team members share the same billing account
+- **API Keys**: Team-level API keys accessible to all members
+- **Services**: Shared access to Delino services
+- **Usage Tracking**: Consolidated usage across all team activities
+
+### Collaboration
+- **Member Invitations**: Email-based invitation system
+- **Role Management**: Flexible permission assignment
+- **Team Dashboard**: Centralized view of team activity
+- **Usage Reports**: Track team resource consumption
+
+### Security
+- **Role-Based Access**: Granular permission control
+- **Audit Logging**: Track team management actions
+- **Secure Invitations**: Token-based invitation system with expiration
+
+## Team Structure
+
+Every user has a personal account (slug: `~`) that serves as their individual workspace:
+- Personal billing account
+- Personal API keys
+- Individual usage tracking
+
+Users can create and join multiple teams, each with its own billing and resources.
+
+## Team Slugs
+
+Each team has a globally unique slug used for URL routing:
+
+<ResponseField name="slug" type="string" required>
+  URL-friendly team identifier
+
+  **Requirements**:
+  - 4-20 characters
+  - Lowercase letters only
+  - Hyphens allowed
+  - Numbers allowed
+  - Must be globally unique
+
+  **Examples**:
+  - `engineering` ✅
+  - `data-team` ✅
+  - `team-42` ✅
+  - `Team` ❌ (uppercase)
+  - `ai` ❌ (too short)
+  - `Engineering` ❌ (uppercase)
+</ResponseField>
+
+<Info>
+The slug `~` is reserved for personal accounts
+</Info>
+
+## Team Billing
+
+### Subscription Requirements
+
+<Warning>
+All teams require a Pro subscription ($10/month) with a configured payment method.
+</Warning>
+
+**Teams**:
+- Require Pro subscription
+- No free trial for teams (trial only for personal account)
+- Payment method required at creation
+
+### Billing Structure
+
+```
+Team
+├── Billing Account (team)
+├── Pro Subscription ($10/month)
+├── Included Credits ($10)
+└── Usage Charges (pay-as-you-go)
+```
+
+## Team Invitations
+
+### Invitation Flow
+
+<Steps>
+  <Step title="Send Invitation">
+    Admin or Owner invites a member by email through the team members page
+  </Step>
+
+  <Step title="Email Delivered">
+    Invitation email sent with:
+    - Team name and inviter information
+    - Assigned role
+    - Secure invitation link
+    - 24-hour expiration notice
+  </Step>
+
+  <Step title="Accept Invitation">
+    Recipient clicks link and accepts
+
+    - Email must match invitation
+    - Token must be valid and not expired
+    - User added to team with specified role
+  </Step>
+</Steps>
+
+## Team Limits
+
+<ResponseField name="Members" type="number">
+  No hard limit on team size
+
+  <Info>Teams can have unlimited members</Info>
+</ResponseField>
+
+
+<ResponseField name="Pending Invitations" type="number">
+  Maximum 50 pending invitations per team
+
+  <Warning>Rate limit to prevent spam and abuse</Warning>
+</ResponseField>
+
+<ResponseField name="Slug Length" type="string">
+  4-20 characters
+
+  <Note>Must be globally unique across all teams</Note>
+</ResponseField>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Clear Naming" icon="tag">
+    Use descriptive team names and slugs that identify the team's purpose
+  </Card>
+  <Card title="Appropriate Roles" icon="user-shield">
+    Assign roles based on principle of least privilege
+  </Card>
+  <Card title="Regular Audits" icon="clipboard-check">
+    Review team members and permissions quarterly
+  </Card>
+  <Card title="Onboarding Process" icon="user-plus">
+    Establish clear onboarding process for new members
+  </Card>
+  <Card title="Offboarding Process" icon="user-minus">
+    Remove departing members promptly and rotate shared keys
+  </Card>
+  <Card title="Monitor Usage" icon="chart-line">
+    Track team usage to optimize costs and resources
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Create Team" icon="plus" href="/core/teams/creation">
+    Learn how to create your first team
+  </Card>
+  <Card title="Manage Members" icon="users-gear" href="/core/teams/members">
+    Add, remove, and manage team members
+  </Card>
+</CardGroup>

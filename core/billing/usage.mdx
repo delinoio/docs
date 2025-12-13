@@ -1,0 +1,155 @@
+---
+title: "Usage Tracking"
+description: "Monitor your resource consumption and understand how usage is tracked and billed."
+---
+
+Delino tracks all resource usage, providing detailed insights into consumption across all services. This guide explains how to monitor your usage and optimize costs.
+
+## Viewing Current Usage
+
+### Dashboard Access
+
+View your current billing cycle usage:
+- **Personal Account**: `/teams/~/billing`
+- **Team Account**: `/teams/[team-slug]/billing`
+
+### Usage Display
+
+<ResponseField name="Current Period" type="date range">
+  Billing cycle start and end dates
+
+  **Example**: Sep 15, 2024 - Oct 14, 2024
+</ResponseField>
+
+<ResponseField name="Credits Used" type="number">
+  Total credits consumed this cycle
+
+  **Format**: `1,234,567 credits`
+</ResponseField>
+
+<ResponseField name="Amount (USD)" type="number">
+  Equivalent amount in USD
+
+  **Calculation**: `credits / 1,000,000`
+
+  **Example**: `1,234,567 credits = $1.23 USD`
+</ResponseField>
+
+<ResponseField name="Included Credits" type="number">
+  Credits included in Pro subscription
+
+  **Pro Tier**: 10,000,000 credits ($10)
+</ResponseField>
+
+<ResponseField name="Additional Charges" type="number">
+  Usage beyond included credits
+
+  **Calculation**: `(used_credits - included_credits) / 1,000,000`
+
+  **Example**:
+  ```
+  Used: 15,000,000 credits
+  Included: 10,000,000 credits
+  Additional: 5,000,000 credits = $5.00 USD
+  ```
+</ResponseField>
+
+### Service Breakdown
+
+Usage is broken down by service with detailed metrics for each service you use. You can view:
+- Service name
+- Metric types (varies by service)
+- Quantity consumed
+- Credits charged
+- Total cost in USD
+
+## Usage Metrics
+
+
+## Viewing Usage History
+
+You can view your usage history through the billing dashboard:
+
+1. Navigate to billing page (`/teams/~/billing` or `/teams/[team-slug]/billing`)
+2. Select date range to view
+3. Review usage by service and metric type
+
+## Usage Optimization
+
+### Best Practices
+
+<AccordionGroup>
+  <Accordion title="Monitor Regularly">
+    Check your usage regularly to stay within budget:
+    - Review weekly to catch unexpected usage
+    - Track trends over time
+    - Identify optimization opportunities
+  </Accordion>
+
+  <Accordion title="Optimize Usage">
+    Reduce costs by optimizing how you use services:
+    - Cache results when possible
+    - Batch operations together
+    - Remove unused resources
+  </Accordion>
+
+  <Accordion title="Review Monthly">
+    At the end of each month:
+    - Review what drove your costs
+    - Adjust usage patterns as needed
+    - Plan for next month's budget
+  </Accordion>
+</AccordionGroup>
+
+### Cost Optimization Tips
+
+<CardGroup cols={2}>
+  <Card title="Efficient Processing" icon="gauge-high">
+    Process only what's needed
+
+    Avoid redundant operations
+  </Card>
+  <Card title="Caching" icon="database">
+    Cache results locally
+
+    Reduce repeat API calls
+  </Card>
+  <Card title="Batch Operations" icon="layer-group">
+    Group multiple operations
+
+    Reduce overhead costs
+  </Card>
+  <Card title="Right-Sizing" icon="sliders">
+    Use appropriate service tiers
+
+    Match resources to needs
+  </Card>
+  <Card title="Monitoring" icon="chart-line">
+    Track usage patterns
+
+    Identify optimization opportunities
+  </Card>
+  <Card title="Cleanup" icon="broom">
+    Remove unused resources
+
+    Delete old data and projects
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+### Usage Not Appearing
+
+If usage doesn't appear in the dashboard:
+
+1. **Check Time Range**: Ensure you're viewing the current billing cycle
+2. **Refresh Page**: Usage updates may take a few minutes to appear
+3. **Contact Support**: If the issue persists after waiting
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Billing Overview" icon="credit-card" href="/core/billing/overview">
+    Learn about subscription tiers and billing cycles
+  </Card>
+</CardGroup>

@@ -1,5 +1,383 @@
 ---
-title: "Creating teams"
+title: "Creating Teams"
 description: "Learn how to create teams, manage team members, and configure team settings."
 ---
 
+Teams enable collaboration by allowing multiple users to share resources, billing, and access to Delino services. This guide covers creating teams.
+
+## Prerequisites
+
+Before creating a team, ensure you have:
+
+<Accordion title="Payment Method Configured">
+  Teams require a payment method at creation
+
+  **Teams**: Your payment method
+
+  **How to set up**: Visit billing settings and configure payment method
+</Accordion>
+
+<Accordion title="Unique Team Slug">
+  Think of a unique team slug (URL identifier)
+
+  **Requirements**:
+  - 4-20 characters
+  - Lowercase letters only
+  - Hyphens and numbers allowed
+  - Globally unique across all Delino teams
+
+  **Examples**: `engineering`, `data-team`, `team-42`
+</Accordion>
+
+## Creating a Team
+
+Teams are created by individual users for their projects:
+
+<Steps>
+  <Step title="Navigate to Teams">
+    Click "Teams" in the sidebar or go to `/teams`
+  </Step>
+
+  <Step title="Click New Team">
+    Click the "New Team" button in the top-right corner
+  </Step>
+
+  <Step title="Enter Team Details">
+    Fill in the team creation form:
+
+    <ParamField path="name" type="string" required>
+      **Team Name**
+
+      Display name for your team
+
+      **Example**: `Engineering Team`
+
+      <Note>Can be changed later in team settings</Note>
+    </ParamField>
+
+    <ParamField path="slug" type="string" required>
+      **Team Slug**
+
+      URL-friendly identifier (4-20 characters)
+
+      **Requirements**:
+      - Lowercase only
+      - Letters, numbers, hyphens
+      - Must be globally unique
+
+      **Example**: `engineering`
+
+      <Warning>Cannot be changed after creation</Warning>
+    </ParamField>
+  </Step>
+
+  <Step title="Configure Billing">
+    **Subscription**: Team Pro ($10/month)
+
+    **Payment Method**: Your configured payment method
+
+    **What's Included**:
+    - $10 worth of credits per month (10,000,000 credits)
+    - Access to all Pro features
+    - Team collaboration tools
+    - Separate usage tracking
+
+    <Info>
+    No free trial for teams (trial only for personal accounts)
+    </Info>
+  </Step>
+
+  <Step title="Review and Create">
+    Review your team details:
+    - Team name
+    - Team slug
+    - Subscription: $10/month
+    - Payment method
+
+    Click "Create Team" to proceed
+  </Step>
+
+  <Step title="Payment Checkout">
+    You'll be redirected to payment checkout:
+
+    **What happens**:
+    - Team Pro subscription ($10/month)
+    - Immediate payment required (no trial)
+    - Payment method verified
+    - Subscription activated
+
+    Click "Subscribe" to complete
+  </Step>
+
+  <Step title="Team Created">
+    You're redirected back to Delino:
+
+    **Automatically configured**:
+    - Team created with your chosen slug
+    - You're added as Owner
+    - Billing account created
+    - Pro subscription active
+    - Ready to invite members
+
+    **Next steps**:
+    - Invite team members
+    - Create team API keys
+    - Start using team services
+  </Step>
+</Steps>
+
+## Team Slug Guidelines
+
+The team slug is a critical identifier that appears in URLs:
+
+### Requirements
+
+<ResponseField name="Length" type="string">
+  **4-20 characters**
+
+  ✅ Valid: `team`, `engineering`, `data-science-2024`
+
+  ❌ Invalid: `ai` (too short), `this-is-a-very-long-team-name-123` (too long)
+</ResponseField>
+
+<ResponseField name="Format" type="string">
+  **Lowercase letters, numbers, hyphens**
+
+  ✅ Valid: `engineering`, `team-42`, `data-sci`
+
+  ❌ Invalid: `Engineering` (uppercase), `team_42` (underscore), `team.42` (period)
+</ResponseField>
+
+<ResponseField name="Uniqueness" type="string">
+  **Globally unique across all Delino teams**
+
+  If slug is taken, try:
+  - Adding numbers: `engineering-2`, `engineering-2024`
+  - Adding organization: `acme-engineering`
+  - Using abbreviations: `eng-team`, `data-sci`
+</ResponseField>
+
+### Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Be Descriptive" icon="tag">
+    Use names that clearly identify the team's purpose
+
+    **Good**: `frontend-team`, `data-science`
+    **Bad**: `team1`, `abc`
+  </Card>
+
+  <Card title="Keep It Short" icon="compress">
+    Shorter slugs are easier to remember and type
+
+    **Good**: `eng`, `data`
+    **Bad**: `engineering-department-team`
+  </Card>
+
+  <Card title="Avoid Dates" icon="calendar-xmark">
+    Don't include years or dates that become outdated
+
+    **Good**: `marketing`
+    **Bad**: `marketing-2024`
+  </Card>
+
+  <Card title="Consider Growth" icon="chart-line">
+    Choose names that scale with your organization
+
+    **Good**: `engineering`, `sales`
+    **Bad**: `johns-team`, `temp-project`
+  </Card>
+</CardGroup>
+
+### Common Slug Patterns
+
+<Tabs>
+  <Tab title="By Department">
+    Department-based naming:
+    - `engineering`
+    - `marketing`
+    - `sales`
+    - `finance`
+    - `hr`
+  </Tab>
+
+  <Tab title="By Function">
+    Function-based naming:
+    - `frontend`
+    - `backend`
+    - `devops`
+    - `qa`
+    - `data-science`
+  </Tab>
+
+  <Tab title="By Product">
+    Product-based naming:
+    - `product-a`
+    - `mobile-app`
+    - `web-platform`
+    - `api-team`
+  </Tab>
+
+  <Tab title="By Location">
+    Location-based naming:
+    - `us-west`
+    - `emea`
+    - `apac`
+    - `remote`
+  </Tab>
+</Tabs>
+
+## What Happens After Creation
+
+Once your team is created:
+
+### 1. Team Structure
+
+```
+Team: engineering
+├── Members
+│   └── You (Owner)
+├── Billing Account
+│   ├── Type: team
+│   ├── Tier: Pro ($10/month)
+│   └── Credits: 10,000,000/month
+├── API Keys
+│   └── (None - create as needed)
+└── Resources
+    └── (None - add as needed)
+```
+
+### 2. Immediate Actions
+
+<CardGroup cols={2}>
+  <Card title="Invite Members" icon="user-plus">
+    Add team members and assign roles
+
+    Navigate to `/teams/[slug]/members`
+  </Card>
+
+  <Card title="Create API Keys" icon="key">
+    Generate API keys for team services
+
+    Navigate to `/teams/[slug]/api-keys`
+  </Card>
+
+  <Card title="Configure Settings" icon="gear">
+    Update team name and preferences
+
+    Navigate to `/teams/[slug]/settings`
+  </Card>
+
+  <Card title="Monitor Usage" icon="chart-line">
+    Track team resource consumption
+
+    Navigate to `/teams/[slug]/billing`
+  </Card>
+</CardGroup>
+
+### 3. Team URLs
+
+Your team is accessible at:
+
+```
+Dashboard: /teams/[slug]
+Members: /teams/[slug]/members
+API Keys: /teams/[slug]/api-keys
+Billing: /teams/[slug]/billing
+Settings: /teams/[slug]/settings
+```
+
+**Example** (slug: `engineering`):
+```
+/teams/engineering
+/teams/engineering/members
+/teams/engineering/api-keys
+/teams/engineering/billing
+/teams/engineering/settings
+```
+
+## Billing for Teams
+
+### Teams
+
+<ResponseField name="Subscription" type="string">
+  **Team Pro**: $10/month
+</ResponseField>
+
+<ResponseField name="Trial" type="string">
+  **None** (trials only for personal accounts)
+</ResponseField>
+
+<ResponseField name="Included Credits" type="number">
+  **10,000,000 credits** ($10 worth)
+</ResponseField>
+
+<ResponseField name="Payment" type="string">
+  **Your payment method**
+</ResponseField>
+
+<ResponseField name="Usage Charges" type="string">
+  **Pay-as-you-go** for usage beyond included credits
+</ResponseField>
+
+## Troubleshooting
+
+### Slug Already Taken
+
+If your desired slug is unavailable:
+
+1. **Try variations**:
+   - Add numbers: `engineering-2`
+   - Add organization: `acme-engineering`
+   - Use abbreviations: `eng-team`
+
+2. **Check availability**: The form will show if slug is taken
+
+3. **Choose unique identifier**: Make it specific to your use case
+
+### Payment Required Error
+
+If you get a payment error:
+
+1. **Configure payment method**: Set up payment in billing settings
+2. **Check payment status**: Ensure payment method is valid
+3. **Contact support**: If problem persists
+
+### Billing Declined
+
+If team creation fails due to billing:
+
+1. **Verify payment method**: Check card details
+2. **Check balance**: Ensure sufficient funds
+3. **Try different card**: Use alternative payment method
+4. **Contact bank**: Payment may be blocked
+5. **Reach support**: Contact Delino support
+
+## Team Limits
+
+
+<ResponseField name="Members per Team" type="number">
+  **Unlimited**
+
+  No hard limit on team size
+</ResponseField>
+
+<ResponseField name="API Keys per Team" type="number">
+  **Unlimited**
+
+  Create as many API keys as needed
+</ResponseField>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Invite Members" icon="user-plus" href="/core/teams/members">
+    Add team members and assign roles
+  </Card>
+  <Card title="Team API Keys" icon="key" href="/core/api-keys/overview">
+    Create API keys for team services
+  </Card>
+  <Card title="Team Billing" icon="credit-card" href="/core/billing/overview">
+    Monitor team usage and billing
+  </Card>
+</CardGroup>
