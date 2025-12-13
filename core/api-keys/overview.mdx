@@ -1,0 +1,150 @@
+---
+title: "API Keys Overview"
+description: "Understand how API keys work and how to use them for programmatic access to Delino services."
+---
+
+API keys (Personal Access Tokens) allow you to authenticate API requests without using your main account credentials. They provide secure, programmatic access to Delino services with fine-grained permission control.
+
+## How API Keys Work
+
+API keys are Personal Access Tokens (PATs) that provide a secure way to authenticate API requests. Each key has:
+
+- **Unique Token**: A secure token value shown only once at creation
+- **Display Name**: A user-friendly name you choose
+- **Scopes**: Fine-grained permissions controlling what the key can access
+- **Expiration**: Optional expiration date
+
+## Permission Scopes
+
+API keys use a scope-based permission system with the format: `service:resource:action`
+
+### Scope Levels
+
+<AccordionGroup>
+  <Accordion title="Full Access">
+    Grant complete access to all services and operations.
+
+    **Scope**: `["*"]`
+
+    **Use case**: Development and testing environments
+  </Accordion>
+
+  <Accordion title="Service-Level Access">
+    Grant access to all operations within specific services.
+
+    **Example**: `service:*` - All operations for a specific service
+
+    **Use case**: Production applications using specific services
+  </Accordion>
+
+  <Accordion title="Granular Access">
+    Grant access to specific operations within services.
+
+    **Examples**:
+    - `service:resource:action` - Specific operation only
+    - `appcore:payment:update` - Access billing portal only
+
+    **Use case**: Maximum security with minimal permissions
+  </Accordion>
+</AccordionGroup>
+
+### Wildcard Support
+
+Scopes support wildcards for flexible permission management:
+- `*` - Full access to everything
+- `service:*` - All operations in a service
+- `service:resource:*` - All actions on a resource
+
+### Available Scopes
+
+**AppCore**:
+- `appcore:payment:update` - Access billing portal URL
+- `appcore:team:read` - Read team information
+- `appcore:team:write` - Manage teams
+
+For service-specific scopes, refer to each service's documentation.
+
+## Security Features
+
+### Token Security
+- **One-Time Display**: Token value shown only at creation
+- **Secure Storage**: Tokens stored securely
+- **Scope Validation**: Every request validates required permissions
+
+### Expiration
+- **Optional Expiration**: Set expiration date or create non-expiring keys
+- **Flexibility**: Choose the expiration that fits your security needs
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Principle of Least Privilege" icon="shield">
+    Grant only the minimum scopes required for each use case
+  </Card>
+  <Card title="Separate Keys" icon="layer-group">
+    Create different keys for different applications or environments
+  </Card>
+  <Card title="Descriptive Names" icon="tag">
+    Use clear names that indicate the key's purpose
+  </Card>
+  <Card title="Regular Rotation" icon="rotate">
+    Periodically rotate keys, especially for production use
+  </Card>
+  <Card title="Secure Storage" icon="lock">
+    Store keys in environment variables or secure vaults
+  </Card>
+  <Card title="Revoke Unused Keys" icon="trash">
+    Delete keys that are no longer needed
+  </Card>
+</CardGroup>
+
+## Common Use Cases
+
+### Development Environment
+```bash
+# Create a key with full access for development
+Scopes: ["*"]
+Name: "Development - Local"
+Expiration: 30 days
+```
+
+### Production Service
+```bash
+# Create a key with service-level access
+Scopes: ["service:*"]
+Name: "Production - Service Access"
+Expiration: Never
+```
+
+### CI/CD Pipeline
+```bash
+# Create a key with specific permissions
+Scopes: ["service:resource:write"]
+Name: "GitHub Actions - Main Pipeline"
+Expiration: 1 year
+```
+
+### Billing Portal Access
+```bash
+# Create a key for billing management
+Scopes: ["appcore:payment:update"]
+Name: "Finance Tool - Billing Portal"
+Expiration: Never
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Create API Key" icon="plus" href="/core/api-keys/creation">
+    Learn how to create your first API key
+  </Card>
+  <Card title="Manage Keys" icon="list-check" href="/core/api-keys/management">
+    View, rotate, and revoke API keys
+  </Card>
+  <Card title="Scope Reference" icon="book" href="/core/api-keys/scopes">
+    Complete list of available scopes
+  </Card>
+  <Card title="Security Guide" icon="shield-check" href="/core/api-keys/security">
+    Security best practices for API keys
+  </Card>
+</CardGroup>
