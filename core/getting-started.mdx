@@ -1,0 +1,371 @@
+---
+title: "Getting Started"
+description: "Quick start guide to set up your Delino account, configure billing, and start using services."
+---
+
+This guide will walk you through setting up your Delino account, from initial signup to creating your first API key and making your first API call.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- A valid email address
+- A payment method (credit card, debit card, or supported payment method)
+- Basic understanding of API concepts (for programmatic access)
+
+## Step 1: Create Your Account
+
+<Steps>
+  <Step title="Navigate to Delino">
+    Go to [https://app.delino.io](https://app.delino.io)
+  </Step>
+
+  <Step title="Click Sign Up">
+    Click the "Sign Up" button to begin registration
+  </Step>
+
+  <Step title="Complete Registration">
+    Register using one of the available methods:
+
+    **Choose a method**:
+    - Email and password
+    - Google account
+
+    **Enter required information**:
+    - Email address
+    - Password (if using email/password)
+  </Step>
+
+  <Step title="Verify Email">
+    Check your email for verification link
+
+    Click the link to verify your email address
+  </Step>
+</Steps>
+
+<Info>
+Your personal account is automatically created with the slug `~` (tilde)
+</Info>
+
+## Step 2: Subscribe to Pro Tier
+
+<Warning>
+All new accounts require a Pro subscription ($10/month). Personal accounts include a 7-day free trial.
+</Warning>
+
+<Steps>
+  <Step title="Navigate to Billing">
+    Go to your billing settings:
+    - Click on your profile icon
+    - Select "Billing" or navigate to `/teams/~/billing`
+  </Step>
+
+  <Step title="Start Free Trial">
+    Click "Upgrade to Pro" to begin your 7-day free trial
+
+    <Info>
+    You won't be charged during the trial period
+    </Info>
+  </Step>
+
+  <Step title="Enter Payment Details">
+    You'll be redirected to the payment checkout page:
+
+    **Enter payment information**:
+    - Credit/debit card number
+    - Expiration date
+    - CVV/CVC code
+    - Billing address
+
+    <Note>
+    Payment method required even during trial for automatic subscription after trial ends
+    </Note>
+  </Step>
+
+  <Step title="Complete Checkout">
+    Review and confirm:
+    - Subscription: Personal Pro ($10/month)
+    - Trial: 7 days free
+    - After trial: $10/month + usage charges
+
+    Click "Subscribe" to complete
+  </Step>
+
+  <Step title="Confirmation">
+    You're redirected back to Delino:
+    - Pro tier activated
+    - Trial period begins
+    - $10 credits included (after trial)
+    - All services accessible
+  </Step>
+</Steps>
+
+## Step 3: Explore the Dashboard
+
+Familiarize yourself with the Delino dashboard:
+
+<CardGroup cols={2}>
+  <Card title="Overview" icon="gauge">
+    **Dashboard Home**
+
+    - Current usage summary
+    - Recent activity
+    - Quick access to services
+    - Billing status
+  </Card>
+
+  <Card title="Billing" icon="credit-card">
+    **Billing Page**
+
+    - Current billing cycle
+    - Credits used
+    - Service breakdown
+    - Upcoming invoice
+  </Card>
+
+  <Card title="API Keys" icon="key">
+    **API Keys Page**
+
+    - Create new keys
+    - View existing keys
+    - Manage permissions
+    - Revoke keys
+  </Card>
+
+  <Card title="Teams" icon="users">
+    **Teams Page**
+
+    - View your teams
+    - Create new teams
+    - Manage team members
+    - Team settings
+  </Card>
+</CardGroup>
+
+## Step 4: Create Your First API Key
+
+<Steps>
+  <Step title="Navigate to API Keys">
+    Go to `/teams/~/api-keys` or click "API Keys" in the sidebar
+  </Step>
+
+  <Step title="Click New Key">
+    Click the "New Key" button in the top-right
+  </Step>
+
+  <Step title="Configure Key">
+    **Details Tab**:
+    - Name: `My First API Key`
+    - Expiration: Select "Never" or choose a date
+
+    **Permissions Tab**:
+    - Select "Full Access" for testing
+    - (You can create restricted keys later)
+
+    <Tip>
+    For production, use granular permissions instead of full access
+    </Tip>
+  </Step>
+
+  <Step title="Create Key">
+    Click "Create" to generate the key
+  </Step>
+
+  <Step title="Copy Token">
+    **Important**: Copy the token value immediately
+
+    ```
+    deli_abc123def456ghi789jkl012mno345pqr678stu901vwx234yz
+    ```
+
+    <Warning>
+    This is the only time you'll see the full token value
+    </Warning>
+
+    Store it securely:
+    - Password manager
+    - Environment variable
+    - Secure vault
+    - **Never** in source code
+  </Step>
+</Steps>
+
+## Step 5: Start Using Services
+
+Now you can start using Delino's services through the web dashboard:
+
+<Steps>
+  <Step title="Access the Dashboard">
+    Navigate to the main dashboard to see available services
+  </Step>
+
+  <Step title="Explore Services">
+    Browse available services and features:
+    - View service documentation
+    - Check pricing and usage
+    - Access service-specific features
+  </Step>
+
+  <Step title="Use Web Interface">
+    Many services provide web interfaces for quick testing:
+    - Upload and process files
+    - Configure service settings
+    - View results in real-time
+    - Download processed outputs
+  </Step>
+
+  <Step title="Integrate with Your App">
+    When ready, use your API key to integrate services into your applications
+
+    See service-specific documentation for API details and code examples
+  </Step>
+</Steps>
+
+<Tip>
+Start with the web interface to understand how services work before integrating them into your code
+</Tip>
+
+## Step 6: Monitor Your Usage
+
+Track your resource consumption:
+
+<Steps>
+  <Step title="Navigate to Billing">
+    Go to `/teams/~/billing`
+  </Step>
+
+  <Step title="View Current Usage">
+    See your current billing cycle:
+    - Credits used
+    - Amount in USD
+    - Service breakdown
+    - Remaining credits
+  </Step>
+
+  <Step title="Check Service Details">
+    Expand each service to see:
+    - Metric types
+    - Quantity consumed
+    - Credits charged
+    - Percentage of total
+  </Step>
+
+  <Step title="Export Data">
+    Download usage data:
+    - Select date range
+    - Choose format (CSV, JSON, PDF)
+    - Click "Export"
+  </Step>
+</Steps>
+
+## Next Steps
+
+Now that you have your account set up, explore these topics:
+
+### For Individual Developers
+
+<CardGroup cols={2}>
+  <Card title="API Keys" icon="key" href="/core/api-keys/overview">
+    Learn about API key scopes and security
+  </Card>
+  <Card title="Services" icon="layer-group" href="/services/overview">
+    Explore available Delino services
+  </Card>
+  <Card title="Billing" icon="credit-card" href="/core/billing/overview">
+    Understand billing and pricing details
+  </Card>
+  <Card title="Examples" icon="code" href="/examples">
+    View code examples and tutorials
+  </Card>
+</CardGroup>
+
+### For Teams
+
+<CardGroup cols={2}>
+  <Card title="Create Team" icon="users-plus" href="/core/teams/creation">
+    Set up a team for collaboration
+  </Card>
+  <Card title="Invite Members" icon="envelope" href="/core/teams/members">
+    Add team members and assign roles
+  </Card>
+  <Card title="Team Billing" icon="building" href="/core/billing/teams">
+    Configure team billing and usage tracking
+  </Card>
+  <Card title="Team API Keys" icon="key-skeleton" href="/core/api-keys/team-keys">
+    Create shared API keys for the team
+  </Card>
+</CardGroup>
+
+
+## Common Questions
+
+<AccordionGroup>
+  <Accordion title="Do I have to pay during the trial?">
+    No, the 7-day trial is completely free. You'll only be charged after the trial ends if you continue using the Pro tier.
+  </Accordion>
+
+  <Accordion title="Can I cancel my subscription?">
+    Yes, you can cancel anytime through the billing portal. Your services will continue until the end of your current billing cycle.
+  </Accordion>
+
+  <Accordion title="What happens if I exceed my included credits?">
+    You'll be charged for additional usage on a pay-as-you-go basis. The $10/month includes $10 worth of credits (10,000,000 credits).
+  </Accordion>
+
+  <Accordion title="Can I use Delino without a credit card?">
+    No, a payment method is required to subscribe to the Pro tier, which is mandatory for all accounts. However, you won't be charged during your 7-day trial.
+  </Accordion>
+
+  <Accordion title="How do I invite team members?">
+    First, create a team (separate from your personal account). Then navigate to the team's members page and click "Invite Member".
+  </Accordion>
+
+  <Accordion title="What's the difference between personal and team accounts?">
+    - **Personal Account** (slug: `~`): Your individual workspace, includes 7-day trial
+    - **Team Account**: Shared workspace for collaboration, no trial, requires payment upfront
+  </Accordion>
+
+  <Accordion title="Can I create multiple API keys?">
+    Yes, you can create unlimited API keys. Best practice is to create separate keys for different applications or environments.
+  </Accordion>
+
+  <Accordion title="Where can I see my invoices?">
+    Navigate to `/teams/~/billing` and click on the "Invoices" tab. You can view, download, and export all your invoices.
+  </Accordion>
+</AccordionGroup>
+
+## Need Help?
+
+<Card title="Support" icon="life-ring" href="mailto:support@delino.io">
+  Contact support team
+</Card>
+
+## Troubleshooting
+
+### Login Issues
+
+If you can't log in:
+1. Verify your email address is correct
+2. Use password reset if needed
+3. Check spam folder for verification email
+4. Clear browser cache and cookies
+5. Try a different browser
+
+### Payment Declined
+
+If your payment is declined:
+1. Verify card details are correct
+2. Check with your bank for restrictions
+3. Try a different payment method
+4. Reach out to Delino support
+
+### API Key Not Working
+
+If your API key doesn't work:
+1. Verify you copied the full token
+2. Check the Authorization header format
+3. Ensure key hasn't expired
+4. Verify scopes include required permissions
+5. Test with a simple API call
+
+For more help, contact our [support team](mailto:support@delino.io).
