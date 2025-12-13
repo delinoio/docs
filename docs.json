@@ -14,21 +14,41 @@
         "tab": "Delino App",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Getting Started",
             "pages": [
-              "index"
+              "index",
+              "core/overview",
+              "core/getting-started"
             ]
           },
           {
             "group": "Authentication",
             "pages": [
-              "core/api-keys/creation"
+              "core/authentication/overview"
+            ]
+          },
+          {
+            "group": "API Keys",
+            "pages": [
+              "core/api-keys/overview",
+              "core/api-keys/creation",
+              "core/api-keys/management",
+              "core/api-keys/scopes"
             ]
           },
           {
             "group": "Teams",
             "pages": [
-              "core/teams/creation"
+              "core/teams/overview",
+              "core/teams/creation",
+              "core/teams/members"
+            ]
+          },
+          {
+            "group": "Billing",
+            "pages": [
+              "core/billing/overview",
+              "core/billing/usage"
             ]
           }
         ]
