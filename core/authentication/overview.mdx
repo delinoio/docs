@@ -1,0 +1,275 @@
+---
+title: "Authentication Overview"
+description: "Learn about Delino's secure authentication system with support for multiple authentication methods and API keys."
+---
+
+Delino provides secure authentication, offering safe access to the platform through multiple authentication methods. This guide covers authentication mechanisms, security features, and best practices.
+
+## Authentication Methods
+
+Delino supports two primary authentication methods:
+
+<CardGroup cols={2}>
+  <Card title="Web Authentication" icon="key">
+    **Dashboard Access**
+
+    - Email/password login
+    - Social login support
+    - Automatic session refresh
+    - Session management
+    - Secure token-based authentication
+  </Card>
+  <Card title="API Keys (PATs)" icon="code">
+    **Programmatic Access**
+
+    - Used for API and service integration
+    - Personal Access Tokens
+    - Fine-grained scope permissions
+    - Restricted to public APIs only
+    - No dashboard access
+  </Card>
+</CardGroup>
+
+## Authentication Flow
+
+### How Authentication Works
+
+Delino's authentication flow:
+
+<Steps>
+  <Step title="User Initiates Login">
+    User navigates to Delino and clicks "Sign In"
+  </Step>
+
+  <Step title="Authentication Page">
+    User directed to authentication page:
+    - Email/password login
+    - Social login options
+  </Step>
+
+  <Step title="Credential Verification">
+    System verifies credentials and validates user identity
+  </Step>
+
+  <Step title="Session Established">
+    User redirected back to Delino with active session:
+    - User record created/updated
+    - Session established
+    - Dashboard access granted
+  </Step>
+</Steps>
+
+## API Key Authentication
+
+### Personal Access Tokens (PATs)
+
+API keys provide secure programmatic access:
+
+<Warning>
+API keys are **restricted to public APIs only**. They cannot access internal or admin endpoints.
+</Warning>
+
+**Key Features**:
+- Created through Delino console
+- Securely managed backend
+- Fine-grained scope permissions
+- Optional expiration (up to 100 years)
+- Token value shown only once at creation
+
+**Authentication Flow**:
+```
+API Request
+├── Header: Authorization: Bearer deli_...
+├── Extract token from header
+├── Validate token
+├── Verify scopes for requested operation
+└── Grant/Deny access
+```
+
+### Scope-Based Authorization
+
+API keys use scopes to control access:
+
+**Format**: `service:resource:action`
+
+**Examples**:
+- `*` - Full access (development only)
+- `service:*` - All operations for a specific service
+- `service:resource:action` - Specific operation only
+
+See [API Key Scopes](/core/api-keys/scopes) for complete reference.
+
+### Public API Restriction
+
+<Info>
+API keys (PATs) can only access **public APIs**. Private and admin endpoints require web session authentication.
+</Info>
+
+**Public APIs** (accessible with API keys):
+- Service-specific operations
+- Usage reporting
+- Resource management within scope
+
+**Private APIs** (require web session):
+- Admin operations
+- User management
+- System configuration
+- Billing portal access (except via specific scope)
+
+## API Key Security
+
+<AccordionGroup>
+  <Accordion title="Secure Generation">
+    API keys generated securely:
+    - Cryptographic random suffix (24 bits entropy)
+    - Unique internal names
+    - Collision-resistant
+    - Unpredictable values
+  </Accordion>
+
+  <Accordion title="Storage">
+    API keys stored securely:
+    - Token value hashed
+    - Only shown once at creation
+    - Database stores hash only
+    - Cannot be recovered if lost
+  </Accordion>
+
+  <Accordion title="Transmission">
+    API keys transmitted securely:
+    - HTTPS only
+    - Authorization header
+    - Never in URL parameters
+    - Never in logs
+  </Accordion>
+
+  <Accordion title="Validation">
+    API keys validated on every request:
+    - Token signature check
+    - Expiration verification
+    - Scope validation
+  </Accordion>
+</AccordionGroup>
+
+## Session Management
+
+### Web Sessions
+
+Dashboard sessions managed automatically:
+
+<ResponseField name="Session Duration" type="duration">
+  Typically 7-30 days with automatic refresh
+</ResponseField>
+
+<ResponseField name="Idle Timeout" type="duration">
+  Configurable per organization
+
+  Default: 30 minutes of inactivity
+</ResponseField>
+
+<ResponseField name="Concurrent Sessions" type="number">
+  Multiple sessions allowed
+
+  Each device maintains separate session
+</ResponseField>
+
+### Session Features
+
+- **Auto Refresh**: Sessions automatically refreshed before expiration
+- **Remember Me**: Optional extended session duration
+- **Multiple Devices**: Access from multiple devices simultaneously
+
+## Security Best Practices
+
+<AccordionGroup>
+  <Accordion title="Use Strong Passwords">
+    For your account:
+    - Minimum 12 characters
+    - Mix of letters, numbers, symbols
+    - Avoid common patterns
+    - Use password manager
+  </Accordion>
+
+  <Accordion title="Enable 2FA">
+    Two-factor authentication:
+    - TOTP (Google Authenticator, etc.)
+    - SMS verification (if enabled)
+    - Backup codes
+    - Required for admin accounts
+  </Accordion>
+
+  <Accordion title="Rotate API Keys">
+    Regular API key rotation:
+    - Every 90-365 days
+    - After team member departure
+    - On security incident
+    - Document rotation schedule
+  </Accordion>
+
+  <Accordion title="Monitor Sessions">
+    Review active sessions:
+    - Check for unknown devices
+    - End inactive sessions
+    - Review login history
+    - Report suspicious activity
+  </Accordion>
+
+  <Accordion title="Least Privilege">
+    Apply principle of least privilege:
+    - Minimum required scopes for API keys
+    - Appropriate team roles
+    - Regular permission audits
+    - Remove unnecessary access
+  </Accordion>
+
+  <Accordion title="Secure Credentials">
+    Protect authentication credentials:
+    - Never share passwords
+    - Never commit API keys to git
+    - Use environment variables
+    - Rotate on exposure
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+### Cannot Log In
+
+If you cannot log in to Delino:
+
+1. **Verify Email**: Ensure using correct email address
+2. **Reset Password**: Use password reset function
+3. **Browser Issues**: Clear cache and cookies
+4. **Contact Support**: If problem persists
+
+### Session Errors
+
+If you experience session issues:
+
+1. **Session Expired**: Log out and log in again
+2. **Clear Session**: Clear browser cache and cookies, then re-authenticate
+3. **Contact Support**: If problem persists
+
+### API Key Not Working
+
+If API key authentication fails:
+
+1. **Check Expiration**: Verify key hasn't expired
+2. **Verify Scopes**: Ensure key has required permissions
+3. **Public API**: Confirm endpoint is public (not admin)
+4. **Header Format**: Use `Authorization: Bearer deli_...`
+5. **Test Key**: Try simple API call to verify
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="API Keys" icon="key" href="/core/api-keys/overview">
+    Learn how to create and manage API keys
+  </Card>
+  <Card title="Teams" icon="users" href="/core/teams/overview">
+    Understand team-based authentication
+  </Card>
+  <Card title="Security Guide" icon="shield" href="/core/authentication/security">
+    Advanced security practices
+  </Card>
+</CardGroup>
