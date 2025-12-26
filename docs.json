@@ -69,6 +69,12 @@
             ]
           },
           {
+            "group": "ChangeLog",
+            "pages": [
+              "devbird/changelog"
+            ]
+          },
+          {
             "group": "Managing Tasks",
             "pages": [
               "devbird/tasks/index",
