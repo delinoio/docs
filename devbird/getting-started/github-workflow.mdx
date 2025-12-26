@@ -88,6 +88,8 @@ on:
 jobs:
   devbird:
     runs-on: ubuntu-latest
+    env:
+      DEVBIRD: 1
     permissions:
       contents: write
       pull-requests: write
@@ -139,11 +141,43 @@ For example, the Delino monorepo includes steps for
 
 </Info>
 
-### 4. Configure `DELINO_ACCESS_TOKEN`
+### 4. Filter environment variables for security
+
+<Warning>
+**Security Best Practice**
+
+Passing all environment variables to AI agents is not recommended. You should filter environment variables to only include those that are safe to expose.
+</Warning>
+
+Delino's official repositories use a filtering approach to ensure only safe environment variables are available during DevBird execution. Add a filtering step in your setup to restrict which environment variables the AI agent can access:
+
+```bash
+# Filter environment variables in DevBird mode
+if [ -n "${DEVBIRD:-}" ]; then
+    echo "DevBird mode detected - filtering environment variables to NEXT_PUBLIC_* and TEST_* only"
+    if [ -f ".env" ]; then
+        grep -E '^(NEXT_PUBLIC_|TEST_)' .env > .env.filtered || true
+        mv .env.filtered .env
+    fi
+fi
+```
+
+This script filters the `.env` file to only include variables with these prefixes:
+
+- **`NEXT_PUBLIC_`**: Variables that are meant to be publicly exposed (e.g., for Next.js client-side code)
+- **`TEST_`**: Variables used for E2E testing, which have minimal security risk if leaked
+
+The `DEVBIRD` environment variable (set to `1` in the workflow configuration) triggers this filtering behavior, ensuring your sensitive credentials remain protected.
+
+<Info>
+You can customize the filtering pattern to match your project's naming conventions. The key is to only expose environment variables that are safe for the AI agent to access.
+</Info>
+
+### 5. Configure `DELINO_ACCESS_TOKEN`
 
 Create a new API key following the guide at [Creating API Keys](/core/api-keys/creation) and add it as a repository secret on GitHub settings.
 
-### 5. Commit to your main branch
+### 6. Commit to your main branch
 
 Commit the workflow file to your repository's main branch:
 

@@ -1,0 +1,19 @@
+---
+title: "ChangeLog"
+description: "Track updates and improvements to DevBird"
+---
+
+## December 26, 2025
+
+### Security Enhancement: Environment Variable Filtering
+
+Added documentation for environment variable filtering in the GitHub workflow to improve security when working with AI agents.
+
+**Changes:**
+- Added `DEVBIRD: 1` environment variable to the workflow configuration
+- Documented best practices for filtering environment variables to only safe prefixes (`NEXT_PUBLIC_*` and `TEST_*`)
+- Added example script for filtering `.env` files in DevBird mode
+- Explained security rationale for limiting AI agent access to environment variables
+
+**Documentation updated:**
+- [GitHub Workflow](/devbird/getting-started/github-workflow) - Added "Filter environment variables for security" section
